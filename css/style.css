@@ -1090,7 +1090,7 @@ body.light-theme {
   }
 
   .services__container {
-    grid-template-columns: repeat(2, 192px);
+    grid-template-columns: repeat(3, 192px);
     column-gap: 3rem;
   }
 
