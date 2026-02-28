@@ -1,6 +1,5 @@
 # Saeed Ramadan - Developer Portfolio ⚡
 
-![Portfolio Preview](./src/assets/html,css%20pro/personal.png)
 
 A highly advanced, architecturally modern portfolio built with **React 19**, **Tailwind CSS v4**, and **Framer Motion**. Designed for a premium, cinematic user experience featuring dynamic themes, 3D interactions, parallax scrolling, and full internationalization (AR/EN).
 
