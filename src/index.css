@@ -1,0 +1,197 @@
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
+
+:root {
+  --header-height: 3.5rem;
+  --body-font: "Poppins", sans-serif;
+  --arabic-font: "Tajawal", sans-serif;
+}
+
+.font-arabic {
+  font-family: var(--arabic-font) !important;
+}
+
+@layer base {
+  :root {
+    --first-color: hsl(250, 66%, 75%);
+    --first-color-alt: hsl(250, 66%, 71%);
+    --first-color-rgb: 155, 137, 245; /* HSL(250, 66%, 75%) to RGB */
+    --title-color: hsl(219, 15%, 95%);
+    --text-color: hsl(219, 8%, 75%);
+    --text-color-light: hsl(219, 4%, 55%);
+    --body-color: hsl(219, 48%, 8%);
+    --container-color: hsl(219, 32%, 12%);
+  }
+
+  .light-theme {
+    --first-color: hsl(250, 66%, 60%);
+    --first-color-alt: hsl(250, 66%, 55%);
+    --first-color-rgb: 104, 82, 224;
+    --title-color: hsl(219, 15%, 15%);
+    --text-color: hsl(219, 8%, 35%);
+    --body-color: hsl(219, 100%, 99%);
+    --container-color: #fff;
+  }
+
+  body {
+    background-color: var(--body-color);
+    color: var(--text-color);
+    overflow-x: hidden;
+    @apply font-["Poppins"] transition-colors duration-300;
+  }
+
+  h1, h2, h3 {
+    color: var(--title-color);
+    @apply font-semibold;
+  }
+}
+
+.scroll-header {
+  @apply shadow-[0_4px_4px_hsla(0,0%,4%,0.3)];
+}
+
+.light-theme .scroll-header {
+  @apply shadow-[0_2px_4px_hsla(0,0%,1%,0.1)];
+}
+
+@keyframes shimmer {
+  from {
+    left: -100%;
+  }
+  to {
+    left: 100%;
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2.5s infinite linear;
+}
+
+.bg-clip-text {
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+}
+
+/* --- SUPERNOVA CELESTIAL TOKENS --- */
+:root {
+  --color-joy-pink: 255, 0, 127;
+  --color-joy-cyan: 0, 255, 255;
+  --color-joy-yellow: 255, 215, 0;
+  --color-joy-violet: 122, 40, 255;
+}
+
+@keyframes chroma-shift {
+  0% { color: rgb(var(--color-joy-pink)); text-shadow: 0 0 20px rgba(var(--color-joy-pink), 0.5); }
+  33% { color: rgb(var(--color-joy-cyan)); text-shadow: 0 0 20px rgba(var(--color-joy-cyan), 0.5); }
+  66% { color: rgb(var(--color-joy-yellow)); text-shadow: 0 0 20px rgba(var(--color-joy-yellow), 0.5); }
+  100% { color: rgb(var(--color-joy-pink)); text-shadow: 0 0 20px rgba(var(--color-joy-pink), 0.5); }
+}
+
+.animate-chroma {
+  animation: chroma-shift 6s linear infinite;
+}
+
+@keyframes solar-flare {
+  0% { transform: rotate(0deg) translateX(80px) rotate(0deg) scale(1); opacity: 0; }
+  50% { opacity: 1; transform: rotate(180deg) translateX(120px) rotate(-180deg) scale(1.5); }
+  100% { transform: rotate(360deg) translateX(80px) rotate(-360deg) scale(1); opacity: 0; }
+}
+
+.solar-flare-spark {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: white;
+  filter: blur(1px);
+}
+
+@keyframes glint {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+.animate-glint {
+  animation: glint 2s ease-in-out infinite;
+}
+
+@keyframes irid {
+  0%, 100% { filter: hue-rotate(0deg) brightness(1.5); }
+  50% { filter: hue-rotate(15deg) brightness(1.8); }
+}
+
+.animate-irid {
+  animation: irid 4s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.group-hover\:bounce:hover, .group:hover .group-hover\:bounce {
+  animation: bounce 0.6s ease-in-out infinite;
+}
+
+/* --- PHASE 6: KINETIC ATMOSPHERE --- */
+.noise-overlay {
+  position: fixed;
+  inset: -200%;
+  width: 400%;
+  height: 400%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.04;
+  pointer-events: none;
+  z-index: 10005;
+  animation: noise 0.5s steps(2) infinite;
+}
+
+@keyframes noise {
+  0% { transform: translate(0, 0); }
+  10% { transform: translate(-5%, -5%); }
+  20% { transform: translate(-10%, 5%); }
+  30% { transform: translate(5%, -10%); }
+  40% { transform: translate(-5%, 15%); }
+  50% { transform: translate(-10%, 5%); }
+  60% { transform: translate(15%, 0); }
+  70% { transform: translate(0, 10%); }
+  80% { transform: translate(-15%, 0); }
+  90% { transform: translate(10%, 5%); }
+  100% { transform: translate(5%, 0); }
+}
+
+.light-leak {
+  position: fixed;
+  width: 80vw;
+  height: 80vh;
+  background: radial-gradient(circle, rgba(var(--color-joy-pink), 0.05) 0%, transparent 70%);
+  filter: blur(100px);
+  pointer-events: none;
+  z-index: 1;
+  animation: drift-slow 40s linear infinite;
+}
+
+@keyframes drift-slow {
+  0% { transform: translate(-20%, -20%) rotate(0deg); }
+  50% { transform: translate(20%, 20%) rotate(180deg); }
+  100% { transform: translate(-20%, -20%) rotate(360deg); }
+}
+
+/* Glass Refraction Upgrade */
+.glass-nebula {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+}
+
+@keyframes sweep {
+  0% { transform: translateX(-50%) skew(-20deg); }
+  100% { transform: translateX(300%) skew(-20deg); }
+}
+
+.animate-sweep {
+  animation: sweep 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
