@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
   motion,
   AnimatePresence,
@@ -194,106 +194,96 @@ const Services = () => {
   const { t } = useTranslation();
   const [activeModal, setActiveModal] = useState(null);
 
-  const services = [
-    {
-      id: 1,
-      title: t("services.web"),
-      description: t("services.web_desc"),
-      icon: "bx-code-alt",
-      color: "from-cyan-400 to-blue-600",
-      accent: "text-cyan-400",
-      glow: "rgba(34, 211, 238, 0.4)",
-      items: [
-        t("services.web_i1"),
-        t("services.web_i2"),
-        t("services.web_i3"),
-        t("services.web_i4"),
-        t("services.web_i5"),
-      ],
-    },
-    {
-      id: 2,
-      title: t("services.uiux"),
-      description: t("services.uiux_desc"),
-      icon: "bx-paint",
-      color: "from-fuchsia-500 to-purple-700",
-      accent: "text-fuchsia-400",
-      glow: "rgba(192, 38, 211, 0.4)",
-      items: [
-        t("services.uiux_i1"),
-        t("services.uiux_i2"),
-        t("services.uiux_i3"),
-        t("services.uiux_i4"),
-        t("services.uiux_i5"),
-      ],
-    },
-    {
-      id: 3,
-      title: t("services.teaching"),
-      description: t("services.teaching_desc"),
-      icon: "bx-terminal",
-      color: "from-orange-400 to-amber-600",
-      accent: "text-orange-400",
-      glow: "rgba(251, 146, 60, 0.4)",
-      items: [
-        t("services.teaching_i1"),
-        t("services.teaching_i2"),
-        t("services.teaching_i3"),
-        t("services.teaching_i4"),
-        t("services.teaching_i5"),
-      ],
-    },
-  ];
+  const services = useMemo(
+    () => [
+      {
+        id: 1,
+        title: t("services.web"),
+        description: t("services.web_desc"),
+        icon: "bx-code-alt",
+        color: "from-cyan-400 to-blue-600",
+        accent: "text-cyan-400",
+        glow: "rgba(34, 211, 238, 0.4)",
+        items: [
+          t("services.web_i1"),
+          t("services.web_i2"),
+          t("services.web_i3"),
+          t("services.web_i4"),
+          t("services.web_i5"),
+        ],
+      },
+      {
+        id: 2,
+        title: t("services.uiux"),
+        description: t("services.uiux_desc"),
+        icon: "bx-paint",
+        color: "from-fuchsia-500 to-purple-700",
+        accent: "text-fuchsia-400",
+        glow: "rgba(192, 38, 211, 0.4)",
+        items: [
+          t("services.uiux_i1"),
+          t("services.uiux_i2"),
+          t("services.uiux_i3"),
+          t("services.uiux_i4"),
+          t("services.uiux_i5"),
+        ],
+      },
+      {
+        id: 3,
+        title: t("services.teaching"),
+        description: t("services.teaching_desc"),
+        icon: "bx-terminal",
+        color: "from-orange-400 to-amber-600",
+        accent: "text-orange-400",
+        glow: "rgba(251, 146, 60, 0.4)",
+        items: [
+          t("services.teaching_i1"),
+          t("services.teaching_i2"),
+          t("services.teaching_i3"),
+          t("services.teaching_i4"),
+          t("services.teaching_i5"),
+        ],
+      },
+    ],
+    [t],
+  );
 
-  const volunteering = [
-    {
-      id: 4,
-      title: t("volunteering.v1_title"),
-      status: t("volunteering.v1_status"),
-      icon: "bx-heart",
-      color: "from-rose-500 to-pink-600",
-      accent: "text-rose-400",
-    },
-    {
-      id: 5,
-      title: t("volunteering.v2_title"),
-      status: t("volunteering.v2_status"),
-      icon: "bx-globe",
-      color: "from-blue-500 to-indigo-700",
-      accent: "text-blue-400",
-    },
-    {
-      id: 6,
-      title: t("volunteering.v3_title"),
-      status: t("volunteering.v3_status"),
-      icon: "bx-atom",
-      color: "from-teal-400 to-emerald-600",
-      accent: "text-teal-400",
-    },
-  ];
+  const volunteering = useMemo(
+    () => [
+      {
+        id: 4,
+        title: t("volunteering.v1_title"),
+        status: t("volunteering.v1_status"),
+        icon: "bx-heart",
+        color: "from-rose-500 to-pink-600",
+        accent: "text-rose-400",
+      },
+      {
+        id: 5,
+        title: t("volunteering.v2_title"),
+        status: t("volunteering.v2_status"),
+        icon: "bx-globe",
+        color: "from-blue-500 to-indigo-700",
+        accent: "text-blue-400",
+      },
+      {
+        id: 6,
+        title: t("volunteering.v3_title"),
+        status: t("volunteering.v3_status"),
+        icon: "bx-atom",
+        color: "from-teal-400 to-emerald-600",
+        accent: "text-teal-400",
+      },
+    ],
+    [t],
+  );
 
   return (
     <section className="py-10 md:py-16 relative overflow-hidden" id="services">
-      {/* Advanced Mesh Background Decoration */}
+      {/* Subtle Static Ambience */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none -z-10 bg-body">
-        <motion.div
-          animate={{
-            x: [0, 50, -50, 0],
-            y: [0, -50, 50, 0],
-            rotate: [0, 180, 360],
-          }}
-          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          className="absolute top-[15%] left-[10%] w-[400px] h-[400px] bg-first/5 rounded-[0.5rem] blur-[180px]"
-        ></motion.div>
-        <motion.div
-          animate={{
-            x: [0, -70, 70, 0],
-            y: [0, 70, -70, 0],
-            rotate: [360, 180, 0],
-          }}
-          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-          className="absolute bottom-[20%] right-[15%] w-[600px] h-[600px] bg-first/10 rounded-[0.5rem] blur-[160px]"
-        ></motion.div>
+        <div className="absolute top-[15%] left-[10%] w-[400px] h-[400px] bg-first/5 rounded-full blur-[180px]" />
+        <div className="absolute bottom-[20%] right-[15%] w-[500px] h-[500px] bg-first/8 rounded-full blur-[160px]" />
       </div>
 
       <div className="max-w-[1240px] mx-auto px-6">

@@ -10,16 +10,20 @@ import { useTranslation } from "react-i18next";
 import bgImg from "../assets/bg.png";
 
 // --- SUPERNOVA: SOLAR FLARE ENGINE ---
-const flareSparks = [...Array(12)].map((_, i) => ({
+// تقليل الشرارات من 12 إلى 6 لتخفيف حمل الـ GPU
+const flareSparks = [...Array(6)].map((_, i) => ({
   id: i,
-  delay: i * 0.5,
+  delay: i * 0.8,
   duration: 3 + Math.random() * 2,
   color: ["#FF007F", "#00FFFF", "#FFD700", "#7A28FF"][i % 4],
 }));
 
 const SolarFlare = ({ x, y }) => {
   return (
-    <div className="fixed inset-0 pointer-events-none z-10000">
+    <div
+      className="fixed inset-0 pointer-events-none z-10000"
+      style={{ willChange: "transform" }}
+    >
       {flareSparks.map((s) => (
         <motion.div
           key={s.id}
@@ -48,7 +52,8 @@ const SolarFlare = ({ x, y }) => {
 };
 
 // --- SUPERNOVA: FLOATING GEOMETRIC SHARDS ---
-const shardsData = [...Array(6)].map((_, i) => ({
+// تقليل الشظايا من 6 إلى 4
+const shardsData = [...Array(4)].map((_, i) => ({
   id: i,
   size: 150 + Math.random() * 100,
   x: Math.random() * 100,
@@ -59,7 +64,10 @@ const shardsData = [...Array(6)].map((_, i) => ({
 
 const FloatingShards = () => {
   return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+    <div
+      className="absolute inset-0 pointer-events-none overflow-hidden z-0"
+      style={{ willChange: "transform" }}
+    >
       {shardsData.map((s) => (
         <motion.div
           key={s.id}
@@ -87,7 +95,8 @@ const FloatingShards = () => {
 };
 
 // --- TRANSCENDENTAL PARTICLES ENGINE ---
-const particlesStore = [...Array(40)].map((_, i) => ({
+// تقليل الجسيمات من 40 إلى 20 لتخفيف الـ CPU/GPU
+const particlesStore = [...Array(20)].map((_, i) => ({
   id: i,
   size: Math.random() * 2 + 1,
   x: Math.random() * 100,
@@ -98,7 +107,10 @@ const particlesStore = [...Array(40)].map((_, i) => ({
 
 const DigitalDust = ({ mouseX, mouseY }) => {
   return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden z-1 opacity-40">
+    <div
+      className="absolute inset-0 pointer-events-none overflow-hidden z-1 opacity-40"
+      style={{ willChange: "transform" }}
+    >
       {particlesStore.map((p) => (
         <motion.div
           key={p.id}

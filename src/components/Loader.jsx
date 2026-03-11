@@ -204,7 +204,7 @@ const Loader = ({ onComplete }) => {
         }
         return prev + 1;
       });
-    }, 45); // Slightly slower for construction detail
+    }, 25); // تسريع الـ Loader: 25ms × 100 = 2.5s بدلاً من 4.5s
     return () => clearInterval(timer);
   }, [onComplete]);
 

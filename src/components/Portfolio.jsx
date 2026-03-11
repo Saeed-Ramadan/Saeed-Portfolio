@@ -163,6 +163,8 @@ const Portfolio = () => {
                       <img
                         src={project.img}
                         alt={t(project.titleKey) || project.titleFallback}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-125 group-hover:blur-[2px] group-hover:brightness-50"
                       />
 

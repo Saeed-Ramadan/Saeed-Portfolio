@@ -166,12 +166,12 @@ const Education = () => {
                     {t("education.faculty")}
                   </p>
 
-                  <p className="flex items-center gap-5 md:gap-4 text-text/60 dark:text-white/70 md:text-text/60 text-base md:text-xl font-bold relative mt-5 md:mt-2">
+                  <div className="flex items-center gap-5 md:gap-4 text-text/60 dark:text-white/70 md:text-text/60 text-base md:text-xl font-bold relative mt-5 md:mt-2">
                     <div className="absolute -left-10 top-1/2 -translate-y-1/2 bg-body md:bg-transparent py-2 flex justify-center z-10 md:relative md:left-auto md:top-auto md:translate-y-0 md:w-auto md:py-0">
                       <i className="bx bx-buildings text-text/40 dark:text-white/70 text-xl md:text-first md:text-2xl"></i>
                     </div>
                     {t("education.university")}
-                  </p>
+                  </div>
                 </div>
 
                 {/* Tech Tags: Refined Edition */}
