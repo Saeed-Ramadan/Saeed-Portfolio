@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const DiagnosticLog = ({ progress }) => {
+interface DiagnosticLogProps {
+  progress: number;
+}
+
+const DiagnosticLog: React.FC<DiagnosticLogProps> = ({ progress }) => {
   const logs = useMemo(
     () => [
       "Initializing React 19 Fiber Engine...",
@@ -16,12 +20,12 @@ const DiagnosticLog = ({ progress }) => {
       "Deploying Global Architecture...",
       "Ready for Supernova Reveal.",
     ],
-    [],
+    []
   );
 
   const visibleLogs = logs.slice(
     0,
-    Math.floor((progress / 100) * logs.length) + 1,
+    Math.floor((progress / 100) * logs.length) + 1
   );
 
   return (
@@ -42,7 +46,7 @@ const DiagnosticLog = ({ progress }) => {
   );
 };
 
-const WireframeCore = () => (
+const WireframeCore: React.FC = () => (
   <div className="relative w-48 h-48 [perspective:1000px]">
     <motion.div
       animate={{
@@ -74,7 +78,11 @@ const WireframeCore = () => (
   </div>
 );
 
-const VirtualBrowser = ({ progress }) => {
+interface VirtualBrowserProps {
+  progress: number;
+}
+
+const VirtualBrowser: React.FC<VirtualBrowserProps> = ({ progress }) => {
   const designTags = [
     "gap: 20px",
     "display: flex",
@@ -191,7 +199,11 @@ const VirtualBrowser = ({ progress }) => {
   );
 };
 
-const Loader = ({ onComplete }) => {
+interface LoaderProps {
+  onComplete: () => void;
+}
+
+const Loader: React.FC<LoaderProps> = ({ onComplete }) => {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -204,7 +216,7 @@ const Loader = ({ onComplete }) => {
         }
         return prev + 1;
       });
-    }, 25); // تسريع الـ Loader: 25ms × 100 = 2.5s بدلاً من 4.5s
+    }, 25);
     return () => clearInterval(timer);
   }, [onComplete]);
 

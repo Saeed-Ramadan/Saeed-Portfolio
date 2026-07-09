@@ -88,8 +88,43 @@ import hopeOwnPro4 from "../assets/hope/ownpro4.png";
 import hopeOwnPro5 from "../assets/hope/ownpro5.png";
 import hopeOwnPro6 from "../assets/hope/ownpro6.png";
 
-export const projectsData = [
-  // ── 1. Bynona ── Pink E-Commerce
+export interface ProjectFeature {
+  titleKey: string;
+  descKey: string;
+  icon: string;
+}
+
+export interface ProjectTheme {
+  primary: string;
+  glow: string;
+  bgGlow: string;
+  gradient: string;
+  label: string;
+  icon: string;
+}
+
+export interface ProjectDetailsSection {
+  heroImage?: string;
+  overviewKey?: string;
+  features?: ProjectFeature[];
+  images: string[];
+}
+
+export interface Project {
+  id: string;
+  titleKey: string;
+  descKey: string;
+  titleFallback?: string;
+  category: "professional" | "grad" | "personal";
+  img: string;
+  link: string;
+  theme: ProjectTheme;
+  techs: string[];
+  details: ProjectDetailsSection;
+}
+
+export const projectsData: Project[] = [
+  // ── 1. Bynona ── Yellow E-Commerce
   {
     id: "bymona",
     titleKey: "portfolio.bymona.title",
@@ -173,7 +208,7 @@ export const projectsData = [
     },
   },
 
-  // ── 2. Propix8 ── Emerald Real Estate
+  // ── 2. Propix8 ── Blue Real Estate
   {
     id: "propix8",
     titleKey: "portfolio.propix8.title",
@@ -396,4 +431,5 @@ export const projectsData = [
   },
 ];
 
-export const getProjectById = (id) => projectsData.find((p) => p.id === id);
+export const getProjectById = (id: string | undefined): Project | undefined =>
+  id ? projectsData.find((p) => p.id === id) : undefined;

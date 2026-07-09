@@ -4,18 +4,20 @@ import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { getProjectById } from "../data/projectsData";
 
-const BynonaDetails = () => {
+const BynonaDetails: React.FC = () => {
   const { t, i18n } = useTranslation();
   const isAr = i18n.language === "ar";
   const project = getProjectById("bymona");
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   if (!project) return null;
-  const theme = project.theme;
+  const theme = project.theme || {
+    label: project.category,
+  };
 
   const features = project.details?.features || [];
   const images = project.details?.images || [];
@@ -39,7 +41,7 @@ const BynonaDetails = () => {
         >
           <Link
             to="/"
-            className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-bold uppercase tracking-widest text-white/70 hover:text-yellow-400 hover:bg-yellow-400/10 transition-colors"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-bold uppercase tracking-widest text-white/70 hover:text-yellow-400 hover:bg-yellow-400/10 transition-colors cursor-pointer"
           >
             <i
               className={`bx bx-left-arrow-alt text-xl ${isAr ? "rotate-180" : ""}`}
@@ -51,7 +53,7 @@ const BynonaDetails = () => {
             href={project.link}
             target="_blank"
             rel="noreferrer"
-            className="group flex items-center gap-2 px-6 py-2.5 bg-yellow-400 text-black rounded-2xl text-sm font-black uppercase tracking-widest hover:shadow-[0_0_30px_rgba(250,204,21,0.4)] hover:scale-105 transition-all"
+            className="group flex items-center gap-2 px-6 py-2.5 bg-yellow-400 text-black rounded-2xl text-sm font-black uppercase tracking-widest hover:shadow-[0_0_30px_rgba(250,204,21,0.4)] hover:scale-105 transition-all cursor-pointer"
           >
             <span>{t("portfolio.projectDetails.liveDemo", "Live Demo")}</span>
             <i className="bx bx-shopping-bag text-lg group-hover:-translate-y-1 transition-transform"></i>
@@ -78,7 +80,7 @@ const BynonaDetails = () => {
             </h1>
 
             <p className="text-lg text-white/60 leading-relaxed max-w-xl font-medium border-l-4 border-yellow-400 pl-6 space-y-4">
-              {t(project.details?.overviewKey)}
+              {project.details?.overviewKey && t(project.details.overviewKey)}
             </p>
 
             <div className="flex flex-wrap gap-4 pt-4">
@@ -94,8 +96,8 @@ const BynonaDetails = () => {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, rotateY: 15 }}
-            animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, type: "spring" }}
             className="order-1 lg:order-2 perspective-1000"
           >
@@ -147,7 +149,7 @@ const BynonaDetails = () => {
           </div>
         </div>
 
-        {/* Gallery Section - Full Screen Width Masonry-ish */}
+        {/* Gallery Section */}
         <div className="mb-20">
           <motion.h3
             initial={{ opacity: 0, y: 20 }}
@@ -194,10 +196,10 @@ const BynonaDetails = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSelectedImage(null)}
-            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 backdrop-blur-xl p-4 md:p-12"
+            className="fixed inset-0 z-[10002] flex items-center justify-center bg-black/90 backdrop-blur-xl p-4 md:p-12"
           >
             <button
-              className="absolute top-6 right-6 w-12 h-12 bg-white/10 hover:bg-yellow-400 hover:text-black border border-white/20 rounded-full flex items-center justify-center text-2xl transition-all"
+              className="absolute top-6 right-6 w-12 h-12 bg-white/10 hover:bg-yellow-400 hover:text-black border border-white/20 rounded-full flex items-center justify-center text-2xl transition-all cursor-pointer"
               onClick={() => setSelectedImage(null)}
             >
               <i className="bx bx-x"></i>

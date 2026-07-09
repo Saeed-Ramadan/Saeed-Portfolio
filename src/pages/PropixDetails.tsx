@@ -4,18 +4,20 @@ import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { getProjectById } from "../data/projectsData";
 
-const PropixDetails = () => {
+const PropixDetails: React.FC = () => {
   const { t, i18n } = useTranslation();
   const isAr = i18n.language === "ar";
   const project = getProjectById("propix8");
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   if (!project) return null;
-  const theme = project.theme;
+  const theme = project.theme || {
+    label: project.category,
+  };
 
   const features = project.details?.features || [];
   const images = project.details?.images || [];
@@ -40,7 +42,7 @@ const PropixDetails = () => {
         >
           <Link
             to="/"
-            className="group flex items-center gap-2 text-sm font-semibold tracking-wide text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors uppercase"
+            className="group flex items-center gap-2 text-sm font-semibold tracking-wide text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors uppercase cursor-pointer"
           >
             <i
               className={`bx bx-left-arrow-alt text-xl group-hover:-translate-x-1 transition-transform ${isAr ? "rotate-180 group-hover:translate-x-1" : ""}`}
@@ -52,7 +54,7 @@ const PropixDetails = () => {
             href={project.link}
             target="_blank"
             rel="noreferrer"
-            className="flex items-center gap-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-sm font-bold tracking-wide transition-all shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:-translate-y-0.5"
+            className="flex items-center gap-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-sm font-bold tracking-wide transition-all shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:-translate-y-0.5 cursor-pointer"
           >
             <span>
               {t("portfolio.projectDetails.liveDemo", "Explore Platform")}
@@ -80,7 +82,7 @@ const PropixDetails = () => {
                 {t(project.titleKey)}
               </h1>
               <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed font-light">
-                {t(project.details?.overviewKey)}
+                {project.details?.overviewKey && t(project.details.overviewKey)}
               </p>
             </div>
 
@@ -149,7 +151,7 @@ const PropixDetails = () => {
                 transition={{ delay: idx * 0.1 }}
                 className="bg-white dark:bg-slate-800/50 p-8 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-blue-500/50 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 group"
               >
-                <div className="w-12 h-12 bg-blue-50 dark:bg-blue-900/30 rounded-xl flex items-center justify-center mb-6 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
+                <div className="w-12 h-12 bg-blue-55 dark:bg-blue-900/30 rounded-xl flex items-center justify-center mb-6 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
                   <i className={`bx ${feature.icon} text-2xl`}></i>
                 </div>
                 <h4 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
@@ -163,7 +165,7 @@ const PropixDetails = () => {
           </div>
         </div>
 
-        {/* Gallery Section - Architectural Photography Style */}
+        {/* Gallery Section */}
         <div className="mb-20">
           <div className="flex items-center justify-between mb-12">
             <h3 className="text-2xl font-bold text-slate-900 dark:text-white">
@@ -209,10 +211,10 @@ const PropixDetails = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSelectedImage(null)}
-            className="fixed inset-0 z-[9999] flex items-center justify-center bg-slate-900/95 backdrop-blur-sm p-4 md:p-8"
+            className="fixed inset-0 z-[10002] flex items-center justify-center bg-slate-900/95 backdrop-blur-sm p-4 md:p-8"
           >
             <button
-              className="absolute top-6 right-6 w-12 h-12 bg-white/10 hover:bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl transition-all"
+              className="absolute top-6 right-6 w-12 h-12 bg-white/10 hover:bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl transition-all cursor-pointer"
               onClick={() => setSelectedImage(null)}
             >
               <i className="bx bx-x"></i>

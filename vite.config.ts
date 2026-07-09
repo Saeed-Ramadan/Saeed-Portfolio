@@ -5,7 +5,6 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   build: {
-    // تقسيم الـ bundle لملفات منفصلة لكل مكتبة — أسرع تحميل وأفضل cache
     rollupOptions: {
       output: {
         manualChunks: {

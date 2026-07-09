@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { motion } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -9,7 +10,7 @@ import testimonial1 from "../assets/testimonial1.jpg";
 import testimonial2 from "../assets/testimonial2.jpg";
 import testimonial3 from "../assets/testimonial3.jpg";
 
-const Certifications = () => {
+const Certifications: React.FC = () => {
   const { t } = useTranslation();
   const certs = [
     {
@@ -91,7 +92,7 @@ const Certifications = () => {
             <span className="text-first font-black tracking-[5px] uppercase text-xs mb-4 block">
               {t("certs.gradTitle")}
             </span>
-            <h2 className="text-4xl md:text-7xl font-black text-title tracking-tighter bg-linear-to-b from-title to-first bg-clip-text  italic leading-[1.1] pb-2">
+            <h2 className="text-4xl md:text-7xl font-black text-title tracking-tighter bg-linear-to-b from-title to-first bg-clip-text italic leading-[1.1] pb-2">
               {t("certs.gradSub")}
             </h2>
           </motion.div>

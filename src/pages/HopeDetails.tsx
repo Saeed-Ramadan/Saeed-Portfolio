@@ -9,13 +9,13 @@ import {
 } from "framer-motion";
 import { getProjectById } from "../data/projectsData";
 
-const HopeDetails = () => {
+const HopeDetails: React.FC = () => {
   const { t, i18n } = useTranslation();
   const isAr = i18n.language === "ar";
   const project = getProjectById("hope");
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [activeSection, setActiveSection] = useState(0);
-  const heroRef = useRef(null);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [activeSection, setActiveSection] = useState<number>(0);
+  const heroRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -56,7 +56,7 @@ const HopeDetails = () => {
     },
   ];
 
-  const scrollToSection = (sectionId) => {
+  const scrollToSection = (sectionId: string) => {
     const el = document.getElementById(sectionId);
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   };
@@ -102,7 +102,7 @@ const HopeDetails = () => {
       <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 backdrop-blur-2xl bg-body/60 border-b border-white/5">
         <Link
           to="/"
-          className="group flex items-center gap-2 px-5 py-2.5 bg-white/5 border border-white/10 hover:border-teal-500/50 rounded-2xl text-[11px] font-black uppercase tracking-widest text-title hover:text-teal-400 transition-all"
+          className="group flex items-center gap-2 px-5 py-2.5 bg-white/5 border border-white/10 hover:border-teal-500/50 rounded-2xl text-[11px] font-black uppercase tracking-widest text-title hover:text-teal-400 transition-all cursor-pointer"
         >
           <i
             className={`bx bx-left-arrow-alt text-lg transition-transform ${isAr ? "rotate-180 group-hover:-translate-x-1" : "group-hover:-translate-x-1"}`}
@@ -119,7 +119,7 @@ const HopeDetails = () => {
                 setActiveSection(i);
                 scrollToSection(s.id);
               }}
-              className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${
+              className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all cursor-pointer ${
                 activeSection === i
                   ? "bg-teal-500 text-white shadow-[0_0_20px_rgba(20,184,166,0.4)]"
                   : "text-text hover:text-teal-400"
@@ -135,7 +135,7 @@ const HopeDetails = () => {
           href={project.link}
           target="_blank"
           rel="noreferrer"
-          className="flex items-center gap-2 px-5 py-2.5 bg-teal-500 text-white rounded-2xl text-[11px] font-black uppercase tracking-widest hover:shadow-[0_0_25px_rgba(20,184,166,0.5)] hover:scale-105 transition-all"
+          className="flex items-center gap-2 px-5 py-2.5 bg-teal-500 text-white rounded-2xl text-[11px] font-black uppercase tracking-widest hover:shadow-[0_0_25px_rgba(20,184,166,0.5)] hover:scale-105 transition-all cursor-pointer"
         >
           <span>{t("portfolio.projectDetails.liveDemo", "Live Demo")}</span>
           <i className="bx bx-link-external"></i>
@@ -302,7 +302,7 @@ const HopeDetails = () => {
                   >
                     <div className="absolute top-0 right-0 w-32 h-32 opacity-10 pointer-events-none">
                       <i
-                        className={`bx ${featureIcons[idx]} text-[8rem] text-white`}
+                        className={`bx ${feature.icon || featureIcons[idx]} text-[8rem] text-white`}
                       ></i>
                     </div>
                     <div
@@ -382,7 +382,7 @@ const HopeDetails = () => {
         </div>
 
         {/* ── Image Gallery ── */}
-        {project.details?.images?.length > 0 && (
+        {project.details?.images && project.details.images.length > 0 && (
           <motion.div
             id="hope-gallery"
             initial={{ opacity: 0, y: 30 }}
@@ -440,10 +440,10 @@ const HopeDetails = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSelectedImage(null)}
-            className="fixed inset-0 z-[9999] flex items-center justify-center bg-body/95 backdrop-blur-xl p-4 md:p-8"
+            className="fixed inset-0 z-[10002] flex items-center justify-center bg-body/95 backdrop-blur-xl p-4 md:p-8"
           >
             <button
-              className="absolute top-4 right-4 w-12 h-12 bg-white/10 border border-white/20 hover:border-teal-500 hover:bg-teal-500 transition-all rounded-full flex items-center justify-center text-white text-xl"
+              className="absolute top-4 right-4 w-12 h-12 bg-white/10 border border-white/20 hover:border-teal-500 hover:bg-teal-500 transition-all rounded-full flex items-center justify-center text-white text-xl cursor-pointer"
               onClick={() => setSelectedImage(null)}
             >
               <i className="bx bx-x"></i>

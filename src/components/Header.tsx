@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-scroll";
 import { useTranslation } from "react-i18next";
-import { useTheme } from "../context/ThemeContext";
+import { useTheme } from "../hooks/useTheme";
 
 const Header = () => {
   const { t, i18n } = useTranslation();
@@ -53,9 +53,13 @@ const Header = () => {
         <Link
           to="home"
           smooth={true}
-          className="text-first font-bold text-xl cursor-pointer"
+          className="flex items-center cursor-pointer hover:opacity-90 transition-opacity"
         >
-          {t("hero.name")}
+          <img
+            src="/logo.png"
+            alt="Saeed Logo"
+            className="w-10 h-auto object-contain filter drop-shadow-[0_4px_12px_rgba(99,102,241,0.15)]"
+          />
         </Link>
 
         {/* Desktop Menu */}
@@ -81,13 +85,15 @@ const Header = () => {
           <div className="flex items-center gap-4 border-l border-textLight/20 pl-4 rtl:border-l-0 rtl:border-r rtl:pl-0 rtl:pr-4">
             <button
               onClick={toggleLanguage}
-              className="text-sm font-bold text-title hover:text-first transition-colors px-2 py-1 rounded border border-textLight/20"
+              aria-label="Toggle language"
+              className="text-sm font-bold text-title hover:text-first transition-colors px-2 py-1 rounded border border-textLight/20 cursor-pointer"
             >
               {i18n.language === "en" ? "AR" : "EN"}
             </button>
             <button
               onClick={toggleTheme}
-              className="text-xl text-title hover:text-first transition-colors"
+              aria-label="Toggle dark/light theme"
+              className="text-xl text-title hover:text-first transition-colors cursor-pointer"
             >
               <i
                 className={`bx ${theme === "dark" ? "bx-sun" : "bx-moon"}`}
@@ -100,24 +106,27 @@ const Header = () => {
         <div className="flex items-center gap-3 md:hidden">
           <button
             onClick={toggleLanguage}
-            className="text-[10px] font-black text-title px-3 py-1.5 rounded-lg border border-title/10 bg-container/20 backdrop-blur-sm active:scale-95 transition-all"
+            aria-label="Toggle language"
+            className="text-[10px] font-black text-title px-3 py-1.5 rounded-lg border border-title/10 bg-container/20 backdrop-blur-sm active:scale-95 transition-all cursor-pointer"
           >
             {i18n.language === "en" ? "AR" : "EN"}
           </button>
           <button
             onClick={toggleTheme}
-            className="w-10 h-10 flex items-center justify-center rounded-lg bg-container/20 border border-title/10 backdrop-blur-sm text-title active:scale-95 transition-all"
+            aria-label="Toggle dark/light theme"
+            className="w-10 h-10 flex items-center justify-center rounded-lg bg-container/20 border border-title/10 backdrop-blur-sm text-title active:scale-95 transition-all cursor-pointer"
           >
             <i className={`bx ${theme === "dark" ? "bx-sun" : "bx-moon"}`}></i>
           </button>
-          <div
-            className="w-10 h-10 flex items-center justify-center rounded-lg bg-first text-body shadow-lg shadow-first/20 cursor-pointer active:scale-95 transition-all"
+          <button
+            className="w-10 h-10 flex items-center justify-center rounded-lg bg-first text-body shadow-lg shadow-first/20 cursor-pointer active:scale-95 transition-all border-0"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Toggle navigation menu"
           >
             <i
               className={`bx ${isMenuOpen ? "bx-x" : "bx-grid-alt"} text-xl`}
             ></i>
-          </div>
+          </button>
         </div>
       </nav>
 

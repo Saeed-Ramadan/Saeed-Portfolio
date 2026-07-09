@@ -4,11 +4,11 @@ import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { getProjectById } from "../data/projectsData";
 
-const ProjectDetails = () => {
-  const { id } = useParams();
+const ProjectDetails: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
   const { t } = useTranslation();
   const project = getProjectById(id);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -42,6 +42,7 @@ const ProjectDetails = () => {
     glow: "rgba(var(--first-color-rgb), 0.35)",
     bgGlow: "rgba(var(--first-color-rgb), 0.05)",
     label: project?.category,
+    icon: "bx-code-alt",
   };
 
   return (
@@ -67,7 +68,7 @@ const ProjectDetails = () => {
         >
           <Link
             to="/"
-            className="group flex items-center gap-2 px-6 py-3 bg-container/30 border border-title/10 rounded-2xl text-[12px] font-black uppercase tracking-widest text-title overflow-hidden hover:text-body transition-all active:scale-95 backdrop-blur-3xl"
+            className="group flex items-center gap-2 px-6 py-3 bg-container/30 border border-title/10 rounded-2xl text-[12px] font-black uppercase tracking-widest text-title overflow-hidden hover:text-body transition-all active:scale-95 backdrop-blur-3xl cursor-pointer"
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = theme.primary;
               e.currentTarget.style.borderColor = theme.primary;
@@ -86,7 +87,7 @@ const ProjectDetails = () => {
             href={project.link}
             target="_blank"
             rel="noreferrer"
-            className="flex items-center gap-2 px-6 py-3 text-body rounded-2xl text-[12px] font-black uppercase tracking-widest transition-all"
+            className="flex items-center gap-2 px-6 py-3 text-body rounded-2xl text-[12px] font-black uppercase tracking-widest transition-all cursor-pointer"
             style={{
               backgroundColor: theme.primary,
               boxShadow: `0 0 30px ${theme.glow}`,
@@ -169,7 +170,7 @@ const ProjectDetails = () => {
                 className="text-sm md:text-base text-text font-bold opacity-80 leading-relaxed border-l-2 pl-6"
                 style={{ borderColor: theme.primary + "60" }}
               >
-                {hasDetails
+                {hasDetails && project.details.overviewKey
                   ? t(project.details.overviewKey)
                   : t(project.descKey) || "Project overview goes here."}
               </p>
@@ -312,10 +313,10 @@ const ProjectDetails = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSelectedImage(null)}
-            className="fixed inset-0 z-100 flex items-center justify-center bg-body/90 backdrop-blur-md p-4 md:p-8"
+            className="fixed inset-0 z-[10002] flex items-center justify-center bg-body/90 backdrop-blur-md p-4 md:p-8"
           >
             <button
-              className="absolute top-4 right-4 md:top-6 md:right-6 w-10 h-10 md:w-12 md:h-12 bg-container/50 border border-title/10 hover:border-first hover:bg-first hover:text-body transition-colors rounded-full flex items-center justify-center text-xl md:text-2xl z-10"
+              className="absolute top-4 right-4 md:top-6 md:right-6 w-10 h-10 md:w-12 md:h-12 bg-container/50 border border-title/10 hover:border-first hover:bg-first hover:text-body transition-colors rounded-full flex items-center justify-center text-xl md:text-2xl z-10 cursor-pointer"
               onClick={() => setSelectedImage(null)}
             >
               <i className="bx bx-x"></i>
