@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 
 export interface Service {
@@ -248,7 +249,7 @@ const Services: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-28">
           {services.map((service, idx) => (
             <ServiceCard
-              key={idx}
+              key={service.id}
               service={service}
               idx={idx}
               setActiveModal={setActiveModal}
@@ -283,7 +284,7 @@ const Services: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {volunteering.map((v, idx) => (
               <VolunteeringCard
-                key={idx}
+                key={v.id}
                 v={v}
                 idx={idx}
               />
@@ -293,72 +294,76 @@ const Services: React.FC = () => {
         </div>
       </div>
 
-      {/* Details Popup Modal */}
-      <AnimatePresence>
-        {activeModal && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[10002] backdrop-blur-md bg-body/80 grid place-items-center p-4"
-            onClick={() => setActiveModal(null)}
-          >
-            <motion.div
-              initial={{ scale: 0.95, y: 20, opacity: 0 }}
-              animate={{ scale: 1, y: 0, opacity: 1 }}
-              exit={{ scale: 0.95, y: 20, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="relative bg-white/95 dark:bg-[#0c1220]/95 border border-slate-200/80 dark:border-white/5 rounded-3xl max-w-[450px] w-full max-h-[85vh] overflow-y-auto shadow-2xl p-8"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Close Button */}
-              <button
-                className="absolute top-6 right-6 rtl:right-auto rtl:left-6 w-8 h-8 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200/60 dark:border-white/10 flex items-center justify-center text-textLight hover:text-first transition-colors cursor-pointer"
+      {/* Details Popup Modal (RATIONALE: Rendered via createPortal to document.body with 100% solid non-transparent background) */}
+      {typeof document !== "undefined" &&
+        createPortal(
+          <AnimatePresence>
+            {activeModal && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 z-[99998] bg-black/80 flex items-center justify-center p-4 overflow-y-auto"
                 onClick={() => setActiveModal(null)}
               >
-                <i className="bx bx-x text-xl" />
-              </button>
-
-              {/* Modal Header */}
-              <div className="text-start mb-6 pr-8 rtl:pr-0 rtl:pl-8">
-                <div className="flex items-center gap-3.5 mb-4">
-                  <div
-                    className="w-14 h-14 rounded-2xl bg-slate-50 dark:bg-[#141b2b]/60 border border-slate-200 dark:border-white/10 flex items-center justify-center text-title text-2xl shrink-0"
+                <motion.div
+                  initial={{ scale: 0.95, y: 20, opacity: 0 }}
+                  animate={{ scale: 1, y: 0, opacity: 1 }}
+                  exit={{ scale: 0.95, y: 20, opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="relative bg-white dark:bg-[#0c1220] border border-slate-200 dark:border-white/10 rounded-3xl max-w-[450px] w-full max-h-[85vh] overflow-y-auto shadow-2xl p-8 z-[99999] opacity-100"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {/* Close Button */}
+                  <button
+                    className="absolute top-6 right-6 rtl:right-auto rtl:left-6 w-8 h-8 rounded-full bg-slate-100 dark:bg-white/10 border border-slate-200/60 dark:border-white/10 flex items-center justify-center text-textLight hover:text-first transition-colors cursor-pointer"
+                    onClick={() => setActiveModal(null)}
                   >
-                    <i className={`bx ${activeModal.icon}`} />
-                  </div>
-                  <h3 className="text-xl md:text-2xl font-black text-title leading-tight">
-                    {activeModal.title}
-                  </h3>
-                </div>
-                <p className="text-xs md:text-sm text-textLight font-semibold leading-relaxed">
-                  {activeModal.description}
-                </p>
-              </div>
+                    <i className="bx bx-x text-xl" />
+                  </button>
 
-              {/* Items List */}
-              <div className="space-y-5">
-                {activeModal.items?.map((item, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, x: isAr ? 20 : -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: idx * 0.08 }}
-                    className="flex items-center gap-4 text-start group"
-                  >
-                    <div className="w-9 h-9 rounded-full border border-slate-300/80 dark:border-white/20 bg-transparent text-title flex items-center justify-center text-xs font-black shrink-0 transition-colors group-hover:border-first group-hover:text-first">
-                      {idx + 1}
+                  {/* Modal Header */}
+                  <div className="text-start mb-6 pr-8 rtl:pr-0 rtl:pl-8">
+                    <div className="flex items-center gap-3.5 mb-4">
+                      <div
+                        className="w-14 h-14 rounded-2xl bg-slate-50 dark:bg-[#141b2b] border border-slate-200 dark:border-white/10 flex items-center justify-center text-title text-2xl shrink-0"
+                      >
+                        <i className={`bx ${activeModal.icon}`} />
+                      </div>
+                      <h3 className="text-xl md:text-2xl font-black text-title leading-tight">
+                        {activeModal.title}
+                      </h3>
                     </div>
-                    <p className="text-sm font-bold text-title">
-                      {item}
+                    <p className="text-xs md:text-sm text-textLight font-semibold leading-relaxed">
+                      {activeModal.description}
                     </p>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          </motion.div>
+                  </div>
+
+                  {/* Items List */}
+                  <div className="space-y-4">
+                    {activeModal.items?.map((item, idx) => (
+                      <motion.div
+                        key={idx}
+                        initial={{ opacity: 0, x: isAr ? 20 : -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: idx * 0.08 }}
+                        className="flex items-center gap-3.5 text-start group"
+                      >
+                        <div className="w-8 h-8 rounded-full border border-slate-300 dark:border-white/20 bg-slate-50 dark:bg-[#141b2b] text-title flex items-center justify-center text-xs font-black shrink-0 transition-colors group-hover:border-first group-hover:text-first">
+                          {idx + 1}
+                        </div>
+                        <p className="text-xs md:text-sm font-bold text-title">
+                          {item}
+                        </p>
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>,
+          document.body
         )}
-      </AnimatePresence>
     </section>
   );
 };

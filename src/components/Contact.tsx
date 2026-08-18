@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 import { useContactForm } from "../hooks/useContactForm";
 import contactAsset from "../assets/contact_3d.png";
@@ -157,156 +158,160 @@ const Contact: React.FC = () => {
         </motion.div>
       </div>
 
-      {/* POPUP EMAIL FORM MODAL */}
-      <AnimatePresence>
-        {isFormOpen && (
-          <div
-            onClick={handleOverlayClick}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md p-4"
-          >
-            <motion.div
-              ref={modalRef}
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              transition={{ duration: 0.3 }}
-              className="bg-white/95 border border-slate-200/80 dark:bg-[#0c1220]/95 dark:border-white/10 p-6 md:p-8 rounded-3xl shadow-2xl relative overflow-hidden w-full max-w-md"
-            >
-              {/* Decorative Accent Glow */}
-              <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-bl from-purple-500/10 to-transparent pointer-events-none"></div>
-
-              {/* Close Button */}
-              <button
-                onClick={handleClose}
-                className="absolute top-4 right-4 rtl:right-auto rtl:left-4 w-8 h-8 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200/60 dark:border-white/10 flex items-center justify-center text-textLight hover:text-first transition-colors cursor-pointer"
+      {/* POPUP EMAIL FORM MODAL (RATIONALE: Rendered via createPortal to document.body to prevent z-index issues & background bleeding) */}
+      {typeof document !== "undefined" &&
+        createPortal(
+          <AnimatePresence>
+            {isFormOpen && (
+              <div
+                onClick={handleOverlayClick}
+                className="fixed inset-0 z-[99998] flex items-center justify-center bg-black/80 p-4 overflow-y-auto"
               >
-                <i className="bx bx-x text-xl"></i>
-              </button>
-
-              {isSuccess ? (
-                /* Success Message State */
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="text-center py-6 flex flex-col items-center justify-center gap-4"
+                  ref={modalRef}
+                  initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                  transition={{ duration: 0.3 }}
+                  className="bg-white dark:bg-[#0c1220] border border-slate-200 dark:border-white/10 p-6 md:p-8 rounded-3xl shadow-2xl relative overflow-hidden w-full max-w-md z-[99999] opacity-100"
                 >
-                  <div className="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-3xl text-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.2)]">
-                    <i className="bx bx-check-circle"></i>
-                  </div>
-                  <h4 className="text-xl font-black text-title">
-                    {t("contact.success_title")}
-                  </h4>
-                  <p className="text-xs md:text-sm text-textLight max-w-xs font-semibold leading-relaxed">
-                    {t("contact.success_desc")}
-                  </p>
+                  {/* Decorative Accent Glow */}
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-bl from-purple-500/10 to-transparent pointer-events-none"></div>
+
+                  {/* Close Button */}
                   <button
                     onClick={handleClose}
-                    className="mt-4 px-8 h-11 bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-2xl text-xs font-black uppercase tracking-wider transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 active:scale-95 cursor-pointer flex items-center justify-center"
+                    className="absolute top-4 right-4 rtl:right-auto rtl:left-4 w-8 h-8 rounded-full bg-slate-100 dark:bg-white/10 border border-slate-200/60 dark:border-white/10 flex items-center justify-center text-textLight hover:text-first transition-colors cursor-pointer"
                   >
-                    {t("footer.rights").includes("Saeed") ? "Done" : "موافق"}
+                    <i className="bx bx-x text-xl"></i>
                   </button>
-                </motion.div>
-              ) : (
-                /* Form Inputs State */
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="text-xl md:text-2xl font-black text-title flex items-center gap-2">
-                      <i className="bx bx-envelope text-indigo-500"></i>
-                      <span>{t("contact.talkNow")}</span>
-                    </h3>
-                    <p className="text-xs text-textLight font-medium mt-1">
-                      {t("contact.description")}
-                    </p>
-                  </div>
 
-                  <form onSubmit={handleSubmit} className="space-y-4">
-                    {isError && (
-                      <div className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-semibold">
-                        {t("contact.error_submit")}
+                  {isSuccess ? (
+                    /* Success Message State */
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="text-center py-6 flex flex-col items-center justify-center gap-4"
+                    >
+                      <div className="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-3xl text-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.2)]">
+                        <i className="bx bx-check-circle"></i>
                       </div>
-                    )}
-
-                    {/* Name Input */}
-                    <div className="space-y-1">
-                      <label className="text-[10px] font-black uppercase tracking-wider text-textLight">
-                        {t("contact.name")}
-                      </label>
-                      <input
-                        type="text"
-                        {...register("name")}
-                        className={`w-full bg-slate-50 dark:bg-white/5 border px-4 py-3 rounded-2xl text-xs font-semibold text-title outline-none transition-all focus:border-first ${
-                          errors.name ? "border-red-500" : "border-slate-200 dark:border-white/5"
-                        }`}
-                      />
-                      {errors.name && (
-                        <span className="text-[10px] text-red-400 font-semibold block pt-0.5">
-                          {t(errors.name.message || "")}
-                        </span>
-                      )}
-                    </div>
-
-                    {/* Email Input */}
-                    <div className="space-y-1">
-                      <label className="text-[10px] font-black uppercase tracking-wider text-textLight">
-                        {t("contact.mail")}
-                      </label>
-                      <input
-                        type="text"
-                        {...register("email")}
-                        className={`w-full bg-slate-50 dark:bg-white/5 border px-4 py-3 rounded-2xl text-xs font-semibold text-title outline-none transition-all focus:border-first ${
-                          errors.email ? "border-red-500" : "border-slate-200 dark:border-white/5"
-                        }`}
-                      />
-                      {errors.email && (
-                        <span className="text-[10px] text-red-400 font-semibold block pt-0.5">
-                          {t(errors.email.message || "")}
-                        </span>
-                      )}
-                    </div>
-
-                    {/* Message TextArea */}
-                    <div className="space-y-1">
-                      <label className="text-[10px] font-black uppercase tracking-wider text-textLight">
-                        {t("contact.project")}
-                      </label>
-                      <textarea
-                        {...register("project")}
-                        rows={4}
-                        className={`w-full bg-slate-50 dark:bg-white/5 border px-4 py-3 rounded-2xl text-xs font-semibold text-title outline-none transition-all focus:border-first resize-none ${
-                          errors.project ? "border-red-500" : "border-slate-200 dark:border-white/5"
-                        }`}
-                      ></textarea>
-                      {errors.project && (
-                        <span className="text-[10px] text-red-400 font-semibold block pt-0.5">
-                          {t(errors.project.message || "")}
-                        </span>
-                      )}
-                    </div>
-
-                    {/* Submit Button */}
-                    <div className="pt-2">
+                      <h4 className="text-xl font-black text-title">
+                        {t("contact.success_title")}
+                      </h4>
+                      <p className="text-xs md:text-sm text-textLight max-w-xs font-semibold leading-relaxed">
+                        {t("contact.success_desc")}
+                      </p>
                       <button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className="w-full flex items-center justify-center gap-2 px-6 h-12 bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-2xl text-xs font-black uppercase tracking-wider transition-all shadow-md disabled:opacity-50 disabled:scale-100 disabled:pointer-events-none cursor-pointer"
+                        onClick={handleClose}
+                        className="mt-4 px-8 h-11 bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-2xl text-xs font-black uppercase tracking-wider transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 active:scale-95 cursor-pointer flex items-center justify-center"
                       >
-                        {isSubmitting ? (
-                          <span>{t("contact.sending")}</span>
-                        ) : (
-                          <>
-                            <span>{t("contact.send")}</span>
-                            <i className="bx bx-paper-plane text-sm"></i>
-                          </>
-                        )}
+                        {t("footer.rights").includes("Saeed") ? "Done" : "موافق"}
                       </button>
+                    </motion.div>
+                  ) : (
+                    /* Form Inputs State */
+                    <div className="space-y-6">
+                      <div>
+                        <h3 className="text-xl md:text-2xl font-black text-title flex items-center gap-2">
+                          <i className="bx bx-envelope text-indigo-500"></i>
+                          <span>{t("contact.talkNow")}</span>
+                        </h3>
+                        <p className="text-xs text-textLight font-medium mt-1">
+                          {t("contact.description")}
+                        </p>
+                      </div>
+
+                      <form onSubmit={handleSubmit} className="space-y-4">
+                        {isError && (
+                          <div className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-semibold">
+                            {t("contact.error_submit")}
+                          </div>
+                        )}
+
+                        {/* Name Input */}
+                        <div className="space-y-1">
+                          <label className="text-[10px] font-black uppercase tracking-wider text-textLight">
+                            {t("contact.name")}
+                          </label>
+                          <input
+                            type="text"
+                            {...register("name")}
+                            className={`w-full bg-slate-50 dark:bg-[#141b2b] border px-4 py-3 rounded-2xl text-xs font-semibold text-title outline-none transition-all focus:border-first ${
+                              errors.name ? "border-red-500" : "border-slate-200 dark:border-white/10"
+                            }`}
+                          />
+                          {errors.name && (
+                            <span className="text-[10px] text-red-400 font-semibold block pt-0.5">
+                              {t(errors.name.message || "")}
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Email Input */}
+                        <div className="space-y-1">
+                          <label className="text-[10px] font-black uppercase tracking-wider text-textLight">
+                            {t("contact.mail")}
+                          </label>
+                          <input
+                            type="text"
+                            {...register("email")}
+                            className={`w-full bg-slate-50 dark:bg-[#141b2b] border px-4 py-3 rounded-2xl text-xs font-semibold text-title outline-none transition-all focus:border-first ${
+                              errors.email ? "border-red-500" : "border-slate-200 dark:border-white/10"
+                            }`}
+                          />
+                          {errors.email && (
+                            <span className="text-[10px] text-red-400 font-semibold block pt-0.5">
+                              {t(errors.email.message || "")}
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Message TextArea */}
+                        <div className="space-y-1">
+                          <label className="text-[10px] font-black uppercase tracking-wider text-textLight">
+                            {t("contact.project")}
+                          </label>
+                          <textarea
+                            {...register("project")}
+                            rows={4}
+                            className={`w-full bg-slate-50 dark:bg-[#141b2b] border px-4 py-3 rounded-2xl text-xs font-semibold text-title outline-none transition-all focus:border-first resize-none ${
+                              errors.project ? "border-red-500" : "border-slate-200 dark:border-white/10"
+                            }`}
+                          ></textarea>
+                          {errors.project && (
+                            <span className="text-[10px] text-red-400 font-semibold block pt-0.5">
+                              {t(errors.project.message || "")}
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Submit Button */}
+                        <div className="pt-2">
+                          <button
+                            type="submit"
+                            disabled={isSubmitting}
+                            className="w-full flex items-center justify-center gap-2 px-6 h-12 bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-2xl text-xs font-black uppercase tracking-wider transition-all shadow-md disabled:opacity-50 disabled:scale-100 disabled:pointer-events-none cursor-pointer"
+                          >
+                            {isSubmitting ? (
+                              <span>{t("contact.sending")}</span>
+                            ) : (
+                              <>
+                                <span>{t("contact.send")}</span>
+                                <i className="bx bx-paper-plane text-sm"></i>
+                              </>
+                            )}
+                          </button>
+                        </div>
+                      </form>
                     </div>
-                  </form>
-                </div>
-              )}
-            </motion.div>
-          </div>
+                  )}
+                </motion.div>
+              </div>
+            )}
+          </AnimatePresence>,
+          document.body
         )}
-      </AnimatePresence>
     </section>
   );
 };

@@ -4,8 +4,11 @@ import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { getProjectById } from "../data/projectsData";
 
+import { useTheme } from "../hooks/useTheme";
+
 const PropixDetails: React.FC = () => {
   const { t, i18n } = useTranslation();
+  const { theme: currentTheme, toggleTheme } = useTheme();
   const isAr = i18n.language === "ar";
   const project = getProjectById("propix8");
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -21,6 +24,7 @@ const PropixDetails: React.FC = () => {
 
   const features = project.details?.features || [];
   const images = project.details?.images || [];
+  const isDark = currentTheme === "dark";
 
   return (
     <div className="min-h-screen relative bg-[#f8fafc] dark:bg-[#0b1120] z-10 pt-24 pb-20 font-sans text-slate-800 dark:text-slate-200 transition-colors duration-300">
@@ -50,17 +54,28 @@ const PropixDetails: React.FC = () => {
             <span>{t("nav.home") || "Back to Index"}</span>
           </Link>
 
-          <a
-            href={project.link}
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center gap-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-sm font-bold tracking-wide transition-all shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:-translate-y-0.5 cursor-pointer"
-          >
-            <span>
-              {t("portfolio.projectDetails.liveDemo", "Explore Platform")}
-            </span>
-            <i className="bx bx-window-open text-lg"></i>
-          </a>
+          <div className="flex items-center gap-3">
+            {/* Theme Toggle Button */}
+            <button
+              onClick={toggleTheme}
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-slate-200/60 dark:bg-slate-800/60 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-amber-400 hover:scale-105 transition-all cursor-pointer"
+              aria-label="Toggle theme"
+            >
+              <i className={`bx ${isDark ? "bx-sun" : "bx-moon"} text-xl`}></i>
+            </button>
+
+            <a
+              href={project.link}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-sm font-bold tracking-wide transition-all shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:-translate-y-0.5 cursor-pointer"
+            >
+              <span>
+                {t("portfolio.projectDetails.liveDemo", "Explore Platform")}
+              </span>
+              <i className="bx bx-window-open text-lg"></i>
+            </a>
+          </div>
         </motion.nav>
 
         {/* Hero Section - Architecture Style */}

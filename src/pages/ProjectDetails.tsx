@@ -4,9 +4,12 @@ import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { getProjectById } from "../data/projectsData";
 
+import { useTheme } from "../hooks/useTheme";
+
 const ProjectDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { t } = useTranslation();
+  const { theme: currentTheme, toggleTheme } = useTheme();
   const project = getProjectById(id);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
@@ -44,6 +47,8 @@ const ProjectDetails: React.FC = () => {
     label: project?.category,
     icon: "bx-code-alt",
   };
+
+  const isDark = currentTheme === "dark";
 
   return (
     <div className="min-h-screen relative bg-body z-10 pt-24 pb-20">
@@ -83,21 +88,31 @@ const ProjectDetails: React.FC = () => {
             <i className="bx bx-left-arrow-alt text-lg group-hover:-translate-x-1 transition-transform rtl:rotate-180 rtl:group-hover:translate-x-1"></i>
             <span>{t("nav.home") || "Back"}</span>
           </Link>
-          <a
-            href={project.link}
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center gap-2 px-6 py-3 text-body rounded-2xl text-[12px] font-black uppercase tracking-widest transition-all cursor-pointer"
-            style={{
-              backgroundColor: theme.primary,
-              boxShadow: `0 0 30px ${theme.glow}`,
-            }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.transform = "scale(1.05)")
-            }
-            onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
-          >
-            <span>{t("portfolio.projectDetails.liveDemo", "Live Demo")}</span>
+
+          <div className="flex items-center gap-3">
+            <button
+              onClick={toggleTheme}
+              className="w-11 h-11 flex items-center justify-center rounded-2xl bg-container/30 border border-title/10 text-title hover:scale-105 transition-all cursor-pointer backdrop-blur-3xl"
+              aria-label="Toggle theme"
+            >
+              <i className={`bx ${isDark ? "bx-sun text-amber-400" : "bx-moon text-purple-400"} text-xl`}></i>
+            </button>
+
+            <a
+              href={project.link}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-2 px-6 py-3 text-body rounded-2xl text-[12px] font-black uppercase tracking-widest transition-all cursor-pointer"
+              style={{
+                backgroundColor: theme.primary,
+                boxShadow: `0 0 30px ${theme.glow}`,
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.transform = "scale(1.05)")
+              }
+              onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+            >
+              <span>{t("portfolio.projectDetails.liveDemo", "Live Demo")}</span>
             <i className="bx bx-link-external text-lg"></i>
           </a>
         </motion.div>

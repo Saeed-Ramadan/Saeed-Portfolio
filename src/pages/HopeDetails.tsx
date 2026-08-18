@@ -8,9 +8,11 @@ import {
   AnimatePresence,
 } from "framer-motion";
 import { getProjectById } from "../data/projectsData";
+import { useTheme } from "../hooks/useTheme";
 
 const HopeDetails: React.FC = () => {
   const { t, i18n } = useTranslation();
+  const { theme, toggleTheme } = useTheme();
   const isAr = i18n.language === "ar";
   const project = getProjectById("hope");
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -58,40 +60,16 @@ const HopeDetails: React.FC = () => {
 
   const scrollToSection = (sectionId: string) => {
     const el = document.getElementById(sectionId);
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
-  const featureIcons = [
-    "bx-user-plus",
-    "bx-news",
-    "bx-bot",
-    "bx-bar-chart-alt-2",
-  ];
-  const featureGradients = [
-    "from-teal-500/20 to-cyan-500/10",
-    "from-indigo-500/20 to-blue-500/10",
-    "from-violet-500/20 to-purple-500/10",
-    "from-amber-500/20 to-orange-500/10",
-  ];
-  const featureBorderColors = [
-    "group-hover:border-teal-500/50",
-    "group-hover:border-indigo-500/50",
-    "group-hover:border-violet-500/50",
-    "group-hover:border-amber-500/50",
-  ];
-  const featureIconColors = [
-    "group-hover:bg-teal-500",
-    "group-hover:bg-indigo-500",
-    "group-hover:bg-violet-500",
-    "group-hover:bg-amber-500",
-  ];
+  const isDark = theme === "dark";
 
   return (
-    <div
-      className="min-h-screen relative bg-body overflow-x-hidden"
-      dir={isAr ? "rtl" : "ltr"}
-    >
-      {/* ── Ambient Background ── */}
+    <div className="min-h-screen relative bg-slate-50 dark:bg-[#090d16] z-10 pt-24 pb-20 font-sans text-slate-900 dark:text-white transition-colors duration-300 overflow-hidden">
+      {/* ── Dynamic Ambient Background ── */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-teal-500/8 rounded-full blur-[160px] animate-pulse" />
         <div className="absolute bottom-1/4 right-0 w-[400px] h-[400px] bg-cyan-500/6 rounded-full blur-[140px]" />
@@ -99,10 +77,10 @@ const HopeDetails: React.FC = () => {
       </div>
 
       {/* ── Sticky Nav ── */}
-      <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 backdrop-blur-2xl bg-body/60 border-b border-white/5">
+      <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 backdrop-blur-2xl bg-white/80 dark:bg-body/60 border-b border-slate-200 dark:border-white/5 shadow-sm">
         <Link
           to="/"
-          className="group flex items-center gap-2 px-5 py-2.5 bg-white/5 border border-white/10 hover:border-teal-500/50 rounded-2xl text-[11px] font-black uppercase tracking-widest text-title hover:text-teal-400 transition-all cursor-pointer"
+          className="group flex items-center gap-2 px-5 py-2.5 bg-slate-200/60 dark:bg-white/5 border border-slate-300 dark:border-white/10 hover:border-teal-500/50 rounded-2xl text-[11px] font-black uppercase tracking-widest text-slate-800 dark:text-title hover:text-teal-500 transition-all cursor-pointer"
         >
           <i
             className={`bx bx-left-arrow-alt text-lg transition-transform ${isAr ? "rotate-180 group-hover:-translate-x-1" : "group-hover:-translate-x-1"}`}
@@ -111,7 +89,7 @@ const HopeDetails: React.FC = () => {
         </Link>
 
         {/* Floating section pills */}
-        <div className="hidden md:flex items-center gap-2 p-1 bg-white/5 border border-white/5 rounded-full">
+        <div className="hidden md:flex items-center gap-2 p-1 bg-slate-200/50 dark:bg-white/5 border border-slate-300/50 dark:border-white/5 rounded-full">
           {sections.map((s, i) => (
             <button
               key={i}
@@ -119,317 +97,210 @@ const HopeDetails: React.FC = () => {
                 setActiveSection(i);
                 scrollToSection(s.id);
               }}
-              className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all cursor-pointer ${
+              className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer ${
                 activeSection === i
-                  ? "bg-teal-500 text-white shadow-[0_0_20px_rgba(20,184,166,0.4)]"
-                  : "text-text hover:text-teal-400"
+                  ? "bg-teal-500 text-black shadow-lg shadow-teal-500/20"
+                  : "text-slate-700 dark:text-white/60 hover:text-slate-900 dark:hover:text-white"
               }`}
             >
-              <i className={`bx ${s.icon}`}></i>
+              <i className={`bx ${s.icon} text-sm`} />
               <span>{s.label}</span>
             </button>
           ))}
         </div>
 
-        <a
-          href={project.link}
-          target="_blank"
-          rel="noreferrer"
-          className="flex items-center gap-2 px-5 py-2.5 bg-teal-500 text-white rounded-2xl text-[11px] font-black uppercase tracking-widest hover:shadow-[0_0_25px_rgba(20,184,166,0.5)] hover:scale-105 transition-all cursor-pointer"
-        >
-          <span>{t("portfolio.projectDetails.liveDemo", "Live Demo")}</span>
-          <i className="bx bx-link-external"></i>
-        </a>
-      </div>
-
-      {/* ── Cinematic Hero ── */}
-      <div ref={heroRef} className="relative h-[100vh] overflow-hidden">
-        <motion.div style={{ y: heroY }} className="absolute inset-0">
-          <img
-            src={project.details?.heroImage || project.img}
-            alt="HOPE"
-            className="w-full h-full object-cover object-top brightness-50"
-          />
-        </motion.div>
-
-        {/* Gradient overlays */}
-        <div className="absolute inset-0 bg-linear-to-t from-body via-body/40 to-transparent" />
-        <div className="absolute inset-0 bg-linear-to-r from-body/60 via-transparent to-transparent" />
-
-        {/* Teal scanline glow */}
-        <div className="absolute top-1/3 left-0 right-0 h-[2px] bg-linear-to-r from-transparent via-teal-500/30 to-transparent blur-sm" />
-
-        <motion.div
-          style={{ opacity: heroOpacity }}
-          className="absolute inset-0 flex flex-col items-start justify-end px-8 md:px-20 pb-24 max-w-[1400px] mx-auto"
-        >
-          {/* Graduation badge */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.3 }}
-            className="flex items-center gap-3 mb-6"
+        <div className="flex items-center gap-3">
+          {/* Theme Toggle Button */}
+          <button
+            onClick={toggleTheme}
+            className="w-10 h-10 flex items-center justify-center rounded-2xl bg-slate-200/60 dark:bg-white/10 border border-slate-300 dark:border-white/10 text-slate-800 dark:text-amber-400 hover:scale-105 transition-all cursor-pointer"
+            aria-label="Toggle theme"
           >
-            <div className="flex items-center gap-2 px-4 py-2 bg-teal-500/20 border border-teal-500/40 rounded-full backdrop-blur-xl">
-              <i className="bx bx-medal text-teal-400 text-lg"></i>
-              <span className="text-[10px] font-black uppercase tracking-[3px] text-teal-400">
-                {isAr ? "مشروع التخرج" : "Graduation Project"}
-              </span>
-            </div>
-            <div className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full backdrop-blur-xl">
-              <i className="bx bx-user-check text-title/60 text-lg"></i>
-              <span className="text-[10px] font-black uppercase tracking-[3px] text-title/60">
-                {isAr
-                  ? "قائد المشروع ومطور Front End"
-                  : "Project Leader & Front End Dev"}
-              </span>
-            </div>
-          </motion.div>
+            <i className={`bx ${isDark ? "bx-sun" : "bx-moon"} text-xl`}></i>
+          </button>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-            className="text-[5rem] md:text-[10rem] font-black tracking-tighter italic leading-[0.85] text-white mb-8"
+          <a
+            href={project.link}
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center gap-2 px-5 py-2.5 bg-linear-to-r from-teal-500 to-cyan-500 text-black font-black text-[11px] uppercase tracking-widest rounded-2xl shadow-lg shadow-teal-500/20 hover:scale-105 transition-all cursor-pointer"
           >
-            <span className="bg-linear-to-r from-teal-400 via-cyan-300 to-teal-400 bg-clip-text text-transparent">
-              HOPE
-            </span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.9 }}
-            className="max-w-2xl text-white/60 font-bold italic text-lg leading-relaxed border-l-4 border-teal-500/50 pl-6"
-          >
-            {isAr
-              ? "منصة اجتماعية تعمل بالذكاء الاصطناعي للمساعدة في العثور على الأشخاص المفقودين"
-              : "An AI-powered social platform helping families find missing persons"}
-          </motion.p>
-
-          {/* Scroll indicator */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.4 }}
-            className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-          >
-            <div className="w-[1px] h-16 bg-linear-to-b from-transparent via-teal-500 to-transparent animate-pulse" />
-            <span className="text-[9px] font-black uppercase tracking-[4px] text-teal-500/60">
-              {isAr ? "اسكرول" : "Scroll"}
-            </span>
-          </motion.div>
-        </motion.div>
-      </div>
-
-      {/* ── Main Content ── */}
-      <div className="relative z-10 max-w-[1400px] mx-auto px-6 md:px-12 pb-32">
-        {/* ── Stats Strip ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-4 -mt-10 mb-24"
-        >
-          {stats.map((stat, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="group relative bg-white/3 border border-white/10 hover:border-teal-500/40 rounded-3xl p-6 text-center backdrop-blur-xl overflow-hidden transition-all hover:-translate-y-2"
-            >
-              <div className="absolute inset-0 bg-linear-to-b from-teal-500/0 group-hover:from-teal-500/10 to-transparent transition-all duration-500" />
-              <div className="text-4xl md:text-5xl font-black text-teal-400 mb-2 italic relative z-10">
-                {stat.num}
-              </div>
-              <div className="text-[10px] font-black uppercase tracking-[2px] text-title/50 relative z-10">
-                {stat.label}
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-          {/* ── Left: Overview + Features ── */}
-          <div className="lg:col-span-2 space-y-10">
-            {/* Overview */}
-            <motion.div
-              id="hope-overview"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="relative bg-white/3 border border-white/10 rounded-[2.5rem] p-8 md:p-12 backdrop-blur-xl overflow-hidden"
-            >
-              <div className="absolute top-0 right-0 w-64 h-64 bg-teal-500/8 rounded-full blur-[80px] pointer-events-none" />
-              <div className="relative z-10">
-                <div className="flex items-center gap-3 mb-8">
-                  <div className="w-10 h-10 bg-teal-500/20 border border-teal-500/30 rounded-2xl flex items-center justify-center">
-                    <i className="bx bx-info-circle text-teal-400 text-xl"></i>
-                  </div>
-                  <h2 className="text-2xl md:text-3xl font-black text-title italic">
-                    {t("portfolio.projectDetails.overview", "Overview")}
-                  </h2>
-                </div>
-                <p className="text-sm md:text-base text-text font-bold opacity-80 leading-relaxed border-l-2 border-teal-500/30 pl-6">
-                  {t("portfolio.hope.details.overview")}
-                </p>
-              </div>
-            </motion.div>
-
-            {/* Key Features */}
-            <div id="hope-features">
-              <motion.h2
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="text-2xl md:text-3xl font-black text-title italic mb-8 flex items-center gap-3 px-2"
-              >
-                <i className="bx bx-star text-teal-400"></i>
-                {t("portfolio.projectDetails.keyFeatures", "Key Features")}
-              </motion.h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                {(project.details?.features || []).map((feature, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: idx * 0.1 }}
-                    className={`group relative bg-linear-to-br ${featureGradients[idx]} bg-white/3 border border-white/10 ${featureBorderColors[idx]} rounded-3xl p-7 hover:-translate-y-2 transition-all duration-500 overflow-hidden`}
-                  >
-                    <div className="absolute top-0 right-0 w-32 h-32 opacity-10 pointer-events-none">
-                      <i
-                        className={`bx ${feature.icon || featureIcons[idx]} text-[8rem] text-white`}
-                      ></i>
-                    </div>
-                    <div
-                      className={`w-12 h-12 bg-white/10 ${featureIconColors[idx]} rounded-2xl flex items-center justify-center mb-5 transition-colors relative z-10`}
-                    >
-                      <i
-                        className={`bx ${feature.icon || featureIcons[idx]} text-2xl text-white`}
-                      ></i>
-                    </div>
-                    <h4 className="text-lg font-black text-title mb-3 italic relative z-10">
-                      {t(feature.titleKey)}
-                    </h4>
-                    <p className="text-sm text-text font-bold opacity-70 leading-relaxed relative z-10">
-                      {t(feature.descKey)}
-                    </p>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* ── Right: Tech Stack (Sticky) ── */}
-          <div id="hope-stack" className="lg:col-span-1">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="sticky top-24 bg-white/3 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-xl overflow-hidden"
-            >
-              <div className="absolute inset-0 bg-linear-to-br from-teal-500/5 to-transparent pointer-events-none" />
-              <div className="relative z-10">
-                <div className="flex items-center gap-3 mb-8">
-                  <div className="w-10 h-10 bg-teal-500/20 border border-teal-500/30 rounded-2xl flex items-center justify-center">
-                    <i className="bx bx-layer text-teal-400 text-xl"></i>
-                  </div>
-                  <h3 className="text-xl font-black text-title italic">
-                    {t("portfolio.projectDetails.techStack", "Tech Stack")}
-                  </h3>
-                </div>
-                <div className="flex flex-wrap gap-3">
-                  {project.techs.map((tech, i) => (
-                    <motion.div
-                      key={tech}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.07 }}
-                      className="group px-4 py-2.5 bg-white/5 border border-white/10 hover:border-teal-500/50 hover:bg-teal-500/10 rounded-xl transition-all cursor-default"
-                    >
-                      <span className="text-[11px] font-black uppercase tracking-tight text-title/80 group-hover:text-teal-300 transition-colors">
-                        {tech}
-                      </span>
-                    </motion.div>
-                  ))}
-                </div>
-
-                {/* Project role card */}
-                <div className="mt-8 p-5 bg-teal-500/10 border border-teal-500/20 rounded-2xl">
-                  <div className="flex items-center gap-2 mb-3">
-                    <i className="bx bx-crown text-teal-400 text-xl"></i>
-                    <span className="text-[11px] font-black uppercase tracking-[2px] text-teal-400">
-                      {isAr ? "دوري في المشروع" : "My Role"}
-                    </span>
-                  </div>
-                  <p className="text-sm font-black text-title">
-                    {isAr ? "قائد المشروع" : "Project Leader"}
-                  </p>
-                  <p className="text-xs text-text/60 font-bold mt-1">
-                    {isAr
-                      ? "مطور واجهة مستخدم (Front End)"
-                      : "Frontend Developer"}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          </div>
+            <span>{isAr ? "زيارة الموقع" : "Live App"}</span>
+            <i className="bx bx-link-external" />
+          </a>
         </div>
+      </div>
 
-        {/* ── Image Gallery ── */}
-        {project.details?.images && project.details.images.length > 0 && (
-          <motion.div
-            id="hope-gallery"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mt-24"
-          >
-            <h2 className="text-4xl md:text-6xl font-black text-title italic tracking-tighter text-center mb-4">
-              {t("portfolio.projectDetails.galleryPrefix", "Project")}{" "}
-              <span className="text-teal-400">
-                {t("portfolio.projectDetails.gallerySuffix", "Gallery")}
+      <div className="max-w-6xl mx-auto px-6 pt-12 relative z-10">
+        {/* ── HERO BANNER ── */}
+        <div ref={heroRef} className="relative mb-20 pt-8">
+          <motion.div style={{ y: heroY, opacity: heroOpacity }} className="space-y-6">
+            {/* Badges row */}
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="px-4 py-1.5 rounded-full bg-teal-500/10 border border-teal-500/30 text-teal-600 dark:text-teal-400 text-xs font-black uppercase tracking-widest">
+                🎓 {isAr ? "مشروع التخرج" : "Graduation Project"}
               </span>
-            </h2>
-            <p className="text-center text-text/50 font-bold text-sm mb-16">
+              <span className="px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-600 dark:text-cyan-400 text-xs font-black uppercase tracking-widest">
+                ⭐ {isAr ? "درجة ممتاز" : "Excellent Grade"}
+              </span>
+              <span className="px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-600 dark:text-indigo-400 text-xs font-black uppercase tracking-widest">
+                🤖 {isAr ? "منصة ذكاء اصطناعي" : "AI Platform"}
+              </span>
+            </div>
+
+            {/* Title */}
+            <h1 className="text-5xl md:text-7xl font-black tracking-tight text-slate-900 dark:text-white leading-[1.1]">
+              HOPE{" "}
+              <span className="bg-linear-to-r from-teal-400 via-cyan-400 to-indigo-400 bg-clip-text text-transparent italic font-serif font-normal">
+                Platform
+              </span>
+            </h1>
+
+            {/* Tagline */}
+            <p className="text-base md:text-xl text-slate-700 dark:text-white/70 max-w-3xl font-medium leading-relaxed">
               {isAr
-                ? `${project.details.images.length} لقطة شاشة — اضغط لفتح`
-                : `${project.details.images.length} screenshots — click to expand`}
+                ? "منصة تعليمية متكاملة مدعومة بالذكاء الاصطناعي لتطوير مهارات البرمجة والأطفال ذوي الاحتياجات الخاصة."
+                : "An all-in-one AI-powered educational ecosystem combining learning management, interactive coding, and specialized support for children."}
             </p>
 
-            {/* Masonry-style grid */}
-            <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
-              {project.details.images.map((img, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: (idx % 6) * 0.08 }}
-                  onClick={() => setSelectedImage(img)}
-                  className="group relative break-inside-avoid rounded-2xl overflow-hidden border border-white/10 hover:border-teal-500/50 cursor-pointer shadow-xl transition-all hover:shadow-[0_20px_60px_rgba(20,184,166,0.15)] hover:-translate-y-1"
+            {/* Quick stats grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4">
+              {stats.map((st, i) => (
+                <div
+                  key={i}
+                  className="p-4 rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-center shadow-xs"
                 >
-                  <img
-                    src={img}
-                    alt={`HOPE screenshot ${idx + 1}`}
-                    className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-teal-500/10 transition-colors duration-500 flex items-center justify-center">
-                    <div className="w-12 h-12 bg-white/0 group-hover:bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 scale-75 group-hover:scale-100 border border-white/20">
-                      <i className="bx bx-expand text-white text-xl"></i>
-                    </div>
-                  </div>
-                </motion.div>
+                  <span className="text-2xl md:text-3xl font-black text-teal-600 dark:text-teal-400 block mb-0.5">
+                    {st.num}
+                  </span>
+                  <span className="text-[11px] font-bold text-slate-600 dark:text-white/50 uppercase tracking-wider">
+                    {st.label}
+                  </span>
+                </div>
               ))}
             </div>
           </motion.div>
-        )}
+        </div>
+
+        {/* ── OVERVIEW SECTION ── */}
+        <div id="hope-overview" className="mb-24 scroll-mt-28">
+          <div className="p-8 md:p-12 rounded-3xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-md">
+            <div className="flex items-center gap-3 mb-6">
+              <i className="bx bx-info-circle text-teal-600 dark:text-teal-400 text-2xl" />
+              <h2 className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white">
+                {isAr ? "عن المشروع" : "About the Project"}
+              </h2>
+            </div>
+            <p className="text-sm md:text-base text-slate-700 dark:text-white/70 leading-relaxed font-medium mb-8">
+              {project.details?.overviewKey && t(project.details.overviewKey)}
+            </p>
+
+            {/* Sub-projects list */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="p-5 rounded-2xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10">
+                <div className="flex items-center gap-2 text-teal-600 dark:text-teal-400 font-bold mb-2">
+                  <i className="bx bx-code-alt text-xl" />
+                  <span>HOPE Academy</span>
+                </div>
+                <p className="text-xs text-slate-600 dark:text-white/60 leading-relaxed font-medium">
+                  {isAr
+                    ? "منصة تعليم برمجة تفاعلية للأطفال والشباب مع محرر كود لايف وتقييم بالذكاء الاصطناعي."
+                    : "Interactive coding learning platform for youth with live code runner and AI grading."}
+                </p>
+              </div>
+
+              <div className="p-5 rounded-2xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10">
+                <div className="flex items-center gap-2 text-cyan-600 dark:text-cyan-400 font-bold mb-2">
+                  <i className="bx bx-heart text-xl" />
+                  <span>HOPE Special Care</span>
+                </div>
+                <p className="text-xs text-slate-600 dark:text-white/60 leading-relaxed font-medium">
+                  {isAr
+                    ? "وحدة خاصة لدعم وتأهيل الأطفال ذوي الاحتياجات من خلال ألعاب وتدريبات تفاعلية."
+                    : "Specialized module supporting children with special needs via targeted interactive games."}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ── FEATURES SECTION ── */}
+        <div id="hope-features" className="mb-24 scroll-mt-28">
+          <h2 className="text-3xl font-black text-slate-900 dark:text-white mb-8 flex items-center gap-3">
+            <i className="bx bx-star text-teal-500" />
+            <span>{isAr ? "المميزات الرئيسية" : "Key Features"}</span>
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {(project.details?.features || []).map((feat, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.08 }}
+                className="p-6 rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-teal-500/40 shadow-sm transition-all group"
+              >
+                <div className="w-12 h-12 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-600 dark:text-teal-400 text-2xl mb-4 group-hover:scale-110 transition-transform">
+                  <i className={`bx ${feat.icon}`} />
+                </div>
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2 group-hover:text-teal-500 transition-colors">
+                  {t(feat.titleKey)}
+                </h3>
+                <p className="text-xs text-slate-600 dark:text-white/60 leading-relaxed font-medium">
+                  {t(feat.descKey)}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* ── TECH STACK ── */}
+        <div id="hope-stack" className="mb-24 scroll-mt-28">
+          <h2 className="text-3xl font-black text-slate-900 dark:text-white mb-8 flex items-center gap-3">
+            <i className="bx bx-layer text-teal-500" />
+            <span>{isAr ? "التقنيات المستخدمة" : "Tech Stack"}</span>
+          </h2>
+
+          <div className="flex flex-wrap gap-3">
+            {project.techs.map((tech, i) => (
+              <span
+                key={i}
+                className="px-5 py-3 rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-white/80 shadow-xs"
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* ── GALLERY ── */}
+        <div id="hope-gallery" className="mb-24 scroll-mt-28">
+          <h2 className="text-3xl font-black text-slate-900 dark:text-white mb-8 flex items-center gap-3">
+            <i className="bx bx-image-alt text-teal-500" />
+            <span>{isAr ? "معرض الصور" : "Screenshots Gallery"}</span>
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {(project.details?.images || []).map((img, i) => (
+              <motion.div
+                key={i}
+                whileHover={{ scale: 1.02 }}
+                onClick={() => setSelectedImage(img)}
+                className="relative rounded-2xl overflow-hidden cursor-pointer border border-slate-200 dark:border-white/10 group shadow-sm"
+              >
+                <img
+                  src={img}
+                  alt={`HOPE Screen ${i + 1}`}
+                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <i className="bx bx-expand text-white text-2xl" />
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* ── Lightbox ── */}
@@ -440,7 +311,7 @@ const HopeDetails: React.FC = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSelectedImage(null)}
-            className="fixed inset-0 z-[10002] flex items-center justify-center bg-body/95 backdrop-blur-xl p-4 md:p-8"
+            className="fixed inset-0 z-[10002] flex items-center justify-center bg-black/90 backdrop-blur-xl p-4 md:p-8"
           >
             <button
               className="absolute top-4 right-4 w-12 h-12 bg-white/10 border border-white/20 hover:border-teal-500 hover:bg-teal-500 transition-all rounded-full flex items-center justify-center text-white text-xl cursor-pointer"

@@ -48,7 +48,7 @@ const Hero: React.FC = () => {
           </span>
 
           {/* Name */}
-          <h1 className="text-5xl md:text-7xl font-black mb-4 tracking-tight leading-[1.1] bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent italic">
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-black mb-4 tracking-tight leading-[1.1] bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent italic">
             {t("hero.name")}
           </h1>
 
@@ -177,7 +177,7 @@ const Hero: React.FC = () => {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative w-[280px] xs:w-[320px] md:w-[360px]"
+            className="relative w-[260px] xs:w-[300px] sm:w-[320px] md:w-[360px]"
           >
             {/* Prismatic Vessel Border Container */}
             <div className="relative aspect-[4/5] rounded-[2.5rem] p-3 bg-white/5 dark:bg-title/3 border border-white/10 dark:border-white/5 backdrop-blur-3xl shadow-[0_50px_100px_rgba(0,0,0,0.6)] overflow-visible">
@@ -194,10 +194,10 @@ const Hero: React.FC = () => {
               </div>
 
               {/* Pulsing Availability Badge */}
-              <div className="absolute bottom-6 left-6 right-6 p-4 rounded-2xl bg-container/80 dark:bg-container/70 backdrop-blur-xl border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.4)] z-30">
+              <div className="absolute bottom-4 left-3 right-3 sm:bottom-6 sm:left-6 sm:right-6 p-3 sm:p-4 rounded-2xl bg-container/80 dark:bg-container/70 backdrop-blur-xl border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.4)] z-30">
                 <div className="flex items-center gap-3">
                   {/* Pulsing Dot */}
-                  <span className="relative flex h-3.5 w-3.5">
+                  <span className="relative flex h-3.5 w-3.5 shrink-0">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500"></span>
                   </span>
@@ -216,28 +216,28 @@ const Hero: React.FC = () => {
               {/* Floating React */}
               <FloatingIcon
                 icon="bxl-react text-[#61dafb]"
-                className="absolute -top-4 -left-4 shadow-[#61dafb]/20"
+                className="absolute -top-2 -left-2 sm:-top-4 sm:-left-4 shadow-[#61dafb]/20"
                 delay={0}
               />
 
               {/* Floating JavaScript */}
               <FloatingIcon
                 icon="bxl-javascript text-[#f7df1e]"
-                className="absolute top-24 -right-6 shadow-[#f7df1e]/20"
+                className="absolute top-20 -right-2 sm:top-24 sm:-right-6 shadow-[#f7df1e]/20"
                 delay={1}
               />
 
               {/* Floating CSS3 */}
               <FloatingIcon
                 icon="bxl-css3 text-[#1572b6]"
-                className="absolute -top-6 right-12 shadow-[#1572b6]/20"
+                className="absolute -top-4 right-8 sm:-top-6 sm:right-12 shadow-[#1572b6]/20"
                 delay={1.5}
               />
 
               {/* Floating Code Brackets */}
               <FloatingIcon
                 icon="bx-code-curly text-[#a855f7]"
-                className="absolute bottom-36 -right-6 shadow-[#a855f7]/20"
+                className="absolute bottom-28 -right-2 sm:bottom-36 sm:-right-6 shadow-[#a855f7]/20"
                 delay={2}
               />
             </div>
