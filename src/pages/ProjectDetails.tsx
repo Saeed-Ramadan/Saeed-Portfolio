@@ -113,8 +113,9 @@ const ProjectDetails: React.FC = () => {
               onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
             >
               <span>{t("portfolio.projectDetails.liveDemo", "Live Demo")}</span>
-            <i className="bx bx-link-external text-lg"></i>
-          </a>
+              <i className="bx bx-link-external text-lg"></i>
+            </a>
+          </div>
         </motion.div>
 
         {/* Hero Image Section */}
