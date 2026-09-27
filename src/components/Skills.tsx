@@ -1,249 +1,111 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import SectionTitle from "./common/SectionTitle";
+import SpotlightCard from "./common/SpotlightCard";
+import { skillsCategories } from "../data/skillsData";
 
-interface Skill {
-  name: string;
-  icon?: string;
-  colorClass?: string;
-  renderIcon?: () => React.ReactNode;
-}
-
-interface SkillCategory {
-  title: string;
-  skills: Skill[];
-}
-
+// RATIONALE: Categorized skills grid highlighting modern React ecosystem, state management, and real-time tooling.
 const Skills: React.FC = () => {
   const { t } = useTranslation();
-
-  const skillsData: SkillCategory[] = [
-    {
-      title: t("skills.frontend"),
-      skills: [
-        {
-          name: "HTML5",
-          icon: "bxl-html5",
-          colorClass: "text-[#E34F26]",
-        },
-        {
-          name: "CSS3",
-          icon: "bxl-css3",
-          colorClass: "text-[#1572B6]",
-        },
-        {
-          name: "JavaScript",
-          icon: "bxl-javascript",
-          colorClass: "text-[#F7DF1E]",
-        },
-        {
-          name: "Sass",
-          icon: "bxl-sass",
-          colorClass: "text-[#CC6699]",
-        },
-        {
-          name: "Tailwind CSS",
-          icon: "bxl-tailwind-css",
-          colorClass: "text-[#06B6D4]",
-        },
-        {
-          name: "Bootstrap",
-          icon: "bxl-bootstrap",
-          colorClass: "text-[#7952B3]",
-        },
-      ],
-    },
-    {
-      title: t("skills.react"),
-      skills: [
-        {
-          name: "React 19",
-          icon: "bxl-react",
-          colorClass: "text-[#61DAFB]",
-        },
-        {
-          name: "Redux / Zustand",
-          icon: "bxl-redux",
-          colorClass: "text-[#764ABC]",
-        },
-        {
-          name: "React Router",
-          icon: "bx-link",
-          colorClass: "text-[#CA4245]",
-        },
-        {
-          name: "React Query",
-          icon: "bx-refresh",
-          colorClass: "text-[#FF4154]",
-        },
-        {
-          name: "Framer Motion",
-          icon: "bx-pulse",
-          colorClass: "text-title",
-        },
-      ],
-    },
-    {
-      title: t("skills.instructor"),
-      skills: [
-        {
-          name: "Teaching",
-          icon: "bx-chalkboard",
-          colorClass: "text-first",
-        },
-        {
-          name: "Curriculum",
-          icon: "bx-book-content",
-          colorClass: "text-first",
-        },
-        {
-          name: "Mentoring",
-          icon: "bx-user-voice",
-          colorClass: "text-first",
-        },
-        {
-          name: "Leadership",
-          icon: "bx-group",
-          colorClass: "text-first",
-        },
-      ],
-    },
-    {
-      title: t("skills.tools"),
-      skills: [
-        {
-          name: "VS Code",
-          icon: "bxl-visual-studio",
-          colorClass: "text-[#007ACC]",
-        },
-        {
-          name: "Git",
-          icon: "bxl-git",
-          colorClass: "text-[#F05032]",
-        },
-        {
-          name: "npm / yarn",
-          renderIcon: () => (
-            <svg viewBox="0 0 24 24" fill="#CB3837" className="w-8 h-8">
-              <path d="M0 0v24h24V0H0zm20 18h-3V9h-3v9h-6V6h12v12z"/>
-            </svg>
-          ),
-        },
-        {
-          name: "Vite",
-          renderIcon: () => (
-            <svg viewBox="0 0 24 24" className="w-8 h-8">
-              <path d="M22.414 4.5a.75.75 0 0 0-1.282-.533L12 13.064 2.868 3.967a.75.75 0 0 0-1.282.533L11.36 21.03a.9.9 0 0 0 1.28 0l9.774-16.53z" fill="url(#vite-grad-skills)" />
-              <path d="M19.78 3.22L12 11 4.22 3.22a.45.45 0 0 0-.77.32l8.13 14.52a.5.5 0 0 0 .84 0l8.13-14.52a.45.45 0 0 0-.77-.32z" fill="#FFD600" />
-              <defs>
-                <linearGradient id="vite-grad-skills" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#BD34FE" />
-                  <stop offset="100%" stopColor="#41D1FF" />
-                </linearGradient>
-              </defs>
-            </svg>
-          ),
-        },
-        {
-          name: "Chrome DevTools",
-          icon: "bxl-chrome",
-          colorClass: "text-[#4285F4]",
-        },
-        {
-          name: "Netlify",
-          icon: "bxl-netlify",
-          colorClass: "text-[#00C7B7]",
-        },
-        {
-          name: "ESLint",
-          icon: "bx-shield-quarter",
-          colorClass: "text-[#4B32C3]",
-        },
-        {
-          name: "Prettier",
-          icon: "bx-brush",
-          colorClass: "text-[#F7B93E]",
-        },
-        {
-          name: "Vercel",
-          renderIcon: () => (
-            <svg viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 text-black dark:text-white">
-              <path d="M12 2L1 21h22L12 2z" />
-            </svg>
-          ),
-        },
-      ],
-    },
-  ];
+  const [selectedCategory, setSelectedCategory] = useState<number>(0);
 
   return (
-    <section
-      className="py-20 relative overflow-hidden bg-body"
-      id="skills"
-    >
-      {/* Background Decorative Glow */}
-      <div className="absolute top-1/2 left-0 w-3/4 h-3/4 bg-joy-pink/5 rounded-full blur-[200px] pointer-events-none -translate-x-1/2 -translate-y-1/2 opacity-30"></div>
-      <div className="absolute bottom-0 right-0 w-1/2 h-1/2 bg-joy-cyan/5 rounded-full blur-[200px] pointer-events-none translate-x-1/4 translate-y-1/4 opacity-30"></div>
+    <section className="py-20 relative overflow-hidden bg-body" id="skills">
+      <div className="max-w-6xl mx-auto px-6 relative z-10">
+        <SectionTitle
+          badge={t("skills.badge")}
+          title={t("skills.title")}
+          subtitle={t("skills.subtitle")}
+        />
 
-      <div className="max-w-5xl mx-auto px-6 relative z-10">
-        
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="flex items-center gap-3 mb-12"
-        >
-          <h2 className="text-2xl md:text-3xl font-black text-title">
-            {t("skills.title")}
-          </h2>
-          <div className="flex items-center gap-1">
-            <div className="w-12 h-[2px] bg-linear-to-r from-purple-500 to-indigo-500"></div>
-            <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.5)]"></div>
-          </div>
-        </motion.div>
-
-        {/* Categories Stack */}
-        <div className="space-y-12">
-          {skillsData.map((category, catIdx) => (
-            <motion.div
-              key={catIdx}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: catIdx * 0.1 }}
-              className="space-y-6"
+        {/* Category Tabs */}
+        <div className="flex flex-wrap justify-center gap-2 mb-10">
+          {skillsCategories.map((category, idx) => (
+            <button
+              key={category.titleKey}
+              onClick={() => setSelectedCategory(idx)}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                selectedCategory === idx
+                  ? "bg-indigo-600 text-white shadow-md shadow-indigo-500/20"
+                  : "bg-slate-100 dark:bg-white/[0.04] text-textLight hover:text-title hover:bg-slate-200 dark:hover:bg-white/[0.08]"
+              }`}
             >
-              {/* Category Subtitle */}
-              <h3 className="text-sm font-black uppercase tracking-wider text-textLight opacity-70">
-                {category.title}
-              </h3>
-
-              {/* Skills Grid */}
-              <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4">
-                {category.skills.map((skill, sIdx) => (
-                  <div
-                    key={sIdx}
-                    className="bg-white/80 border border-slate-200/60 dark:bg-[#090d15]/60 dark:border-white/5 p-5 rounded-2xl flex flex-col items-center justify-center gap-4 transition-all duration-300 hover:-translate-y-1 hover:border-first/30 hover:shadow-lg hover:shadow-first/5 group"
-                  >
-                    <div className="flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
-                      {skill.renderIcon ? (
-                        skill.renderIcon()
-                      ) : (
-                        <i className={`bx ${skill.icon} text-4xl ${skill.colorClass}`}></i>
-                      )}
-                    </div>
-                    <span className="text-[10px] md:text-xs font-bold text-textLight tracking-wide group-hover:text-title transition-colors text-center uppercase select-none">
-                      {skill.name}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
+              {t(category.titleKey)}
+            </button>
           ))}
         </div>
-        
+
+        {/* Active Category Display */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={selectedCategory}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="mb-6 text-center">
+              <h3 className="text-xl font-bold text-title">
+                {t(skillsCategories[selectedCategory].titleKey)}
+              </h3>
+              <p className="text-xs md:text-sm text-textLight mt-1">
+                {t(skillsCategories[selectedCategory].subtitleKey)}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              {skillsCategories[selectedCategory].skills.map((skill, sIdx) => (
+                <SpotlightCard
+                  key={skill.name}
+                  className="p-5 flex flex-col items-center justify-center text-center group cursor-default"
+                >
+                  <div
+                    className={`w-12 h-12 rounded-xl bg-slate-100 dark:bg-white/[0.04] border border-slate-200/80 dark:border-white/[0.08] flex items-center justify-center text-2xl mb-3 transition-transform duration-300 group-hover:scale-110 ${
+                      skill.colorClass || "text-title"
+                    }`}
+                  >
+                    <i className={`bx ${skill.icon || "bx-code-alt"}`} />
+                  </div>
+                  <h4 className="text-xs md:text-sm font-bold text-title mb-1">
+                    {skill.name}
+                  </h4>
+                  <span className="text-[10px] text-textLight uppercase tracking-wider font-mono">
+                    Production Grade
+                  </span>
+                </SpotlightCard>
+              ))}
+            </div>
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Global Competency Grid Showcase */}
+        <div className="mt-14 pt-8 border-t border-slate-200/80 dark:border-white/[0.08] grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="p-4 rounded-xl bg-slate-100/60 dark:bg-white/[0.02] border border-slate-200/60 dark:border-white/[0.06] text-center">
+            <span className="text-xl md:text-2xl font-black text-indigo-500 block mb-1">
+              React 19 & 18
+            </span>
+            <span className="text-xs text-textLight">Component Architecture</span>
+          </div>
+          <div className="p-4 rounded-xl bg-slate-100/60 dark:bg-white/[0.02] border border-slate-200/60 dark:border-white/[0.06] text-center">
+            <span className="text-xl md:text-2xl font-black text-amber-500 block mb-1">
+              Zustand + Query
+            </span>
+            <span className="text-xs text-textLight">Resilient State Flow</span>
+          </div>
+          <div className="p-4 rounded-xl bg-slate-100/60 dark:bg-white/[0.02] border border-slate-200/60 dark:border-white/[0.06] text-center">
+            <span className="text-xl md:text-2xl font-black text-cyan-500 block mb-1">
+              Tailwind v4
+            </span>
+            <span className="text-xs text-textLight">RTL / LTR Design Systems</span>
+          </div>
+          <div className="p-4 rounded-xl bg-slate-100/60 dark:bg-white/[0.02] border border-slate-200/60 dark:border-white/[0.06] text-center">
+            <span className="text-xl md:text-2xl font-black text-emerald-500 block mb-1">
+              TypeScript & Zod
+            </span>
+            <span className="text-xs text-textLight">Strict Validation</span>
+          </div>
+        </div>
       </div>
     </section>
   );

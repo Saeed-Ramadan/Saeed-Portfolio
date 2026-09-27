@@ -3,243 +3,244 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-scroll";
 import bgImg from "../assets/bg.png";
+import { useClipboard } from "../hooks/useClipboard";
 import { useSocialPreview } from "../hooks/useSocialPreview";
 import SocialPreviewCard from "./SocialPreviewCard";
+import MagneticButton from "./common/MagneticButton";
+import CurrentRolesBadge from "./common/CurrentRolesBadge";
 import { createPortal } from "react-dom";
+import { appleFadeUp, appleScaleReveal } from "../utils/motion";
 
+// RATIONALE: Hero component focused exclusively on UI presentation.
+// Interactivity is enriched with tactile MagneticButton wrappers, while entrance animations use Apple-style spring physics.
 const Hero: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isAr = i18n.language === "ar";
+  const { copy, isCopied } = useClipboard();
 
-  // Main skills list
-  const techBadges = [
-    { name: "HTML", icon: "bxl-html5", color: "text-[#e34f26] border-[#e34f26]/20 bg-[#e34f26]/5" },
-    { name: "CSS", icon: "bxl-css3", color: "text-[#1572b6] border-[#1572b6]/20 bg-[#1572b6]/5" },
-    { name: "JavaScript", icon: "bxl-javascript", color: "text-[#f7df1e] border-[#f7df1e]/20 bg-[#f7df1e]/5" },
-    { name: "React", icon: "bxl-react", color: "text-[#61dafb] border-[#61dafb]/20 bg-[#61dafb]/5" },
+  const primaryTechs = [
+    { name: "Next.js", icon: "bx-layer", color: "text-slate-900 dark:text-white border-slate-300 dark:border-white/20 bg-slate-100 dark:bg-white/5" },
+    { name: "React 19", icon: "bxl-react", color: "text-[#61dafb] border-[#61dafb]/20 bg-[#61dafb]/5" },
+    { name: "TypeScript", icon: "bxl-typescript", color: "text-[#3178c6] border-[#3178c6]/20 bg-[#3178c6]/5" },
+    { name: "Tailwind v4", icon: "bxl-tailwind-css", color: "text-[#06b6d4] border-[#06b6d4]/20 bg-[#06b6d4]/5" },
+    { name: "TanStack Query", icon: "bx-sync", color: "text-[#ff4154] border-[#ff4154]/20 bg-[#ff4154]/5" },
+    { name: "Zustand", icon: "bx-box", color: "text-amber-400 border-amber-400/20 bg-amber-400/5" },
   ];
 
   return (
     <section
-      className="relative min-h-screen flex items-center pt-28 pb-16 overflow-hidden bg-body selection:bg-first selection:text-body"
+      className="relative min-h-[92vh] flex items-center pt-28 pb-16 overflow-hidden bg-body"
       id="home"
     >
-      {/* --- STATIC GRADIENT GLOW BACKGROUND --- */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div
-          className="absolute top-[-40%] left-[-20%] w-[140%] h-[140%] blur-[120px] opacity-40"
-          style={{
-            background: "radial-gradient(circle at center,rgba(59,130,246,0.12),rgba(168,85,247,0.08),transparent 70%)"
-          }}
-        />
-      </div>
+      {/* Ambient Radial Lights - Subtle & Atmospheric */}
+      <div className="ambient-glow-top" />
+      <div className="ambient-glow-bottom" />
 
-      <div className="max-w-5xl mx-auto px-6 grid gap-12 lg:grid-cols-12 items-center w-full relative z-10">
-        
-        {/* --- LEFT: DETAILS --- */}
+      <div className="max-w-6xl mx-auto px-6 grid gap-12 lg:grid-cols-12 items-center w-full relative z-10">
+        {/* --- LEFT: DETAILS & VALUE PROPOSITION --- */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          variants={appleFadeUp}
+          initial="hidden"
+          animate="visible"
           className="lg:col-span-7 text-center md:text-start flex flex-col justify-center order-2 lg:order-1"
         >
-          {/* Greeting */}
-          <span className="text-text font-medium text-lg md:text-xl mb-3 block">
-            {t("hero.greeting")}
-          </span>
+          {/* Live Availability Badge */}
+          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 text-emerald-500 text-xs font-semibold self-center md:self-start mb-6">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <span>{t("hero.availableStatus")}</span>
+            <span className="text-emerald-500/40">|</span>
+            <span className="text-emerald-600 dark:text-emerald-300 font-medium">
+              {t("hero.workMode")}
+            </span>
+          </div>
 
-          {/* Name */}
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-black mb-4 tracking-tight leading-[1.1] bg-linear-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent italic">
-            {t("hero.name")}
-          </h1>
+          {/* Greeting & Name */}
+          <div className="mb-2">
+            <span className="text-textLight font-medium text-sm md:text-base tracking-wide block mb-1">
+              {t("hero.greeting")}
+            </span>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-title leading-[1.1]">
+              {t("hero.name")}
+            </h1>
+          </div>
 
-          {/* Role */}
-          <h2 className="text-xl md:text-2xl font-bold text-title mb-4 tracking-wide">
-            {t("hero.role")}
-          </h2>
+          {/* Subheading / Role */}
+          <div className="mb-4">
+            <span className="inline-block text-lg md:text-2xl font-bold bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 bg-clip-text text-transparent">
+              {t("hero.role")}
+            </span>
+          </div>
 
-          {/* Tagline */}
-          <p className="text-text/80 text-sm md:text-base max-w-lg mb-8 leading-relaxed font-medium">
+          {/* Bio Tagline from CV */}
+          <p className="text-text text-sm md:text-base max-w-xl mb-6 leading-relaxed font-normal">
             {t("hero.tagline")}
           </p>
 
-          {/* Tech Badges */}
-          <div className="flex flex-wrap gap-2 md:gap-3 justify-center md:justify-start mb-8">
-            {techBadges.map((badge, idx) => (
-              <div
-                key={idx}
-                className={`flex items-center gap-2 px-4 py-2 border rounded-xl text-xs font-bold transition-transform hover:-translate-y-1 ${badge.color}`}
+          {/* Core Tech Stack Badges */}
+          <div className="flex flex-wrap gap-2 justify-center md:justify-start mb-8">
+            {primaryTechs.map((tech) => (
+              <span
+                key={tech.name}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-medium transition-all duration-300 ease-apple hover:-translate-y-0.5 ${tech.color}`}
               >
-                <i className={`bx ${badge.icon} text-lg`}></i>
-                <span>{badge.name}</span>
-              </div>
+                {tech.name === "Next.js" ? (
+                  <svg className="w-3.5 h-3.5 shrink-0" viewBox="0 0 180 180" fill="none">
+                    <mask id="nextjs-pill-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="180" height="180" style={{ maskType: "alpha" }}>
+                      <circle cx="90" cy="90" r="90" fill="black" />
+                    </mask>
+                    <g mask="url(#nextjs-pill-mask)">
+                      <circle cx="90" cy="90" r="90" fill="currentColor" />
+                      <path d="M149.508 157.52L69.142 54H54V125.97H66.1136V69.3836L139.999 164.845C143.333 162.614 146.509 160.165 149.508 157.52Z" fill="white" />
+                      <rect x="115" y="54" width="12" height="72" fill="white" />
+                    </g>
+                  </svg>
+                ) : (
+                  <i className={`bx ${tech.icon} text-base`} />
+                )}
+                <span>{tech.name}</span>
+              </span>
             ))}
           </div>
 
-          {/* Call To Actions */}
-          <div className="flex flex-wrap gap-4 justify-center md:justify-start items-center mb-8">
-            {/* Primary Button */}
-            <Link
-              to="work"
-              smooth={true}
-              offset={-70}
-              duration={500}
-              className="flex items-center gap-2 px-8 h-14 bg-linear-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-2xl text-xs font-black uppercase tracking-wider transition-all shadow-lg shadow-blue-500/20 hover:shadow-purple-500/40 hover:-translate-y-1 active:scale-95 cursor-pointer"
-            >
-              <span>{t("hero.exploreWork")}</span>
-              <i className="bx bx-plus text-base font-bold"></i>
-            </Link>
+          {/* Primary Action Buttons with Magnetic Pull */}
+          <div className="flex flex-wrap gap-3.5 justify-center md:justify-start items-center mb-6">
+            <MagneticButton strength={0.3}>
+              <Link
+                to="work"
+                smooth={true}
+                offset={-70}
+                duration={500}
+                className="flex items-center gap-2 px-6 h-12 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 ease-apple shadow-md shadow-indigo-500/20 hover:shadow-indigo-500/30 active:scale-95 cursor-pointer"
+              >
+                <span>{t("hero.exploreWork")}</span>
+                <i className={`bx ${isAr ? "bx-left-arrow-alt" : "bx-right-arrow-alt"} text-lg`} />
+              </Link>
+            </MagneticButton>
 
-            {/* Contact Button */}
-            <Link
-              to="contact"
-              smooth={true}
-              offset={-70}
-              duration={500}
-              className="flex items-center gap-2 px-8 h-14 border border-title/20 hover:border-first bg-transparent hover:bg-title/5 text-title rounded-2xl text-xs font-black uppercase tracking-wider transition-all hover:-translate-y-1 active:scale-95 cursor-pointer"
-            >
-              <span>{t("hero.contactMe")}</span>
-              <i className="bx bx-paper-plane text-base"></i>
-            </Link>
-          </div>
+            <MagneticButton strength={0.3}>
+              <Link
+                to="contact"
+                smooth={true}
+                offset={-70}
+                duration={500}
+                className="flex items-center gap-2 px-6 h-12 border border-slate-200 dark:border-white/10 hover:border-indigo-500/50 bg-white/50 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 text-title rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 ease-apple active:scale-95 cursor-pointer"
+              >
+                <span>{t("hero.contactMe")}</span>
+                <i className="bx bx-paper-plane text-base" />
+              </Link>
+            </MagneticButton>
 
-          {/* Social Cluster & CV Downloads */}
-          <div className="flex flex-col gap-4 border-t border-title/10 pt-6 mt-2">
-            {/* Social Icons row */}
-            <div className="flex flex-wrap gap-4 items-center justify-center md:justify-start">
-              <span className="text-[11px] font-black uppercase tracking-widest text-textLight">
-                {t("hero.followMe")}
-              </span>
-              <div className="flex gap-3">
-                <SocialIcon
-                  href="https://wa.me/201126488442"
-                  icon="bxl-whatsapp"
-                  hoverColor="hover:text-emerald-500 hover:border-emerald-500"
-                  platform="whatsapp"
-                />
-                <SocialIcon
-                  href="https://www.linkedin.com/in/saeed-ramadan-686186201"
-                  icon="bxl-linkedin"
-                  hoverColor="hover:text-blue-500 hover:border-blue-500"
-                  platform="linkedin"
-                />
-                <SocialIcon
-                  href="https://github.com/Saeed-Ramadan"
-                  icon="bxl-github"
-                  hoverColor="hover:text-title hover:border-title"
-                  platform="github"
-                />
-                <SocialIcon
-                  href="https://www.youtube.com/@saeed-r1"
-                  icon="bxl-youtube"
-                  hoverColor="hover:text-red-500 hover:border-red-500"
-                  platform="youtube"
-                />
-                <SocialIcon
-                  href="https://www.facebook.com/said.aboshanab.92"
-                  icon="bxl-facebook"
-                  hoverColor="hover:text-blue-600 hover:border-blue-600"
-                  platform="facebook"
-                />
-              </div>
-            </div>
-
-            {/* CV Downloads Link Row */}
-            <div className="flex flex-wrap gap-3 justify-center md:justify-start items-center text-xs">
+            <MagneticButton strength={0.25}>
               <a
                 href="/Saeed Ramadan Front End (React JS).pdf"
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-1.5 text-textLight hover:text-first transition-colors font-bold"
+                className="flex items-center gap-2 px-5 h-12 border border-dashed border-indigo-500/30 hover:border-indigo-500 text-indigo-600 dark:text-indigo-400 bg-indigo-500/5 hover:bg-indigo-500/10 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 ease-apple"
               >
-                <i className="bx bx-download"></i>
-                <span>{t("hero.devCV")}</span>
+                <i className="bx bx-download text-base" />
+                <span>{t("hero.downloadCV")}</span>
               </a>
-              <span className="text-title/20">|</span>
-              <a
-                href="/Saeed Ramadan - Programming Instructor.pdf"
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center gap-1.5 text-textLight hover:text-first transition-colors font-bold"
-              >
-                <i className="bx bx-download"></i>
-                <span>{t("hero.instCV")}</span>
-              </a>
+            </MagneticButton>
+          </div>
+
+          {/* Quick Direct Copy Bar & Social Links */}
+          <div className="flex flex-wrap items-center gap-2.5 pt-5 border-t border-slate-200/80 dark:border-white/[0.08] justify-center md:justify-start">
+            {/* Direct Calls (01032426483 - Preferred for Calls) */}
+            <button
+              onClick={() => copy("+201032426483")}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-cyan-500/30 text-xs text-textLight hover:text-title hover:border-cyan-500/60 bg-cyan-500/5 transition-colors cursor-pointer group"
+              title="Click to copy 01032426483 (Preferred for Calls)"
+            >
+              <i className="bx bx-phone-call text-cyan-400 group-hover:scale-110 transition-transform" />
+              <span className="font-code text-[11px] font-bold text-title">+201032426483</span>
+              <span className="text-[9.5px] px-1.5 py-0.5 rounded bg-cyan-500/15 text-cyan-500 dark:text-cyan-400 font-semibold border border-cyan-500/20">
+                {isCopied("+201032426483") ? t("hero.copied") : t("hero.preferredForCalls")}
+              </span>
+            </button>
+
+            {/* WhatsApp (01126488442 - Preferred for WhatsApp) */}
+            <button
+              onClick={() => copy("+201126488442")}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-emerald-500/30 text-xs text-textLight hover:text-title hover:border-emerald-500/60 bg-emerald-500/5 transition-colors cursor-pointer group"
+              title="Click to copy 01126488442 (Preferred for WhatsApp)"
+            >
+              <i className="bx bxl-whatsapp text-emerald-400 group-hover:scale-110 transition-transform text-sm" />
+              <span className="font-code text-[11px] font-bold text-title">+201126488442</span>
+              <span className="text-[9.5px] px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-500 dark:text-emerald-400 font-semibold border border-emerald-500/20">
+                {isCopied("+201126488442") ? t("hero.copied") : t("hero.preferredForWhatsApp")}
+              </span>
+            </button>
+
+            {/* Quick Copy Email */}
+            <button
+              onClick={() => copy("saeedramadan82@gmail.com")}
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-white/10 text-xs text-textLight hover:text-title hover:border-indigo-500/40 bg-white/40 dark:bg-white/[0.03] transition-colors cursor-pointer"
+              title="Click to copy email"
+            >
+              <i className="bx bx-envelope text-indigo-500" />
+              <span className="font-code text-[11px]">saeedramadan82@gmail.com</span>
+              <span className="text-[10px] text-indigo-400 font-bold ml-1">
+                {isCopied("saeedramadan82@gmail.com") ? t("hero.copied") : t("hero.copyEmail")}
+              </span>
+            </button>
+
+            {/* Social Icons with Magnetic physics */}
+            <div className="flex items-center gap-2 ml-auto rtl:ml-0 rtl:mr-auto">
+              <MagneticButton strength={0.4}>
+                <SocialIcon
+                  href="https://wa.me/201126488442"
+                  icon="bxl-whatsapp"
+                  hoverColor="hover:text-emerald-500 hover:border-emerald-500/40"
+                  platform="whatsapp"
+                />
+              </MagneticButton>
+              <MagneticButton strength={0.4}>
+                <SocialIcon
+                  href="https://www.linkedin.com/in/saeed-ramadan-686186201"
+                  icon="bxl-linkedin"
+                  hoverColor="hover:text-blue-500 hover:border-blue-500/40"
+                  platform="linkedin"
+                />
+              </MagneticButton>
+              <MagneticButton strength={0.4}>
+                <SocialIcon
+                  href="https://github.com/Saeed-Ramadan"
+                  icon="bxl-github"
+                  hoverColor="hover:text-title hover:border-title/40"
+                  platform="github"
+                />
+              </MagneticButton>
             </div>
           </div>
         </motion.div>
 
-        {/* --- RIGHT: PREMIUM DEVICE CONTAINER --- */}
+        {/* --- RIGHT: SLEEK ARCHITECTURAL CARD --- */}
         <div className="lg:col-span-5 flex justify-center order-1 lg:order-2 relative select-none">
-          {/* Subtle Grid Dots Decoration */}
-          <div className="absolute right-[-20px] bottom-[-20px] w-36 h-36 bg-[radial-gradient(rgba(255,255,255,0.07)_1px,transparent_1px)] bg-[size:12px_12px] opacity-70 pointer-events-none -z-10"></div>
-
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative w-[260px] xs:w-[300px] sm:w-[320px] md:w-[360px]"
+            variants={appleScaleReveal}
+            initial="hidden"
+            animate="visible"
+            className="relative w-[280px] xs:w-[320px] sm:w-[350px]"
           >
-            {/* Prismatic Vessel Border Container */}
-            <div className="relative aspect-[4/5] rounded-[2.5rem] p-3 bg-white/5 dark:bg-title/3 border border-white/10 dark:border-white/5 backdrop-blur-3xl shadow-[0_50px_100px_rgba(0,0,0,0.6)] overflow-visible">
-              
+            {/* Elegant Framed Container */}
+            <div className="relative aspect-[4/5] rounded-3xl p-2.5 bg-gradient-to-b from-white/10 via-white/5 to-transparent dark:from-white/[0.08] dark:to-transparent border border-slate-200/80 dark:border-white/[0.1] shadow-2xl backdrop-blur-xl">
               {/* Profile Image Wrap */}
-              <div className="relative w-full h-full rounded-[2rem] overflow-hidden bg-body">
+              <div className="relative w-full h-full rounded-2xl overflow-hidden bg-container">
                 <img
                   src={bgImg}
                   alt="Saeed Ramadan"
-                  className="w-full h-full object-cover saturate-[1.1] brightness-[0.95] contrast-[1.05]"
+                  className="w-full h-full object-cover saturate-[1.05] brightness-[0.98] contrast-[1.02]"
                 />
-                {/* Purple to blue overlay glow on image bottom */}
-                <div className="absolute inset-0 bg-gradient-to-t from-body via-body/20 to-transparent opacity-80"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#07090e] via-[#07090e]/20 to-transparent opacity-80" />
               </div>
 
-              {/* Pulsing Availability Badge */}
-              <div className="absolute bottom-4 left-3 right-3 sm:bottom-6 sm:left-6 sm:right-6 p-3 sm:p-4 rounded-2xl bg-container/80 dark:bg-container/70 backdrop-blur-xl border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.4)] z-30">
-                <div className="flex items-center gap-3">
-                  {/* Pulsing Dot */}
-                  <span className="relative flex h-3.5 w-3.5 shrink-0">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500"></span>
-                  </span>
-                  <div>
-                    <h4 className="text-xs font-bold text-title leading-tight">
-                      {t("hero.availableForWork")}
-                    </h4>
-                    <p className="text-[10px] text-textLight leading-none mt-0.5">
-                      {t("hero.openToProjects")}
-                    </p>
-                  </div>
-                </div>
+              {/* Floating Engineering Badge: Dynamic Current Roles Rotator */}
+              <div className="absolute bottom-4 left-4 right-4 z-20">
+                <CurrentRolesBadge />
               </div>
-
-              {/* Floating Tech Icons */}
-              {/* Floating React */}
-              <FloatingIcon
-                icon="bxl-react text-[#61dafb]"
-                className="absolute -top-2 -left-2 sm:-top-4 sm:-left-4 shadow-[#61dafb]/20"
-                delay={0}
-              />
-
-              {/* Floating JavaScript */}
-              <FloatingIcon
-                icon="bxl-javascript text-[#f7df1e]"
-                className="absolute top-20 -right-2 sm:top-24 sm:-right-6 shadow-[#f7df1e]/20"
-                delay={1}
-              />
-
-              {/* Floating CSS3 */}
-              <FloatingIcon
-                icon="bxl-css3 text-[#1572b6]"
-                className="absolute -top-4 right-8 sm:-top-6 sm:right-12 shadow-[#1572b6]/20"
-                delay={1.5}
-              />
-
-              {/* Floating Code Brackets */}
-              <FloatingIcon
-                icon="bx-code-curly text-[#a855f7]"
-                className="absolute bottom-28 -right-2 sm:bottom-36 sm:-right-6 shadow-[#a855f7]/20"
-                delay={2}
-              />
             </div>
           </motion.div>
         </div>
@@ -247,8 +248,6 @@ const Hero: React.FC = () => {
     </section>
   );
 };
-
-// --- SUB-COMPONENTS ---
 
 interface SocialIconProps {
   href: string;
@@ -259,77 +258,38 @@ interface SocialIconProps {
 
 const SocialIcon: React.FC<SocialIconProps> = ({ href, icon, hoverColor, platform }) => {
   const {
-    activePlatform,
-    chatMessage,
+    isHovered,
     coords,
-    setChatMessage,
     handleMouseEnter,
     handleMouseLeave,
-    handleCardMouseEnter,
-    handleCardMouseLeave,
-    sendWhatsAppMessage,
-  } = useSocialPreview();
-
-  const showCard = activePlatform === platform && coords;
+    previewData,
+  } = useSocialPreview(platform);
 
   return (
     <div
-      className="relative"
-      onMouseEnter={(e) => handleMouseEnter(platform, e.currentTarget)}
+      className="relative flex items-center justify-center"
+      onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
       <a
         href={href}
         target="_blank"
         rel="noreferrer"
-        className={`w-10 h-10 flex items-center justify-center bg-title/5 border border-title/10 rounded-xl text-lg text-textLight transition-all active:scale-95 ${hoverColor}`}
+        className={`w-9 h-9 flex items-center justify-center rounded-lg border border-slate-200/80 dark:border-white/[0.08] bg-white/40 dark:bg-white/[0.02] text-textLight transition-all duration-300 ease-apple ${hoverColor}`}
+        aria-label={platform}
       >
-        <i className={`bx ${icon}`}></i>
+        <i className={`bx ${icon} text-lg`} />
       </a>
 
-      {typeof document !== "undefined" &&
-        createPortal(
-          <AnimatePresence>
-            {showCard && (
-              <SocialPreviewCard
-                platform={platform}
-                chatMessage={chatMessage}
-                setChatMessage={setChatMessage}
-                sendWhatsAppMessage={sendWhatsAppMessage}
-                onMouseEnter={handleCardMouseEnter}
-                onMouseLeave={handleCardMouseLeave}
-                coords={coords}
-              />
-            )}
-          </AnimatePresence>,
-          document.body
-        )}
+      {createPortal(
+        <AnimatePresence>
+          {isHovered && coords && (
+            <SocialPreviewCard platform={platform} coords={coords} data={previewData} />
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </div>
-  );
-};
-
-interface FloatingIconProps {
-  icon: string;
-  className?: string;
-  delay?: number;
-}
-
-const FloatingIcon: React.FC<FloatingIconProps> = ({ icon, className = "", delay = 0 }) => {
-  return (
-    <motion.div
-      animate={{
-        y: [0, -10, 0],
-      }}
-      transition={{
-        duration: 3.5,
-        repeat: Infinity,
-        ease: "easeInOut",
-        delay,
-      }}
-      className={`w-12 h-12 rounded-2xl bg-container/90 dark:bg-container/85 border border-white/10 flex items-center justify-center text-2xl shadow-xl z-20 hover:scale-110 transition-transform ${className}`}
-    >
-      <i className={`bx ${icon}`}></i>
-    </motion.div>
   );
 };
 

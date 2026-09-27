@@ -10,6 +10,7 @@ const ProjectDetails = lazy(() => import("./pages/ProjectDetails"));
 const HopeDetails = lazy(() => import("./pages/HopeDetails"));
 const BynonaDetails = lazy(() => import("./pages/BynonaDetails"));
 const PropixDetails = lazy(() => import("./pages/PropixDetails"));
+const CiHostDetails = lazy(() => import("./pages/CiHostDetails"));
 
 function App() {
   const { i18n } = useTranslation();
@@ -28,21 +29,17 @@ function App() {
         ) : (
           <div
             key="main-app"
-            className={`bg-body text-text min-h-screen selection:bg-first selection:text-body transition-colors duration-300 relative ${
+            className={`bg-body text-text min-h-screen selection:bg-indigo-500/20 selection:text-indigo-400 transition-colors duration-300 relative ${
               i18n.language === "ar" ? "font-arabic" : ""
             }`}
           >
-            {/* Cinematic Kinetic Atmosphere */}
-            <div className="noise-overlay" />
-            <div className="light-leak top-0 left-0" />
-            <div className="light-leak bottom-0 right-0 opacity-40 blur-[150px]" />
-
             <Suspense fallback={null}>
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/project/hope" element={<HopeDetails />} />
                 <Route path="/project/bymona" element={<BynonaDetails />} />
                 <Route path="/project/propix8" element={<PropixDetails />} />
+                <Route path="/project/cihost" element={<CiHostDetails />} />
                 <Route path="/project/:id" element={<ProjectDetails />} />
               </Routes>
             </Suspense>

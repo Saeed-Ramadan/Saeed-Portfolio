@@ -1,252 +1,223 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { getProjectById } from "../data/projectsData";
+import { ProjectDetailHeader } from "../components/project-details/ProjectDetailHeader";
+import { ProjectLightbox } from "../components/project-details/ProjectLightbox";
+import { useProjectLightbox } from "../hooks/useProjectLightbox";
+import { SpotlightCard } from "../components/common/SpotlightCard";
 
-import { useTheme } from "../hooks/useTheme";
-
+// RATIONALE: Redesigned Propix8 Details page adhering to the unified portfolio design tokens (bg-body, text-title, SpotlightCard).
+// Preserves real estate architecture overview, core engineering specs, modular feature cards, and 20+ interface gallery screenshots.
 const PropixDetails: React.FC = () => {
   const { t, i18n } = useTranslation();
-  const { theme: currentTheme, toggleTheme } = useTheme();
   const isAr = i18n.language === "ar";
   const project = getProjectById("propix8");
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const { selectedImage, openLightbox, closeLightbox } = useProjectLightbox();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   if (!project) return null;
-  const theme = project.theme || {
-    label: project.category,
-  };
 
+  const accentColor = project.theme.primary || "#3b82f6";
   const features = project.details?.features || [];
   const images = project.details?.images || [];
-  const isDark = currentTheme === "dark";
 
   return (
-    <div className="min-h-screen relative bg-[#f8fafc] dark:bg-[#0b1120] z-10 pt-24 pb-20 font-sans text-slate-800 dark:text-slate-200 transition-colors duration-300">
-      {/* Structural Blueprint Background */}
+    <div className="min-h-screen bg-body text-text font-sans transition-colors duration-300 relative overflow-hidden">
+      {/* Dynamic Ambient Background Glow - Architectural Cyan / Blue */}
       <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
-        {/* Architectural Blueprints Lines */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.05)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:linear-gradient(to_bottom,white_20%,transparent_90%)]"></div>
-        {/* Soft Blue Glow */}
-        <div className="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-[120px]"></div>
-        <div className="absolute bottom-1/4 left-[-10%] w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-[100px]"></div>
+        <div className="absolute top-0 end-1/4 w-[550px] h-[550px] bg-blue-500/10 dark:bg-blue-500/15 rounded-full blur-[140px] pointer-events-none" />
+        <div className="absolute top-1/2 start-10 w-[450px] h-[450px] bg-indigo-500/10 dark:bg-indigo-500/15 rounded-full blur-[130px] pointer-events-none" />
       </div>
 
-      <div className="max-w-[1280px] mx-auto px-6 lg:px-8 relative z-10">
-        {/* Clean Modern Navigation */}
-        <motion.nav
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex items-center justify-between py-6 border-b border-slate-200 dark:border-slate-800 mb-16"
-        >
-          <Link
-            to="/"
-            className="group flex items-center gap-2 text-sm font-semibold tracking-wide text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors uppercase cursor-pointer"
-          >
-            <i
-              className={`bx bx-left-arrow-alt text-xl group-hover:-translate-x-1 transition-transform ${isAr ? "rotate-180 group-hover:translate-x-1" : ""}`}
-            ></i>
-            <span>{t("nav.home") || "Back to Index"}</span>
-          </Link>
+      {/* Unified Sticky Header */}
+      <ProjectDetailHeader
+        liveLink={project.link}
+        liveLabelKey="portfolio.projectDetails.liveDemo"
+        accentColor={accentColor}
+      />
 
-          <div className="flex items-center gap-3">
-            {/* Theme Toggle Button */}
-            <button
-              onClick={toggleTheme}
-              className="w-10 h-10 flex items-center justify-center rounded-full bg-slate-200/60 dark:bg-slate-800/60 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-amber-400 hover:scale-105 transition-all cursor-pointer"
-              aria-label="Toggle theme"
-            >
-              <i className={`bx ${isDark ? "bx-sun" : "bx-moon"} text-xl`}></i>
-            </button>
-
-            <a
-              href={project.link}
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center gap-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-sm font-bold tracking-wide transition-all shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:-translate-y-0.5 cursor-pointer"
-            >
-              <span>
-                {t("portfolio.projectDetails.liveDemo", "Explore Platform")}
-              </span>
-              <i className="bx bx-window-open text-lg"></i>
-            </a>
-          </div>
-        </motion.nav>
-
-        {/* Hero Section - Architecture Style */}
-        <div className="flex flex-col mb-24">
+      {/* Main Container */}
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 pt-28 pb-20 relative z-10">
+        {/* ── HERO BANNER ── */}
+        <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-16 pt-4">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="flex flex-col lg:flex-row justify-between items-end gap-8 mb-12"
+            className="lg:col-span-8 space-y-5"
           >
-            <div className="max-w-2xl">
-              <div className="flex items-center gap-3 mb-6">
-                <span className="h-px w-12 bg-blue-600"></span>
-                <span className="text-sm font-bold tracking-[0.2em] text-blue-600 dark:text-blue-400 uppercase">
-                  {theme.label || t(`portfolio.${project.category}`)}
-                </span>
-              </div>
-              <h1 className="text-5xl lg:text-7xl font-bold tracking-tight text-slate-900 dark:text-white mb-6 leading-[1.1]">
-                {t(project.titleKey)}
-              </h1>
-              <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed font-light">
-                {project.details?.overviewKey && t(project.details.overviewKey)}
-              </p>
+            {/* Badges row: Category & Company Affiliation */}
+            <div className="flex flex-wrap items-center gap-2.5">
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-blue-500/30 bg-blue-500/10 backdrop-blur-xs text-xs font-bold tracking-wider text-blue-600 dark:text-blue-400 uppercase">
+                <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+                <span>{project.theme.label || t(`portfolio.${project.category}`)}</span>
+              </span>
+
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-xs font-bold text-indigo-600 dark:text-indigo-400">
+                <i className="bx bx-buildings text-sm" />
+                <span>{t("portfolio.affiliation.pyramidDetail")}</span>
+              </span>
             </div>
 
-            {/* Tech Specs Block */}
-            <div className="bg-white dark:bg-slate-900/50 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-xl shadow-slate-200/20 dark:shadow-none min-w-[280px]">
-              <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">
-                Core Technology
+            {/* Title */}
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-title leading-[1.15]">
+              {t(project.titleKey)}
+            </h1>
+
+            {/* Overview */}
+            <p className="text-base sm:text-lg text-textLight leading-relaxed border-s-3 border-blue-500 ps-4">
+              {project.details?.overviewKey && t(project.details.overviewKey)}
+            </p>
+          </motion.div>
+
+          {/* Tech Specs Block */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="lg:col-span-4"
+          >
+            <SpotlightCard className="p-5 sm:p-6" spotlightColor="rgba(59, 130, 246, 0.15)">
+              <h4 className="text-xs font-bold text-blue-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+                <i className="bx bx-chip text-base" />
+                <span>{t("portfolio.projectDetails.coreTech")}</span>
               </h4>
-              <ul className="space-y-3">
+              <ul className="space-y-2.5">
                 {project.techs.map((tech) => (
-                  <li key={tech} className="flex items-center gap-3">
-                    <i className="bx bx-check text-blue-500"></i>
-                    <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                      {tech}
-                    </span>
+                  <li key={tech} className="flex items-center gap-2.5 text-xs sm:text-sm font-semibold text-title">
+                    <i className="bx bx-check-circle text-blue-500 text-base" />
+                    <span>{tech}</span>
                   </li>
                 ))}
               </ul>
-            </div>
+            </SpotlightCard>
           </motion.div>
 
+          {/* Wide Hero Image Showcase */}
           <motion.div
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="w-full aspect-[21/9] rounded-3xl overflow-hidden shadow-2xl relative group bg-slate-200 dark:bg-slate-800"
+            className="lg:col-span-12"
           >
-            <img
-              src={project.details?.heroImage || project.img}
-              alt="Propix8 Platform"
-              className="w-full h-full object-cover object-top transition-transform duration-[2s] group-hover:scale-[1.03]"
-            />
-            {/* Blueprint Overlay on image bottom */}
-            <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-slate-900/40 to-transparent flex items-end p-8">
-              <div className="text-white">
-                <p className="text-xs font-mono opacity-60 uppercase tracking-widest mb-1">
-                  Architecture Overview
-                </p>
-                <p className="font-medium tracking-wide">
-                  Premium Real Estate Solutions
-                </p>
+            <div
+              onClick={() => openLightbox(project.details?.heroImage || project.img)}
+              className="relative rounded-2xl overflow-hidden border border-slate-200/80 dark:border-white/[0.08] bg-white/50 dark:bg-white/[0.02] shadow-xl group cursor-pointer aspect-21/9"
+            >
+              <img
+                src={project.details?.heroImage || project.img}
+                alt="Propix8 Platform Architecture"
+                className="w-full h-full object-cover object-top group-hover:scale-[1.02] transition-transform duration-700"
+              />
+              <div className="absolute inset-x-0 bottom-0 h-28 bg-linear-to-t from-black/80 to-transparent flex items-end p-6">
+                <div className="text-white">
+                  <p className="text-[11px] font-code opacity-75 uppercase tracking-widest">
+                    Enterprise Architecture
+                  </p>
+                  <p className="text-sm font-bold mt-0.5">
+                    Premium Real Estate & Property Discovery
+                  </p>
+                </div>
               </div>
             </div>
           </motion.div>
-        </div>
+        </section>
 
-        {/* Modular Features Grid */}
-        <div className="mb-32">
-          <div className="mb-12 flex flex-col items-center text-center">
-            <h3 className="text-3xl font-bold text-slate-900 dark:text-white mb-4">
-              {t("portfolio.projectDetails.keyFeatures", "System Modules")}
-            </h3>
-            <p className="text-slate-500 max-w-xl text-sm font-light">
-              Built on a foundation of scalability, Propix8 aggregates complex
-              real estate data into intuitive, high-performance interfaces.
-            </p>
+        {/* ── SYSTEM MODULES & FEATURES ── */}
+        <section className="mb-20">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-600 dark:text-blue-400 text-xl">
+              <i className="bx bx-cube" />
+            </div>
+            <div>
+              <h2 className="text-xl sm:text-2xl font-bold text-title">
+                {t("portfolio.projectDetails.systemModules")}
+              </h2>
+              <p className="text-xs text-textLight mt-0.5">
+                {isAr ? "مكونات النظام المعمارية وهندسة الواجهات المتطورة" : "Modular front-end architecture designed for real estate scalability"}
+              </p>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {features.map((feature, idx) => (
-              <motion.div
+              <SpotlightCard
                 key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: idx * 0.1 }}
-                className="bg-white dark:bg-slate-800/50 p-8 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-blue-500/50 hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 group"
+                className="p-6 transition-all group flex flex-col justify-between"
+                spotlightColor="rgba(59, 130, 246, 0.15)"
               >
-                <div className="w-12 h-12 bg-blue-55 dark:bg-blue-900/30 rounded-xl flex items-center justify-center mb-6 text-blue-600 dark:text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
-                  <i className={`bx ${feature.icon} text-2xl`}></i>
+                <div>
+                  <div className="w-11 h-11 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-600 dark:text-blue-400 text-2xl mb-4 group-hover:scale-105 transition-transform">
+                    <i className={`bx ${feature.icon}`} />
+                  </div>
+                  <h3 className="text-base font-bold text-title mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                    {t(feature.titleKey)}
+                  </h3>
+                  <p className="text-xs text-textLight leading-relaxed">
+                    {t(feature.descKey)}
+                  </p>
                 </div>
-                <h4 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
-                  {t(feature.titleKey)}
-                </h4>
-                <p className="text-sm leading-relaxed text-slate-500 dark:text-slate-400">
-                  {t(feature.descKey)}
-                </p>
-              </motion.div>
+              </SpotlightCard>
             ))}
           </div>
-        </div>
+        </section>
 
-        {/* Gallery Section */}
-        <div className="mb-20">
-          <div className="flex items-center justify-between mb-12">
-            <h3 className="text-2xl font-bold text-slate-900 dark:text-white">
-              Interface Gallery
-            </h3>
-            <div className="h-px bg-slate-200 dark:bg-slate-800 flex-1 ml-8"></div>
+        {/* ── INTERFACE GALLERY ── */}
+        <section className="mb-16">
+          <div className="flex items-center justify-between gap-4 mb-8">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-600 dark:text-blue-400 text-xl">
+                <i className="bx bx-image-alt" />
+              </div>
+              <div>
+                <h2 className="text-xl sm:text-2xl font-bold text-title">
+                  {t("portfolio.projectDetails.gallery")}
+                </h2>
+                <p className="text-xs text-textLight mt-0.5">
+                  {isAr ? "استعرض شاشات المنصة وتجارب الحجز واستعراض الوحدات" : "Explore interface views, booking flows, and unit inspection modules"}
+                </p>
+              </div>
+            </div>
+            <span className="text-xs font-code font-bold px-2.5 py-1 rounded-lg border border-slate-200 dark:border-white/10 bg-white/40 dark:bg-white/[0.03] text-textLight">
+              {images.length} {isAr ? "صورة" : "Screens"}
+            </span>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 lg:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {images.map((img, idx) => (
               <motion.div
                 key={idx}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: (idx % 3) * 0.1 }}
-                className={`relative group rounded-xl overflow-hidden cursor-pointer bg-slate-100 dark:bg-slate-800 transform-gpu ${idx % 7 === 0 ? "col-span-2 md:col-span-2 aspect-video" : "aspect-square"}`}
-                onClick={() => setSelectedImage(img)}
+                whileHover={{ y: -3 }}
+                onClick={() => openLightbox(img)}
+                className="group relative rounded-2xl overflow-hidden cursor-pointer border border-slate-200/80 dark:border-white/[0.08] bg-white/40 dark:bg-white/[0.02] shadow-xs"
               >
-                <div className="absolute inset-0 bg-blue-600/0 group-hover:bg-blue-600/10 transition-colors duration-300 z-10"></div>
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 z-10 flex items-center justify-center">
-                  <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 scale-50 group-hover:scale-100 transition-all duration-300">
-                    <i className="bx bx-search-alt-2 text-white"></i>
-                  </div>
-                </div>
                 <img
                   src={img}
-                  alt={`Propix screen ${idx}`}
+                  alt={`Propix screen ${idx + 1}`}
                   loading="lazy"
-                  className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
+                  className="w-full h-48 sm:h-52 object-cover group-hover:scale-105 transition-transform duration-500"
                 />
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
+                  <div className="w-10 h-10 rounded-full bg-white/20 border border-white/30 text-white flex items-center justify-center text-xl">
+                    <i className="bx bx-expand" />
+                  </div>
+                </div>
               </motion.div>
             ))}
           </div>
-        </div>
-      </div>
+        </section>
+      </main>
 
-      {/* Lightbox Modal */}
-      <AnimatePresence>
-        {selectedImage && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setSelectedImage(null)}
-            className="fixed inset-0 z-[10002] flex items-center justify-center bg-slate-900/95 backdrop-blur-sm p-4 md:p-8"
-          >
-            <button
-              className="absolute top-6 right-6 w-12 h-12 bg-white/10 hover:bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl transition-all cursor-pointer"
-              onClick={() => setSelectedImage(null)}
-            >
-              <i className="bx bx-x"></i>
-            </button>
-            <motion.img
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              transition={{ type: "spring", damping: 30, stiffness: 400 }}
-              src={selectedImage}
-              alt="Enlarged interface"
-              className="w-auto h-auto max-w-full max-h-[90vh] object-contain shadow-2xl rounded-sm"
-              onClick={(e) => e.stopPropagation()}
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Reusable Lightbox */}
+      <ProjectLightbox
+        imageSrc={selectedImage}
+        onClose={closeLightbox}
+        accentColor={accentColor}
+      />
     </div>
   );
 };

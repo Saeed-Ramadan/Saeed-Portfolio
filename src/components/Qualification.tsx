@@ -1,499 +1,316 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import SectionTitle from "./common/SectionTitle";
+import SpotlightCard from "./common/SpotlightCard";
+import { APPLE_EASE } from "../utils/motion";
 
-interface TechTag {
-  name: string;
-  icon?: string;
-  colorClass?: string;
-}
-
-interface ExpItem {
-  key: string;
+interface ExperienceItem {
+  id: string;
   category: "work" | "teaching";
-  current: boolean;
-  color: string;
-  bg: string;
-  border: string;
-  durationKey: string;
-  tagsTitleKey: string;
-  tags: TechTag[];
+  titleKey: string;
+  companyKey: string;
+  dateKey: string;
+  locationKey: string;
+  bullets: string[];
+  techTags: string[];
+  isCurrent?: boolean;
+  highlightBadgeKey?: string;
 }
 
-const expItems: ExpItem[] = [
-  {
-    key: "exp1",
-    category: "work",
-    current: true,
-    color: "text-violet-500 dark:text-violet-400",
-    bg: "bg-violet-500/10",
-    border: "border-violet-500/20",
-    durationKey: "current",
-    tagsTitleKey: "keyTech",
-    tags: [
-      { name: "React JS", icon: "bxl-react", colorClass: "text-[#61DAFB]" },
-      { name: "Tailwind CSS", icon: "bxl-tailwind-css", colorClass: "text-[#06B6D4]" },
-      { name: "Zustand" },
-      { name: "React Query" },
-      { name: "Firebase", icon: "bxl-firebase", colorClass: "text-[#FFCA28]" },
-      { name: "Laravel APIs" },
-    ],
-  },
-  {
-    key: "exp2",
-    category: "work",
-    current: false,
-    color: "text-indigo-500 dark:text-indigo-400",
-    bg: "bg-indigo-500/10",
-    border: "border-indigo-500/20",
-    durationKey: "durationAhdaf",
-    tagsTitleKey: "keyTech",
-    tags: [
-      { name: "React 19", icon: "bxl-react", colorClass: "text-[#61DAFB]" },
-      { name: "Tailwind CSS v4", icon: "bxl-tailwind-css", colorClass: "text-[#06B6D4]" },
-      { name: "Pollinations AI" },
-      { name: "E-Commerce" },
-      { name: "REST APIs" },
-    ],
-  },
-  {
-    key: "exp3",
-    category: "teaching",
-    current: true,
-    color: "text-sky-500 dark:text-sky-400",
-    bg: "bg-sky-500/10",
-    border: "border-sky-500/20",
-    durationKey: "current",
-    tagsTitleKey: "subjects",
-    tags: [
-      { name: "Programming" },
-      { name: "Logic Building" },
-      { name: "E-Youth" },
-      { name: "MCIT Egypt" },
-    ],
-  },
-  {
-    key: "exp4",
-    category: "teaching",
-    current: true,
-    color: "text-cyan-500 dark:text-cyan-400",
-    bg: "bg-cyan-500/10",
-    border: "border-cyan-500/20",
-    durationKey: "current",
-    tagsTitleKey: "subjects",
-    tags: [
-      { name: "React 19", icon: "bxl-react", colorClass: "text-[#61DAFB]" },
-      { name: "Component Arch" },
-      { name: "State & Hooks" },
-      { name: "API Integration" },
-    ],
-  },
-  {
-    key: "exp5",
-    category: "teaching",
-    current: false,
-    color: "text-emerald-500 dark:text-emerald-400",
-    bg: "bg-emerald-500/10",
-    border: "border-emerald-500/20",
-    durationKey: "durationTariq",
-    tagsTitleKey: "subjects",
-    tags: [
-      { name: "HTML & CSS", icon: "bxl-html5", colorClass: "text-[#E34F26]" },
-      { name: "React JS", icon: "bxl-react", colorClass: "text-[#61DAFB]" },
-      { name: "Python", icon: "bxl-python", colorClass: "text-[#3776AB]" },
-      { name: "Mentorship" },
-    ],
-  },
-  {
-    key: "exp6",
-    category: "teaching",
-    current: false,
-    color: "text-teal-500 dark:text-teal-400",
-    bg: "bg-teal-500/10",
-    border: "border-teal-500/20",
-    durationKey: "yearsMonths",
-    tagsTitleKey: "subjects",
-    tags: [
-      { name: "Web Dev" },
-      { name: "Scratch" },
-      { name: "Problem Solving" },
-      { name: "Debugging" },
-    ],
-  },
-  {
-    key: "exp7",
-    category: "teaching",
-    current: true,
-    color: "text-pink-500 dark:text-pink-400",
-    bg: "bg-pink-500/10",
-    border: "border-pink-500/20",
-    durationKey: "current",
-    tagsTitleKey: "subjects",
-    tags: [
-      { name: "Programming" },
-      { name: "Logic Building" },
-      { name: "Mentorship" },
-    ],
-  },
-  {
-    key: "exp8",
-    category: "teaching",
-    current: false,
-    color: "text-rose-500 dark:text-rose-400",
-    bg: "bg-rose-500/10",
-    border: "border-rose-500/20",
-    durationKey: "durationFekra",
-    tagsTitleKey: "subjects",
-    tags: [
-      { name: "Web Dev" },
-      { name: "Logic Building" },
-      { name: "Frontend" },
-    ],
-  },
-  {
-    key: "exp9",
-    category: "teaching",
-    current: true,
-    color: "text-orange-500 dark:text-orange-400",
-    bg: "bg-orange-500/10",
-    border: "border-orange-500/20",
-    durationKey: "current",
-    tagsTitleKey: "subjects",
-    tags: [
-      { name: "Programming" },
-      { name: "Mentorship" },
-      { name: "Web Dev" },
-    ],
-  },
-];
-
-const actItems = [
-  {
-    num: 1,
-    icon: "bx-crown",
-    color: "text-amber-500 dark:text-amber-400",
-    bg: "bg-amber-500/10",
-    border: "border-amber-500/20",
-  },
-  {
-    num: 2,
-    icon: "bx-trophy",
-    color: "text-orange-500 dark:text-orange-400",
-    bg: "bg-orange-500/10",
-    border: "border-orange-500/20",
-  },
-  {
-    num: 3,
-    icon: "bx-group",
-    color: "text-cyan-500 dark:text-cyan-400",
-    bg: "bg-cyan-500/10",
-    border: "border-cyan-500/20",
-  },
-  {
-    num: 4,
-    icon: "bx-calendar-event",
-    color: "text-rose-500 dark:text-rose-400",
-    bg: "bg-rose-500/10",
-    border: "border-rose-500/20",
-  },
-];
-
+// RATIONALE: Qualification component highlighting real commercial experience (The 4th Pyramid: Bynona & Propix8) and academic training roles.
+// Uses Apple-style spring curves for calm and elegant timeline item transitions.
 const Qualification: React.FC = () => {
-  const { t, i18n } = useTranslation();
-  const [toggleState, setToggleState] = useState<number>(1);
-  const isAr = i18n.language === "ar";
+  const { t } = useTranslation();
+  const [activeTab, setActiveTab] = useState<"all" | "work" | "teaching">("all");
 
-  const workItems = expItems.filter((item) => item.category === "work");
-  const teachingItems = expItems.filter((item) => item.category === "teaching");
+  const experiences: ExperienceItem[] = [
+    {
+      id: "modernDigital",
+      category: "work",
+      titleKey: "qualification.roles.modernDigital.title",
+      companyKey: "qualification.roles.modernDigital.company",
+      dateKey: "qualification.roles.modernDigital.date",
+      locationKey: "qualification.roles.modernDigital.location",
+      bullets: [
+        t("qualification.roles.modernDigital.bullet1"),
+        t("qualification.roles.modernDigital.bullet2"),
+        t("qualification.roles.modernDigital.bullet3"),
+        t("qualification.roles.modernDigital.bullet4"),
+      ],
+      techTags: [
+        "Next.js",
+        "React 19",
+        "TypeScript",
+        "Tailwind CSS v4",
+        "Zustand v5",
+        "TanStack Query v5",
+        "Zod",
+        "RTL / LTR",
+        "CiHost Platform",
+        "Tafaul Platform",
+      ],
+      isCurrent: true,
+    },
+    {
+      id: "pyramid",
+      category: "work",
+      titleKey: "qualification.roles.pyramid.title",
+      companyKey: "qualification.roles.pyramid.company",
+      dateKey: "qualification.roles.pyramid.date",
+      locationKey: "qualification.roles.pyramid.location",
+      bullets: [
+        t("qualification.roles.pyramid.bullet1"),
+        t("qualification.roles.pyramid.bullet2"),
+        t("qualification.roles.pyramid.bullet3"),
+        t("qualification.roles.pyramid.bullet4"),
+      ],
+      techTags: [
+        "React 19",
+        "Zustand",
+        "React Query v5",
+        "Tailwind CSS v4",
+        "Firebase FCM",
+        "Laravel Echo",
+        "Google Maps",
+        "Axios",
+      ],
+      isCurrent: true,
+    },
+    {
+      id: "ahdaf",
+      category: "work",
+      titleKey: "qualification.roles.ahdaf.title",
+      companyKey: "qualification.roles.ahdaf.company",
+      dateKey: "qualification.roles.ahdaf.date",
+      locationKey: "qualification.roles.ahdaf.location",
+      bullets: [
+        t("qualification.roles.ahdaf.bullet1"),
+        t("qualification.roles.ahdaf.bullet2"),
+        t("qualification.roles.ahdaf.bullet3"),
+      ],
+      techTags: [
+        "React 19",
+        "Tailwind CSS v4",
+        "Pollinations AI",
+        "AI Design Studio",
+        "E-Commerce",
+        "Social Auth",
+        "REST APIs",
+      ],
+      isCurrent: false,
+    },
+    {
+      id: "deci",
+      category: "teaching",
+      titleKey: "qualification.roles.deci.title",
+      companyKey: "qualification.roles.deci.company",
+      dateKey: "qualification.roles.deci.date",
+      locationKey: "qualification.roles.deci.location",
+      highlightBadgeKey: "qualification.govInitiative",
+      bullets: [
+        t("qualification.roles.deci.bullet1"),
+        t("qualification.roles.deci.bullet2"),
+        t("qualification.roles.deci.bullet3"),
+      ],
+      techTags: [
+        "Egyptian MCIT Initiative",
+        "DECI (أشبال مصر)",
+        "E-Youth",
+        "CS Fundamentals",
+        "Problem Solving",
+        "Programming Logic",
+        "100+ Students",
+        "Mentorship",
+      ],
+      isCurrent: true,
+    },
+    {
+      id: "coody",
+      category: "teaching",
+      titleKey: "qualification.roles.coody.title",
+      companyKey: "qualification.roles.coody.company",
+      dateKey: "qualification.roles.coody.date",
+      locationKey: "qualification.roles.coody.location",
+      bullets: [
+        t("qualification.roles.coody.bullet1"),
+        t("qualification.roles.coody.bullet2"),
+        t("qualification.roles.coody.bullet3"),
+        t("qualification.roles.coody.bullet4"),
+      ],
+      techTags: [
+        "React 19",
+        "Virtual DOM",
+        "Component Architecture",
+        "Hooks",
+        "State Management",
+        "REST APIs",
+        "Git & GitHub",
+        "Vercel",
+      ],
+      isCurrent: false,
+    },
+    {
+      id: "tariq",
+      category: "teaching",
+      titleKey: "qualification.roles.tariq.title",
+      companyKey: "qualification.roles.tariq.company",
+      dateKey: "qualification.roles.tariq.date",
+      locationKey: "qualification.roles.tariq.location",
+      bullets: [
+        t("qualification.roles.tariq.bullet1"),
+        t("qualification.roles.tariq.bullet2"),
+      ],
+      techTags: ["HTML5", "CSS3", "JavaScript", "React", "Python", "50+ Students"],
+      isCurrent: false,
+    },
+    {
+      id: "alphaprog",
+      category: "teaching",
+      titleKey: "qualification.roles.alphaprog.title",
+      companyKey: "qualification.roles.alphaprog.company",
+      dateKey: "qualification.roles.alphaprog.date",
+      locationKey: "qualification.roles.alphaprog.location",
+      bullets: [
+        t("qualification.roles.alphaprog.bullet1"),
+        t("qualification.roles.alphaprog.bullet2"),
+      ],
+      techTags: ["Web Fundamentals", "Scratch Logic", "Real-Time Debugging"],
+      isCurrent: false,
+    },
+  ];
+
+  const filteredExperiences =
+    activeTab === "all"
+      ? experiences
+      : experiences.filter((e) => e.category === activeTab);
 
   return (
-    <section
-      className="py-20 relative overflow-hidden bg-body"
-      id="qualification"
-    >
-      {/* Decorative Background Glows */}
-      <div className="absolute top-1/3 -left-20 w-96 h-96 bg-first/5 rounded-full blur-[140px] pointer-events-none opacity-30"></div>
-      <div className="absolute bottom-1/3 -right-20 w-96 h-96 bg-first/5 rounded-full blur-[140px] pointer-events-none opacity-30"></div>
-
+    <section className="py-20 relative overflow-hidden bg-body" id="qualification">
       <div className="max-w-5xl mx-auto px-6 relative z-10">
-        
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
-          <span className="text-first font-black tracking-widest uppercase text-xs mb-3 block">
-            {t("qualification.subtitle")}
-          </span>
-          <h2 className="text-3xl md:text-5xl font-black text-title leading-tight">
-            {t("qualification.title")}
-          </h2>
-          <p className="text-xs md:text-sm text-textLight max-w-lg mx-auto mt-3 font-medium leading-relaxed">
-            {t("qualification.desc")}
-          </p>
-        </motion.div>
+        <SectionTitle
+          badge={t("qualification.badge")}
+          title={t("qualification.title")}
+          subtitle={t("qualification.subtitle")}
+        />
 
-        {/* Tab Toggle Bar */}
-        <div className="flex justify-center gap-2 mb-16 bg-slate-100/50 dark:bg-white/5 border border-slate-200/60 dark:border-white/5 p-1.5 rounded-2xl w-fit mx-auto backdrop-blur-md">
-          {[
-            {
-              id: 1,
-              icon: "bx-briefcase",
-              label: t("qualification.experience"),
-            },
-            {
-              id: 3,
-              icon: "bx-star",
-              label: t("qualification.activities"),
-            },
-          ].map((tab) => {
-            const isActive = toggleState === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setToggleState(tab.id)}
-                className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all duration-300 cursor-pointer ${
-                  isActive
-                    ? "bg-linear-to-r from-blue-600/20 to-purple-600/20 border border-purple-500/20 text-first shadow-md"
-                    : "text-textLight hover:text-first border border-transparent"
-                }`}
-              >
-                <i className={`bx ${tab.icon} text-base`} />
-                <span>{tab.label}</span>
-              </button>
-            );
-          })}
+        {/* Tab Controls */}
+        <div className="flex justify-center mb-12">
+          <div className="inline-flex p-1 rounded-xl bg-slate-100 dark:bg-white/[0.04] border border-slate-200 dark:border-white/[0.08]">
+            <button
+              onClick={() => setActiveTab("all")}
+              className={`px-4 py-2 rounded-lg text-xs font-bold transition-all duration-300 ease-apple cursor-pointer ${
+                activeTab === "all"
+                  ? "bg-indigo-600 text-white shadow-sm"
+                  : "text-textLight hover:text-title"
+              }`}
+            >
+              {t("portfolio.all")}
+            </button>
+            <button
+              onClick={() => setActiveTab("work")}
+              className={`px-4 py-2 rounded-lg text-xs font-bold transition-all duration-300 ease-apple cursor-pointer ${
+                activeTab === "work"
+                  ? "bg-indigo-600 text-white shadow-sm"
+                  : "text-textLight hover:text-title"
+              }`}
+            >
+              {t("qualification.tabWork")}
+            </button>
+            <button
+              onClick={() => setActiveTab("teaching")}
+              className={`px-4 py-2 rounded-lg text-xs font-bold transition-all duration-300 ease-apple cursor-pointer ${
+                activeTab === "teaching"
+                  ? "bg-indigo-600 text-white shadow-sm"
+                  : "text-textLight hover:text-title"
+              }`}
+            >
+              {t("qualification.tabTeaching")}
+            </button>
+          </div>
         </div>
 
-        {/* Tab Panels */}
-        <div className="max-w-4xl mx-auto">
-          <AnimatePresence mode="wait">
-            
-            {/* ── PANEL 1: EXPERIENCE ── */}
-            {toggleState === 1 && (
+        {/* Timeline List */}
+        <div className="space-y-6">
+          <AnimatePresence mode="popLayout">
+            {filteredExperiences.map((exp, idx) => (
               <motion.div
-                key="experience"
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -15 }}
-                transition={{ duration: 0.4 }}
-                className="relative"
+                key={exp.id}
+                layout
+                initial={{ opacity: 0, y: 24, filter: "blur(4px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                exit={{ opacity: 0, scale: 0.98, filter: "blur(4px)" }}
+                transition={{ duration: 0.75, ease: APPLE_EASE, delay: idx * 0.06 }}
               >
-                {/* Continuous Timeline Vertical Line */}
-                <div className="absolute left-[19px] rtl:left-auto rtl:right-[19px] top-6 bottom-6 w-[2px] bg-linear-to-b from-purple-500 via-blue-500 to-transparent pointer-events-none" />
-
-                {/* Group 1: Professional Experience */}
-                <div className="relative pl-12 rtl:pl-0 rtl:pr-12 pb-12">
-                  {/* Timeline Header Circle Icon */}
-                  <div className="absolute -left-5 rtl:-left-auto rtl:-right-5 top-0 w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-500 z-10 shadow-sm">
-                    <i className="bx bx-code-alt text-lg"></i>
-                  </div>
-                  
-                  {/* Group Title */}
-                  <div className="mb-6 text-start">
-                    <span className="text-[10px] font-black uppercase tracking-wider text-purple-500">
-                      {t("qualification.group_work_sub")}
-                    </span>
-                    <h3 className="text-lg md:text-xl font-black text-title mt-1">
-                      {t("qualification.group_work_title")}
-                    </h3>
-                  </div>
-
-                  {/* Cards Stack */}
-                  <div className="space-y-6">
-                    {workItems.map((item, idx) => (
-                      <motion.div
-                        key={item.key}
-                        initial={{ opacity: 0, x: isAr ? 20 : -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5, delay: idx * 0.1 }}
-                        className="bg-white/80 border border-slate-200/60 dark:bg-[#090d15]/60 dark:border-white/5 rounded-3xl p-6 md:p-8 shadow-md hover:shadow-lg transition-all duration-300 group"
-                      >
-                        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
-                          {/* Col 1: Date & Duration */}
-                          <div className="md:col-span-3 flex flex-col text-start">
-                            <span className="text-xs md:text-sm font-black text-purple-600 dark:text-purple-400">
-                              {t(`qualification.${item.key}.date`)}
-                            </span>
-                            <span className="mt-2 px-2.5 py-1 rounded-lg bg-purple-500/10 border border-purple-500/20 text-[9px] font-black text-purple-600 dark:text-purple-400 uppercase tracking-widest w-fit">
-                              {t(`qualification.${item.durationKey}`)}
-                            </span>
-                          </div>
-
-                          {/* Col 2: Info (Title, Company, Desc) */}
-                          <div className="md:col-span-5 flex flex-col text-start">
-                            <h4 className="text-base md:text-lg font-black text-title leading-snug">
-                              {t(`qualification.${item.key}.title`)}
-                            </h4>
-                            <span className="text-xs md:text-sm font-bold text-purple-500 mt-1">
-                              {t(`qualification.${item.key}.company`)}
-                            </span>
-                            <p className="text-xs md:text-sm text-textLight font-medium mt-3 leading-relaxed">
-                              {t(`qualification.${item.key}.desc`)}
-                            </p>
-                          </div>
-
-                          {/* Col 3: Tech Tags */}
-                          <div className="md:col-span-4 flex flex-col text-start border-t md:border-t-0 border-slate-100 dark:border-white/5 pt-4 md:pt-0">
-                            <span className="text-[10px] font-black uppercase tracking-wider text-purple-500 mb-3 block">
-                              {t(`qualification.${item.tagsTitleKey}`)}
-                            </span>
-                            <div className="flex flex-wrap gap-2">
-                              {item.tags.map((tag, tIdx) => (
-                                <div
-                                  key={tIdx}
-                                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200/60 dark:border-white/5 text-[10px] font-black text-textLight select-none transition-colors group-hover:border-purple-500/20"
-                                >
-                                  {tag.icon && (
-                                    <i className={`bx ${tag.icon} ${tag.colorClass} text-sm`} />
-                                  )}
-                                  <span>{tag.name}</span>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Group 2: Teaching Experience */}
-                <div className="relative pl-12 rtl:pl-0 rtl:pr-12">
-                  {/* Timeline Header Circle Icon */}
-                  <div className="absolute -left-5 rtl:-left-auto rtl:-right-5 top-0 w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-500 z-10 shadow-sm">
-                    <i className="bx bx-tv text-lg"></i>
-                  </div>
-                  
-                  {/* Group Title */}
-                  <div className="mb-6 text-start">
-                    <span className="text-[10px] font-black uppercase tracking-wider text-blue-500">
-                      {t("qualification.group_teach_sub")}
-                    </span>
-                    <h3 className="text-lg md:text-xl font-black text-title mt-1">
-                      {t("qualification.group_teach_title")}
-                    </h3>
-                  </div>
-
-                  {/* Cards Stack */}
-                  <div className="space-y-6">
-                    {teachingItems.map((item, idx) => (
-                      <motion.div
-                        key={item.key}
-                        initial={{ opacity: 0, x: isAr ? 20 : -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5, delay: idx * 0.1 }}
-                        className="bg-white/80 border border-slate-200/60 dark:bg-[#090d15]/60 dark:border-white/5 rounded-3xl p-6 md:p-8 shadow-md hover:shadow-lg transition-all duration-300 group"
-                      >
-                        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
-                          {/* Col 1: Date & Duration */}
-                          <div className="md:col-span-3 flex flex-col text-start">
-                            <span className="text-xs md:text-sm font-black text-blue-600 dark:text-blue-400">
-                              {t(`qualification.${item.key}.date`)}
-                            </span>
-                            <span className="mt-2 px-2.5 py-1 rounded-lg bg-blue-500/10 border border-blue-500/20 text-[9px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-widest w-fit">
-                              {t(`qualification.${item.durationKey}`)}
-                            </span>
-                          </div>
-
-                          {/* Col 2: Info */}
-                          <div className="md:col-span-5 flex flex-col text-start">
-                            <h4 className="text-base md:text-lg font-black text-title leading-snug">
-                              {t(`qualification.${item.key}.title`)}
-                            </h4>
-                            <span className="text-xs md:text-sm font-bold text-blue-500 mt-1">
-                              {t(`qualification.${item.key}.company`)}
-                            </span>
-                            <p className="text-xs md:text-sm text-textLight font-medium mt-3 leading-relaxed">
-                              {t(`qualification.${item.key}.desc`)}
-                            </p>
-                          </div>
-
-                          {/* Col 3: Subjects Tags */}
-                          <div className="md:col-span-4 flex flex-col text-start border-t md:border-t-0 border-slate-100 dark:border-white/5 pt-4 md:pt-0">
-                            <span className="text-[10px] font-black uppercase tracking-wider text-blue-500 mb-3 block">
-                              {t(`qualification.${item.tagsTitleKey}`)}
-                            </span>
-                            <div className="flex flex-wrap gap-2">
-                              {item.tags.map((tag, tIdx) => (
-                                <div
-                                  key={tIdx}
-                                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200/60 dark:border-white/5 text-[10px] font-black text-textLight select-none transition-colors group-hover:border-blue-500/20"
-                                >
-                                  {tag.icon && (
-                                    <i className={`bx ${tag.icon} ${tag.colorClass} text-sm`} />
-                                  )}
-                                  <span>{tag.name}</span>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-
-              </motion.div>
-            )}
-
-            {/* ── PANEL 2: ACTIVITIES ── */}
-            {toggleState === 3 && (
-              <motion.div
-                key="activities"
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -15 }}
-                transition={{ duration: 0.4 }}
-                className="grid sm:grid-cols-2 gap-6"
-              >
-                {actItems.map((item, idx) => (
-                  <motion.div
-                    key={item.num}
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: idx * 0.08 }}
-                    className="bg-white/80 border border-slate-200/60 dark:bg-[#090d15]/60 dark:border-white/5 rounded-3xl p-6 shadow-md hover:shadow-lg transition-all duration-300 group text-start flex flex-col justify-between"
-                  >
+                <SpotlightCard className="p-6 md:p-8">
+                  <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-4">
                     <div>
-                      {/* Top Row: Icon & Date Badge */}
-                      <div className="flex items-start justify-between mb-5">
-                        <div
-                          className={`w-10 h-10 rounded-xl ${item.bg} border ${item.border} flex items-center justify-center group-hover:scale-110 transition-transform`}
-                        >
-                          <i className={`bx ${item.icon} text-xl ${item.color}`} />
-                        </div>
-                        <span
-                          className={`text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-lg ${item.bg} ${item.color} border ${item.border}`}
-                        >
-                          {t(`qualification.act${item.num}.date`)}
+                      <div className="flex flex-wrap items-center gap-2 mb-2">
+                        <span className="text-xs font-semibold px-2.5 py-0.5 rounded-md bg-indigo-500/10 text-indigo-500 border border-indigo-500/20">
+                          {exp.category === "work"
+                            ? t("qualification.tabWork")
+                            : t("qualification.tabTeaching")}
                         </span>
+                        {exp.highlightBadgeKey && (
+                          <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-md bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 flex items-center gap-1.5">
+                            <i className="bx bxs-institution text-xs" />
+                            {t(exp.highlightBadgeKey)}
+                          </span>
+                        )}
+                        {exp.isCurrent && (
+                          <span className="text-[11px] font-semibold px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                            {t("qualification.current")}
+                          </span>
+                        )}
                       </div>
-
-                      {/* Title & Organization */}
-                      <h4 className="text-base font-black text-title leading-snug group-hover:text-first transition-colors">
-                        {t(`qualification.act${item.num}.title`)}
-                      </h4>
+                      <h3 className="text-lg md:text-xl font-bold text-title">
+                        {t(exp.titleKey)}
+                      </h3>
+                      <p className="text-sm font-medium text-indigo-500 mt-0.5">
+                        {t(exp.companyKey)}
+                      </p>
                     </div>
 
-                    <div className="mt-4 pt-3 border-t border-slate-100 dark:border-white/5 flex items-center gap-1.5 text-xs font-semibold text-textLight">
-                      <i className="bx bx-buildings text-sm text-first" />
-                      <span>{t(`qualification.act${item.num}.org`)}</span>
+                    <div className="text-start md:text-end shrink-0">
+                      <span className="inline-block text-xs font-medium text-textLight px-2.5 py-1 rounded-md bg-slate-100 dark:bg-white/[0.03] border border-slate-200 dark:border-white/[0.06]">
+                        {t(exp.dateKey)}
+                      </span>
+                      <p className="text-xs text-textLight mt-1 font-medium">
+                        {t(exp.locationKey)}
+                      </p>
                     </div>
-                  </motion.div>
-                ))}
+                  </div>
+
+                  {/* Bullet points from CV */}
+                  <ul className="space-y-2 mb-5">
+                    {exp.bullets.map((bullet, bIdx) => (
+                      <li
+                        key={bIdx}
+                        className="text-xs md:text-sm text-text flex items-start gap-2.5 leading-relaxed"
+                      >
+                        <i className="bx bx-check text-indigo-500 text-base shrink-0 mt-0.5" />
+                        <span>{bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* Technology Tags */}
+                  <div className="flex flex-wrap gap-1.5 pt-4 border-t border-slate-200/80 dark:border-white/[0.08]">
+                    {exp.techTags.map((tech) => (
+                      <span
+                        key={tech}
+                        className="text-[11px] font-medium px-2.5 py-1 rounded-md bg-slate-100 dark:bg-white/[0.04] text-textLight border border-slate-200/60 dark:border-white/[0.06]"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </SpotlightCard>
               </motion.div>
-            )}
-
+            ))}
           </AnimatePresence>
         </div>
-
       </div>
     </section>
   );

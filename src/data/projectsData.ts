@@ -88,6 +88,21 @@ import hopeOwnPro4 from "../assets/hope/ownpro4.png";
 import hopeOwnPro5 from "../assets/hope/ownpro5.png";
 import hopeOwnPro6 from "../assets/hope/ownpro6.png";
 
+// ─── CiHost Images (Modern Digital Solutions) ──────────────────────────────
+import cihostHero from "../assets/cihost/cihost-hero.png";
+import cihostHeroAr from "../assets/cihost/cihost-hero-ar.png";
+import cihostFeatures from "../assets/cihost/cihost-features.png";
+import cihostModules from "../assets/cihost/cihost-modules.png";
+import cihostProcess from "../assets/cihost/cihost-process.png";
+import cihostSectors from "../assets/cihost/cihost-sectors.png";
+import cihostSectorDetail from "../assets/cihost/cihost-sector-detail.png";
+import cihostPricing from "../assets/cihost/cihost-pricing.png";
+import cihostContact from "../assets/cihost/cihost-contact.png";
+import cihostAiWidget from "../assets/cihost/cihost-ai-widget.png";
+import cihostAiResponse from "../assets/cihost/cihost-ai-response.png";
+import cihostReferences from "../assets/cihost/cihost-references.png";
+import cihostFooter from "../assets/cihost/cihost-footer.png";
+
 export interface ProjectFeature {
   titleKey: string;
   descKey: string;
@@ -110,12 +125,21 @@ export interface ProjectDetailsSection {
   images: string[];
 }
 
+export interface ProjectAffiliation {
+  type: "company" | "grad" | "personal";
+  badgeKey: string;
+  detailKey: string;
+  companyNameKey?: string;
+  icon: string;
+}
+
 export interface Project {
   id: string;
   titleKey: string;
   descKey: string;
   titleFallback?: string;
   category: "professional" | "grad" | "personal";
+  affiliation: ProjectAffiliation;
   img: string;
   link: string;
   theme: ProjectTheme;
@@ -124,12 +148,100 @@ export interface Project {
 }
 
 export const projectsData: Project[] = [
-  // ── 1. Bynona ── Yellow E-Commerce
+  // ── 1. CiHost ── Azure Hospitality Cloud (Modern Digital Solutions)
+  {
+    id: "cihost",
+    titleKey: "portfolio.cihost.title",
+    descKey: "portfolio.cihost.desc",
+    category: "professional",
+    affiliation: {
+      type: "company",
+      badgeKey: "portfolio.affiliation.modernBadge",
+      detailKey: "portfolio.affiliation.modernDetail",
+      companyNameKey: "portfolio.affiliation.modernName",
+      icon: "bx-buildings",
+    },
+    img: cihostHero,
+    link: "https://cihostegypt-001-site17.ctempurl.com/",
+    theme: {
+      primary: "#0284c7",
+      glow: "rgba(2,132,199,0.35)",
+      bgGlow: "rgba(2,132,199,0.08)",
+      gradient:
+        "linear-gradient(135deg, rgba(2,132,199,0.15), rgba(6,182,212,0.05))",
+      label: "Hospitality Cloud",
+      icon: "bx-hotel",
+    },
+    techs: [
+      "React 19",
+      "Vite",
+      "Tailwind 4",
+      "TanStack Query",
+      "Zustand",
+      "Framer Motion",
+      "Axios",
+    ],
+    details: {
+      heroImage: cihostHero,
+      overviewKey: "portfolio.cihost.details.overview",
+      features: [
+        {
+          titleKey: "portfolio.cihost.details.features.f1.title",
+          descKey: "portfolio.cihost.details.features.f1.desc",
+          icon: "bx-calendar-check",
+        },
+        {
+          titleKey: "portfolio.cihost.details.features.f2.title",
+          descKey: "portfolio.cihost.details.features.f2.desc",
+          icon: "bx-sync",
+        },
+        {
+          titleKey: "portfolio.cihost.details.features.f3.title",
+          descKey: "portfolio.cihost.details.features.f3.desc",
+          icon: "bx-bot",
+        },
+        {
+          titleKey: "portfolio.cihost.details.features.f4.title",
+          descKey: "portfolio.cihost.details.features.f4.desc",
+          icon: "bx-restaurant",
+        },
+        {
+          titleKey: "portfolio.cihost.details.features.f5.title",
+          descKey: "portfolio.cihost.details.features.f5.desc",
+          icon: "bx-buildings",
+        },
+      ],
+      images: [
+        cihostHero,
+        cihostHeroAr,
+        cihostFeatures,
+        cihostModules,
+        cihostProcess,
+        cihostSectors,
+        cihostSectorDetail,
+        cihostPricing,
+        cihostContact,
+        cihostAiWidget,
+        cihostAiResponse,
+        cihostReferences,
+        cihostFooter,
+      ],
+    },
+  },
+
+  // ── 2. Bynona ── Yellow E-Commerce
   {
     id: "bymona",
     titleKey: "portfolio.bymona.title",
     descKey: "portfolio.bymona.desc",
     category: "professional",
+    affiliation: {
+      type: "company",
+      badgeKey: "portfolio.affiliation.pyramidBadge",
+      detailKey: "portfolio.affiliation.pyramidDetail",
+      companyNameKey: "portfolio.affiliation.pyramidName",
+      icon: "bx-buildings",
+    },
     img: bynonaLogo,
     link: "https://www.bynona.store/",
     theme: {
@@ -214,6 +326,13 @@ export const projectsData: Project[] = [
     titleKey: "portfolio.propix8.title",
     descKey: "portfolio.propix8.desc",
     category: "professional",
+    affiliation: {
+      type: "company",
+      badgeKey: "portfolio.affiliation.pyramidBadge",
+      detailKey: "portfolio.affiliation.pyramidDetail",
+      companyNameKey: "portfolio.affiliation.pyramidName",
+      icon: "bx-buildings",
+    },
     img: propixLogo,
     link: "https://www.propix8.com/",
     theme: {
@@ -291,6 +410,13 @@ export const projectsData: Project[] = [
     titleKey: "portfolio.hope.title",
     descKey: "portfolio.hope.desc",
     category: "grad",
+    affiliation: {
+      type: "grad",
+      badgeKey: "portfolio.affiliation.gradBadge",
+      detailKey: "portfolio.affiliation.gradDetail",
+      companyNameKey: "portfolio.affiliation.sohagUniv",
+      icon: "bx-graduation",
+    },
     img: hopeLogoImg,
     link: "https://hope-social.vercel.app/",
     theme: {
@@ -371,6 +497,12 @@ export const projectsData: Project[] = [
     descKey: "portfolio.srgym.desc",
     titleFallback: "SR-gym",
     category: "personal",
+    affiliation: {
+      type: "personal",
+      badgeKey: "portfolio.affiliation.personalBadge",
+      detailKey: "portfolio.affiliation.personalDetail",
+      icon: "bx-user",
+    },
     img: srGymImg,
     link: "https://sr-gym.netlify.app",
     theme: {
@@ -393,6 +525,12 @@ export const projectsData: Project[] = [
     descKey: "portfolio.fastpizza.desc",
     titleFallback: "Fast Pizza",
     category: "personal",
+    affiliation: {
+      type: "personal",
+      badgeKey: "portfolio.affiliation.personalBadge",
+      detailKey: "portfolio.affiliation.personalDetail",
+      icon: "bx-user",
+    },
     img: pizzaImg,
     link: "https://react-pizza-system-iv2z0qitl-saeed-ramadan.vercel.app/",
     theme: {
@@ -415,6 +553,12 @@ export const projectsData: Project[] = [
     descKey: "portfolio.personalsite.desc",
     titleFallback: "Personal Website",
     category: "personal",
+    affiliation: {
+      type: "personal",
+      badgeKey: "portfolio.affiliation.personalBadge",
+      detailKey: "portfolio.affiliation.personalDetail",
+      icon: "bx-code-curly",
+    },
     img: personalImg,
     link: "https://saeed-ramadan.github.io/personal-website/",
     theme: {

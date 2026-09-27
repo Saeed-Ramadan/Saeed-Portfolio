@@ -1,36 +1,28 @@
-import React, { useEffect, useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  AnimatePresence,
-} from "framer-motion";
+import { motion } from "framer-motion";
 import { getProjectById } from "../data/projectsData";
-import { useTheme } from "../hooks/useTheme";
+import { ProjectDetailHeader } from "../components/project-details/ProjectDetailHeader";
+import { ProjectLightbox } from "../components/project-details/ProjectLightbox";
+import { useProjectLightbox } from "../hooks/useProjectLightbox";
+import { SpotlightCard } from "../components/common/SpotlightCard";
 
+// RATIONALE: Redesigned HOPE Platform details page adhering to unified design tokens (bg-body, text-title, SpotlightCard).
+// Preserves all graduation project achievements, sub-modules (Academy & Special Care), metrics, and screenshot gallery.
 const HopeDetails: React.FC = () => {
   const { t, i18n } = useTranslation();
-  const { theme, toggleTheme } = useTheme();
   const isAr = i18n.language === "ar";
   const project = getProjectById("hope");
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [activeSection, setActiveSection] = useState<number>(0);
-  const heroRef = useRef<HTMLDivElement>(null);
-
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-  const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  const { selectedImage, openLightbox, closeLightbox } = useProjectLightbox();
+  const [activeSection, setActiveSection] = useState<string>("hope-overview");
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   if (!project) return null;
+
+  const accentColor = project.theme.primary || "#14b8a6";
 
   const stats = [
     { num: "23+", label: isAr ? "ميزة وظيفية" : "Core Features" },
@@ -40,298 +32,254 @@ const HopeDetails: React.FC = () => {
   ];
 
   const sections = [
-    {
-      icon: "bx-info-circle",
-      label: isAr ? "نبذة" : "Overview",
-      id: "hope-overview",
-    },
-    {
-      icon: "bx-star",
-      label: isAr ? "المميزات" : "Features",
-      id: "hope-features",
-    },
-    { icon: "bx-layer", label: isAr ? "التقنيات" : "Stack", id: "hope-stack" },
-    {
-      icon: "bx-image-alt",
-      label: isAr ? "معرض الصور" : "Gallery",
-      id: "hope-gallery",
-    },
+    { id: "hope-overview", label: isAr ? "نبذة" : "Overview", icon: "bx-info-circle" },
+    { id: "hope-features", label: isAr ? "المميزات" : "Features", icon: "bx-star" },
+    { id: "hope-stack", label: isAr ? "التقنيات" : "Stack", icon: "bx-layer" },
+    { id: "hope-gallery", label: isAr ? "معرض الصور" : "Gallery", icon: "bx-image-alt" },
   ];
 
   const scrollToSection = (sectionId: string) => {
+    setActiveSection(sectionId);
     const el = document.getElementById(sectionId);
     if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
 
-  const isDark = theme === "dark";
-
   return (
-    <div className="min-h-screen relative bg-slate-50 dark:bg-[#090d16] z-10 pt-24 pb-20 font-sans text-slate-900 dark:text-white transition-colors duration-300 overflow-hidden">
-      {/* ── Dynamic Ambient Background ── */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-teal-500/8 rounded-full blur-[160px] animate-pulse" />
-        <div className="absolute bottom-1/4 right-0 w-[400px] h-[400px] bg-cyan-500/6 rounded-full blur-[140px]" />
-        <div className="absolute top-1/2 left-0 w-[300px] h-[300px] bg-indigo-500/8 rounded-full blur-[120px] animate-pulse delay-1000" />
+    <div className="min-h-screen bg-body text-text font-sans transition-colors duration-300 relative overflow-hidden">
+      {/* Dynamic Ambient Background Glow */}
+      <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+        <div className="absolute top-0 start-1/4 w-[600px] h-[600px] bg-teal-500/10 dark:bg-teal-500/15 rounded-full blur-[140px] pointer-events-none" />
+        <div className="absolute top-1/2 end-10 w-[450px] h-[450px] bg-cyan-500/10 dark:bg-cyan-500/15 rounded-full blur-[130px] pointer-events-none" />
       </div>
 
-      {/* ── Sticky Nav ── */}
-      <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 backdrop-blur-2xl bg-white/80 dark:bg-body/60 border-b border-slate-200 dark:border-white/5 shadow-sm">
-        <Link
-          to="/"
-          className="group flex items-center gap-2 px-5 py-2.5 bg-slate-200/60 dark:bg-white/5 border border-slate-300 dark:border-white/10 hover:border-teal-500/50 rounded-2xl text-[11px] font-black uppercase tracking-widest text-slate-800 dark:text-title hover:text-teal-500 transition-all cursor-pointer"
-        >
-          <i
-            className={`bx bx-left-arrow-alt text-lg transition-transform ${isAr ? "rotate-180 group-hover:-translate-x-1" : "group-hover:-translate-x-1"}`}
-          ></i>
-          <span>{t("nav.home") || "Back"}</span>
-        </Link>
+      {/* Unified Sticky Header */}
+      <ProjectDetailHeader
+        liveLink={project.link}
+        liveLabelKey="portfolio.projectDetails.liveDemo"
+        accentColor={accentColor}
+        sections={sections}
+        activeSection={activeSection}
+        onSectionClick={scrollToSection}
+      />
 
-        {/* Floating section pills */}
-        <div className="hidden md:flex items-center gap-2 p-1 bg-slate-200/50 dark:bg-white/5 border border-slate-300/50 dark:border-white/5 rounded-full">
-          {sections.map((s, i) => (
-            <button
-              key={i}
-              onClick={() => {
-                setActiveSection(i);
-                scrollToSection(s.id);
-              }}
-              className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer ${
-                activeSection === i
-                  ? "bg-teal-500 text-black shadow-lg shadow-teal-500/20"
-                  : "text-slate-700 dark:text-white/60 hover:text-slate-900 dark:hover:text-white"
-              }`}
-            >
-              <i className={`bx ${s.icon} text-sm`} />
-              <span>{s.label}</span>
-            </button>
-          ))}
-        </div>
-
-        <div className="flex items-center gap-3">
-          {/* Theme Toggle Button */}
-          <button
-            onClick={toggleTheme}
-            className="w-10 h-10 flex items-center justify-center rounded-2xl bg-slate-200/60 dark:bg-white/10 border border-slate-300 dark:border-white/10 text-slate-800 dark:text-amber-400 hover:scale-105 transition-all cursor-pointer"
-            aria-label="Toggle theme"
-          >
-            <i className={`bx ${isDark ? "bx-sun" : "bx-moon"} text-xl`}></i>
-          </button>
-
-          <a
-            href={project.link}
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center gap-2 px-5 py-2.5 bg-linear-to-r from-teal-500 to-cyan-500 text-black font-black text-[11px] uppercase tracking-widest rounded-2xl shadow-lg shadow-teal-500/20 hover:scale-105 transition-all cursor-pointer"
-          >
-            <span>{isAr ? "زيارة الموقع" : "Live App"}</span>
-            <i className="bx bx-link-external" />
-          </a>
-        </div>
-      </div>
-
-      <div className="max-w-6xl mx-auto px-6 pt-12 relative z-10">
+      {/* Main Container */}
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 pt-28 pb-20 relative z-10">
         {/* ── HERO BANNER ── */}
-        <div ref={heroRef} className="relative mb-20 pt-8">
-          <motion.div style={{ y: heroY, opacity: heroOpacity }} className="space-y-6">
+        <section className="mb-16 pt-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="space-y-6"
+          >
             {/* Badges row */}
-            <div className="flex flex-wrap items-center gap-3">
-              <span className="px-4 py-1.5 rounded-full bg-teal-500/10 border border-teal-500/30 text-teal-600 dark:text-teal-400 text-xs font-black uppercase tracking-widest">
-                🎓 {isAr ? "مشروع التخرج" : "Graduation Project"}
+            <div className="flex flex-wrap items-center gap-2.5">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/30 text-teal-600 dark:text-teal-400 text-xs font-bold uppercase tracking-wider">
+                <i className="bx bx-graduation text-sm" />
+                <span>{t("portfolio.affiliation.gradDetail")}</span>
               </span>
-              <span className="px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-600 dark:text-cyan-400 text-xs font-black uppercase tracking-widest">
-                ⭐ {isAr ? "درجة ممتاز" : "Excellent Grade"}
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-600 dark:text-cyan-400 text-xs font-bold uppercase tracking-wider">
+                ⭐ {isAr ? "تقدير ممتاز مع مرتبة الشرف (A+)" : "Grade A+ with Honours"}
               </span>
-              <span className="px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-600 dark:text-indigo-400 text-xs font-black uppercase tracking-widest">
-                🤖 {isAr ? "منصة ذكاء اصطناعي" : "AI Platform"}
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-600 dark:text-indigo-400 text-xs font-bold uppercase tracking-wider">
+                🤖 {isAr ? "منصة ذكاء اصطناعي وخدمة مجتمعية" : "AI & Community Service"}
               </span>
             </div>
 
             {/* Title */}
-            <h1 className="text-5xl md:text-7xl font-black tracking-tight text-slate-900 dark:text-white leading-[1.1]">
+            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-title leading-[1.15]">
               HOPE{" "}
-              <span className="bg-linear-to-r from-teal-400 via-cyan-400 to-indigo-400 bg-clip-text text-transparent italic font-serif font-normal">
+              <span className="bg-linear-to-r from-teal-400 via-cyan-400 to-indigo-400 bg-clip-text text-transparent">
                 Platform
               </span>
             </h1>
 
             {/* Tagline */}
-            <p className="text-base md:text-xl text-slate-700 dark:text-white/70 max-w-3xl font-medium leading-relaxed">
+            <p className="text-base sm:text-lg text-textLight max-w-3xl leading-relaxed">
               {isAr
-                ? "منصة تعليمية متكاملة مدعومة بالذكاء الاصطناعي لتطوير مهارات البرمجة والأطفال ذوي الاحتياجات الخاصة."
-                : "An all-in-one AI-powered educational ecosystem combining learning management, interactive coding, and specialized support for children."}
+                ? "منصة خدمة اجتماعية متكاملة مدعومة بالذكاء الاصطناعي لإيجاد المفقودين عبر تقنية التعرف على الوجوه، إدارة البلاغات المجتمعية، وتوفير بيئة تعليمية وتأهيلية."
+                : "An all-in-one AI-powered social ecosystem combining facial recognition search for missing persons, real-time community reporting, interactive coding, and specialized support."}
             </p>
 
             {/* Quick stats grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5 pt-2">
               {stats.map((st, i) => (
-                <div
+                <SpotlightCard
                   key={i}
-                  className="p-4 rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-center shadow-xs"
+                  className="p-4 sm:p-5 text-center"
+                  spotlightColor="rgba(20, 184, 166, 0.15)"
                 >
-                  <span className="text-2xl md:text-3xl font-black text-teal-600 dark:text-teal-400 block mb-0.5">
+                  <span className="text-2xl sm:text-3xl font-extrabold text-teal-600 dark:text-teal-400 block mb-1">
                     {st.num}
                   </span>
-                  <span className="text-[11px] font-bold text-slate-600 dark:text-white/50 uppercase tracking-wider">
+                  <span className="text-[11px] font-semibold text-textLight uppercase tracking-wider">
                     {st.label}
                   </span>
-                </div>
+                </SpotlightCard>
               ))}
             </div>
           </motion.div>
-        </div>
+        </section>
 
         {/* ── OVERVIEW SECTION ── */}
-        <div id="hope-overview" className="mb-24 scroll-mt-28">
-          <div className="p-8 md:p-12 rounded-3xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 shadow-md">
-            <div className="flex items-center gap-3 mb-6">
-              <i className="bx bx-info-circle text-teal-600 dark:text-teal-400 text-2xl" />
-              <h2 className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white">
-                {isAr ? "عن المشروع" : "About the Project"}
+        <section id="hope-overview" className="mb-20 scroll-mt-24">
+          <SpotlightCard
+            className="p-6 sm:p-10"
+            spotlightColor="rgba(20, 184, 166, 0.12)"
+          >
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-500 text-xl">
+                <i className="bx bx-info-circle" />
+              </div>
+              <h2 className="text-xl sm:text-2xl font-bold text-title">
+                {t("portfolio.projectDetails.overview")}
               </h2>
             </div>
-            <p className="text-sm md:text-base text-slate-700 dark:text-white/70 leading-relaxed font-medium mb-8">
+
+            <p className="text-sm sm:text-base text-textLight leading-relaxed mb-8">
               {project.details?.overviewKey && t(project.details.overviewKey)}
             </p>
 
             {/* Sub-projects list */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="p-5 rounded-2xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10">
+              <div className="p-5 rounded-xl border border-slate-200/80 dark:border-white/[0.06] bg-slate-50/50 dark:bg-white/[0.02]">
                 <div className="flex items-center gap-2 text-teal-600 dark:text-teal-400 font-bold mb-2">
                   <i className="bx bx-code-alt text-xl" />
                   <span>HOPE Academy</span>
                 </div>
-                <p className="text-xs text-slate-600 dark:text-white/60 leading-relaxed font-medium">
+                <p className="text-xs text-textLight leading-relaxed">
                   {isAr
                     ? "منصة تعليم برمجة تفاعلية للأطفال والشباب مع محرر كود لايف وتقييم بالذكاء الاصطناعي."
                     : "Interactive coding learning platform for youth with live code runner and AI grading."}
                 </p>
               </div>
 
-              <div className="p-5 rounded-2xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10">
+              <div className="p-5 rounded-xl border border-slate-200/80 dark:border-white/[0.06] bg-slate-50/50 dark:bg-white/[0.02]">
                 <div className="flex items-center gap-2 text-cyan-600 dark:text-cyan-400 font-bold mb-2">
                   <i className="bx bx-heart text-xl" />
                   <span>HOPE Special Care</span>
                 </div>
-                <p className="text-xs text-slate-600 dark:text-white/60 leading-relaxed font-medium">
+                <p className="text-xs text-textLight leading-relaxed">
                   {isAr
                     ? "وحدة خاصة لدعم وتأهيل الأطفال ذوي الاحتياجات من خلال ألعاب وتدريبات تفاعلية."
                     : "Specialized module supporting children with special needs via targeted interactive games."}
                 </p>
               </div>
             </div>
-          </div>
-        </div>
+          </SpotlightCard>
+        </section>
 
         {/* ── FEATURES SECTION ── */}
-        <div id="hope-features" className="mb-24 scroll-mt-28">
-          <h2 className="text-3xl font-black text-slate-900 dark:text-white mb-8 flex items-center gap-3">
-            <i className="bx bx-star text-teal-500" />
-            <span>{isAr ? "المميزات الرئيسية" : "Key Features"}</span>
-          </h2>
+        <section id="hope-features" className="mb-20 scroll-mt-24">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="w-10 h-10 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-500 text-xl">
+              <i className="bx bx-star" />
+            </div>
+            <h2 className="text-xl sm:text-2xl font-bold text-title">
+              {t("portfolio.projectDetails.keyFeatures")}
+            </h2>
+          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {(project.details?.features || []).map((feat, idx) => (
-              <motion.div
+              <SpotlightCard
                 key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.08 }}
-                className="p-6 rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-teal-500/40 shadow-sm transition-all group"
+                className="p-6 transition-all group"
+                spotlightColor="rgba(20, 184, 166, 0.15)"
               >
-                <div className="w-12 h-12 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-600 dark:text-teal-400 text-2xl mb-4 group-hover:scale-110 transition-transform">
+                <div className="w-11 h-11 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-500 text-2xl mb-4 group-hover:scale-105 transition-transform">
                   <i className={`bx ${feat.icon}`} />
                 </div>
-                <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2 group-hover:text-teal-500 transition-colors">
+                <h3 className="text-base sm:text-lg font-bold text-title mb-2 group-hover:text-teal-500 transition-colors">
                   {t(feat.titleKey)}
                 </h3>
-                <p className="text-xs text-slate-600 dark:text-white/60 leading-relaxed font-medium">
+                <p className="text-xs sm:text-sm text-textLight leading-relaxed">
                   {t(feat.descKey)}
                 </p>
-              </motion.div>
+              </SpotlightCard>
             ))}
           </div>
-        </div>
+        </section>
 
         {/* ── TECH STACK ── */}
-        <div id="hope-stack" className="mb-24 scroll-mt-28">
-          <h2 className="text-3xl font-black text-slate-900 dark:text-white mb-8 flex items-center gap-3">
-            <i className="bx bx-layer text-teal-500" />
-            <span>{isAr ? "التقنيات المستخدمة" : "Tech Stack"}</span>
-          </h2>
+        <section id="hope-stack" className="mb-20 scroll-mt-24">
+          <SpotlightCard className="p-6 sm:p-8" spotlightColor="rgba(20, 184, 166, 0.12)">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-500 text-xl">
+                <i className="bx bx-layer" />
+              </div>
+              <h2 className="text-xl sm:text-2xl font-bold text-title">
+                {t("portfolio.projectDetails.techStack")}
+              </h2>
+            </div>
 
-          <div className="flex flex-wrap gap-3">
-            {project.techs.map((tech, i) => (
-              <span
-                key={i}
-                className="px-5 py-3 rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-white/80 shadow-xs"
-              >
-                {tech}
-              </span>
-            ))}
-          </div>
-        </div>
+            <div className="flex flex-wrap gap-2.5">
+              {project.techs.map((tech, i) => (
+                <span
+                  key={i}
+                  className="px-3.5 py-1.5 rounded-xl border border-slate-200 dark:border-white/10 bg-white/60 dark:bg-white/[0.04] text-xs font-semibold text-title shadow-2xs hover:border-teal-500/40 transition-colors"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </SpotlightCard>
+        </section>
 
         {/* ── GALLERY ── */}
-        <div id="hope-gallery" className="mb-24 scroll-mt-28">
-          <h2 className="text-3xl font-black text-slate-900 dark:text-white mb-8 flex items-center gap-3">
-            <i className="bx bx-image-alt text-teal-500" />
-            <span>{isAr ? "معرض الصور" : "Screenshots Gallery"}</span>
-          </h2>
+        <section id="hope-gallery" className="mb-16 scroll-mt-24">
+          <div className="flex items-center justify-between gap-4 mb-8">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-500 text-xl">
+                <i className="bx bx-image-alt" />
+              </div>
+              <div>
+                <h2 className="text-xl sm:text-2xl font-bold text-title">
+                  {t("portfolio.projectDetails.gallery")}
+                </h2>
+                <p className="text-xs text-textLight mt-0.5">
+                  {isAr ? "اضغط على أي صورة لتكبيرها واستعراضها بدقة عالية" : "Click any screenshot to inspect in full resolution"}
+                </p>
+              </div>
+            </div>
+            <span className="text-xs font-code font-bold px-2.5 py-1 rounded-lg border border-slate-200 dark:border-white/10 bg-white/40 dark:bg-white/[0.03] text-textLight">
+              {project.details?.images?.length || 0} {isAr ? "صورة" : "Screens"}
+            </span>
+          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {(project.details?.images || []).map((img, i) => (
               <motion.div
                 key={i}
-                whileHover={{ scale: 1.02 }}
-                onClick={() => setSelectedImage(img)}
-                className="relative rounded-2xl overflow-hidden cursor-pointer border border-slate-200 dark:border-white/10 group shadow-sm"
+                whileHover={{ y: -3 }}
+                onClick={() => openLightbox(img)}
+                className="group relative rounded-2xl overflow-hidden cursor-pointer border border-slate-200/80 dark:border-white/[0.08] bg-white/40 dark:bg-white/[0.02] shadow-xs"
               >
                 <img
                   src={img}
-                  alt={`HOPE Screen ${i + 1}`}
-                  className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500"
+                  alt={`HOPE Screenshot ${i + 1}`}
+                  loading="lazy"
+                  className="w-full h-48 sm:h-52 object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <i className="bx bx-expand text-white text-2xl" />
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
+                  <div className="w-10 h-10 rounded-full bg-white/20 border border-white/30 text-white flex items-center justify-center text-xl">
+                    <i className="bx bx-expand" />
+                  </div>
                 </div>
               </motion.div>
             ))}
           </div>
-        </div>
-      </div>
+        </section>
+      </main>
 
-      {/* ── Lightbox ── */}
-      <AnimatePresence>
-        {selectedImage && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setSelectedImage(null)}
-            className="fixed inset-0 z-[10002] flex items-center justify-center bg-black/90 backdrop-blur-xl p-4 md:p-8"
-          >
-            <button
-              className="absolute top-4 right-4 w-12 h-12 bg-white/10 border border-white/20 hover:border-teal-500 hover:bg-teal-500 transition-all rounded-full flex items-center justify-center text-white text-xl cursor-pointer"
-              onClick={() => setSelectedImage(null)}
-            >
-              <i className="bx bx-x"></i>
-            </button>
-            <motion.img
-              initial={{ scale: 0.85, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.85, opacity: 0 }}
-              transition={{ type: "spring", damping: 25, stiffness: 280 }}
-              src={selectedImage}
-              alt="Expanded HOPE screenshot"
-              className="max-w-[90vw] max-h-[88vh] object-contain rounded-2xl shadow-[0_0_80px_rgba(20,184,166,0.2)] border border-teal-500/20"
-              onClick={(e) => e.stopPropagation()}
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Reusable Lightbox */}
+      <ProjectLightbox
+        imageSrc={selectedImage}
+        onClose={closeLightbox}
+        accentColor={accentColor}
+      />
     </div>
   );
 };
