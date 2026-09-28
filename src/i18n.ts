@@ -264,6 +264,69 @@ i18n
             viewDemo: "Live Demo",
             viewDetails: "Case Study",
             techStack: "Tech Stack",
+            fatmaMagdy: {
+              title: "Fatma Magdy - Personal Branding Portfolio",
+              desc: "Interactive portfolio and personal branding platform for Social Media & Content Specialist Fatma Magdy, showcasing viral campaigns and growth analytics.",
+              details: {
+                overview: "An interactive digital portfolio and resume platform engineered specifically for Social Media and Content Creation Specialist 'Fatma Magdy'. The platform focuses on highlighting Personal Branding, showcasing high-impact marketing campaigns, creative content formats, and data-driven brand growth strategies with a modern, harmonious visual palette.",
+                features: {
+                  f1: {
+                    title: "Personal Branding & Visual Identity",
+                    desc: "Distinctive design reflecting professionalism, harmonious contemporary color schemes, and a compelling personal brand vision.",
+                  },
+                  f2: {
+                    title: "Content Strategies & Case Studies",
+                    desc: "Live display of client account growth stats, viral hook examples, content funnels, and interactive creative post previews.",
+                  },
+                  f3: {
+                    title: "Interactive UX & Cross-Device Fluidity",
+                    desc: "Silky Framer Motion micro-interactions, high-speed asset performance, and adaptive mobile-first layout.",
+                  },
+                },
+              },
+            },
+            srAcademy: {
+              title: "SR Programming Academy - EdTech Platform",
+              desc: "Modern educational platform and interactive developer hub for front-end engineering, algorithmic problem solving, and practical coding mentorship.",
+              details: {
+                overview: "An advanced educational platform and interactive developer hub built for Saeed Ramadan (Front-End Developer & Programming Instructor) dedicated to teaching coding through practical intuition and real-world application. The platform showcases specialized curriculums in UI development, logical thinking, problem-solving, student project showcases, and a streamlined live consultation booking engine.",
+                features: {
+                  f1: {
+                    title: "Modern Curriculums & Front-End Tracks",
+                    desc: "Comprehensive tracks covering modern web architecture (HTML, CSS, JS, React 19), logical foundations for youth, and production-grade client projects.",
+                  },
+                  f2: {
+                    title: "Hands-on Mentorship & Code Reviews",
+                    desc: "In-depth code reviews, career guidance, competitive programming contests, and real student project showcases.",
+                  },
+                  f3: {
+                    title: "Direct Booking & Technical Consultations",
+                    desc: "Instant scheduling for 1-on-1 and group coaching tracks, technical career guidance, and integrated WhatsApp direct channels.",
+                  },
+                },
+              },
+            },
+            zakaaAcademy: {
+              title: "Zakaa Academy - Saudi Curriculum Online Platform",
+              desc: "Comprehensive online educational platform specialized in the Saudi National Curriculum across all grades, featuring standardized test prep and direct WhatsApp booking.",
+              details: {
+                overview: "An interactive educational platform and web portal developed for 'Zakaa Academy', specializing in online tutoring for the Saudi National Curriculum across elementary, middle, and high school stages. The platform features a vibrant brand identity, rapid mobile-first responsiveness, structured curriculums, standardized testing programs (Qudurat & Tahsili), parent tracking frameworks, and an instant WhatsApp-integrated booking engine.",
+                features: {
+                  f1: {
+                    title: "Comprehensive Saudi Curriculum & Grades",
+                    desc: "Full coverage for elementary, middle, and high school grades with interactive video lessons and standardized test prep (Qudurat & Tahsili).",
+                  },
+                  f2: {
+                    title: "Honor Board & Parent Follow-up",
+                    desc: "Student achievement honor roll, certified appreciation certificates, periodic progress tracking, and verified parent testimonials.",
+                  },
+                  f3: {
+                    title: "Instant WhatsApp Booking Engine",
+                    desc: "Instant one-click course enrollment, automated WhatsApp appointment coordination, and ultra-fast responsive interactions.",
+                  },
+                },
+              },
+            },
             cihost: {
               title: "CiHost - Cloud Hospitality Platform",
               desc: "Comprehensive cloud-based property management system (PMS) and hospitality ecosystem engineered for hotels, resorts, chalets, and tourist cruises.",
@@ -379,6 +442,8 @@ i18n
               gradDetail: "Official Graduation Project | Faculty of Computers & AI, Sohag Univ (Grade A+)",
               personalBadge: "Personal Project",
               personalDetail: "Independent Personal Project | Concept & Implementation",
+              freelanceBadge: "Freelance Project",
+              freelanceDetail: "Freelance Client Project | Production Delivery",
             },
             projectDetails: {
               backToHome: "Back to Home",
@@ -445,9 +510,11 @@ i18n
             emailField: "Your Email",
             project: "Message Details",
             send: "Send Message",
-            sending: "Sending...",
-            success_title: "Message Sent!",
-            success_desc: "Thank you! Saeed will get in touch with you shortly.",
+            sendViaWA: "Send via WhatsApp",
+            sending: "Preparing WhatsApp...",
+            success_title: "WhatsApp Chat Ready!",
+            success_desc: "Your message details have been formatted and directed to Saeed's WhatsApp (01126488442).",
+            reopenWA: "Open WhatsApp Chat",
             send_another: "Send Another Message",
             error_submit: "An error occurred. Please try again.",
             errors: {
@@ -461,6 +528,14 @@ i18n
             quickLinks: "Navigation",
             rights: "All rights reserved.",
             designedBy: "Engineered by Saeed Ramadan",
+          },
+          loader: {
+            systemInitializing: "Initializing Front-End Architecture...",
+            compilingVite: "Compiling React 19 & Tailwind v4 Core...",
+            loadingModules: "Loading Interactive 3D Systems & Shaders...",
+            readyPrompt: "System Ready. Click to Launch Saeed's Portfolio",
+            clickAction: "Click Mouse / Tap to Enter",
+            entering: "Engaging Quantum Portal...",
           },
         },
       },
@@ -713,6 +788,71 @@ i18n
             personal: "المشاريع الشخصية",
             grad: "مشروع التخرج",
             viewDemo: "معاينة حية",
+            viewDetails: "تفاصيل المشروع",
+            techStack: "التقنيات المستخدمة",
+            fatmaMagdy: {
+              title: "فاطمة مجدي - بورتفوليو الهوية الشخصية والمحتوى",
+              desc: "موقع بورتفوليو وسيرة ذاتية رقمية تفاعلية تم تطويره لأخصائية إدارة منصات التواصل وصناعة المحتوى 'فاطمة مجدي' لإبراز الهوية الشخصية والحملات التسويقية.",
+              details: {
+                overview: "موقع بورتفوليو وسيرة ذاتية رقمية تفاعلية تم تطويره خصيصاً لأخصائية إدارة منصات التواصل وصناعة المحتوى 'فاطمة مجدي'. يركز الموقع على إبراز الهوية الشخصية (Personal Branding)، واستعراض الحملات التسويقية الناجحة، ونماذج المحتوى الإبداعي، واستراتيجيات نمو العلامات التجارية بتصميم عصري وألوان متناسقة.",
+                features: {
+                  f1: {
+                    title: "الهوية الشخصية والعلامة التجارية",
+                    desc: "تصميم فريد يعكس الاحترافية، تناسق ألوان عصري وجذاب، وعرض رسالة ورؤية واضحة للعلامة.",
+                  },
+                  f2: {
+                    title: "استراتيجيات ونماذج المحتوى",
+                    desc: "عرض دراسات الحالة للحسابات، أرقام وإحصائيات النمو، ونماذج المنشورات الإبداعية التفاعلية.",
+                  },
+                  f3: {
+                    title: "تجربة المستخدم والأداء المتطور",
+                    desc: "حركات تفاعلية سلسة بـ Framer Motion، تحسين الأداء وسرعة التحميل، وتوافق تام مع مختلف مقاسات الشاشات.",
+                  },
+                },
+              },
+            },
+            srAcademy: {
+              title: "أكاديمية سعيد رمضان - لتعليم البرمجة والواجهات",
+              desc: "منصة تعليمية تفاعلية متطورة لتدريس وتطوير واجهات المستخدم ومفاهيم حل المشكلات البرمجية بالفهم والتطبيق العملي لجميع الفئات.",
+              details: {
+                overview: "موقع تعريفي ومنصة تعليمية متطورة تابعة للمهندس سعيد رمضان (Front-End Developer & Programming Instructor) لتعليم وتدريس البرمجة بالفهم والتطبيق العملي لجميع الفئات والأعمار. تستعرض المنصة المسارات التدريبية المتخصصة في بناء وتطوير واجهات المستخدم، ومفاهيم التفكير المنطقي وحل المشكلات (Problem Solving)، مع نماذج لمشاريع الطلاب ونظام حجز واستفسار سريع ومباشر.",
+                features: {
+                  f1: {
+                    title: "المسارات والمناهج التدريبية المتخصصة",
+                    desc: "مسار تطوير الويب الحديث (HTML, CSS, JS, React 19)، التأسيس المنطقي للأطفال والناشئين، وبناء مشاريع عملية تحاكي سوق العمل.",
+                  },
+                  f2: {
+                    title: "التطبيق العملي والإرشاد ومراجعة الأكواد",
+                    desc: "مراجعة دقيقة للأكواد (Code Reviews)، توجيه مهني ومسابقات برمجية، ونماذج وتطبيقات أعمال حقيقية للطلاب.",
+                  },
+                  f3: {
+                    title: "الحجز والاستشارات المباشرة",
+                    desc: "حجز دورات تدريبية فردية وجماعية، جلسات استشارية متخصصة، وتواصل سريع ومباشر عبر واتساب.",
+                  },
+                },
+              },
+            },
+            zakaaAcademy: {
+              title: "منصة ذكاء التعليمية - المنهج السعودي أون لاين",
+              desc: "منصة تعليمية متكاملة لتدريس المنهج السعودي لجميع المراحل الدراسية مع برامج تأسيس القدرات والتحصيلي ونظام حجز واتساب مباشر.",
+              details: {
+                overview: "موقع تعريفي ومنصة تعليمية متكاملة لـ 'منصة ذكاء التعليمية' المتخصصة في تدريس المنهج السعودي أون لاين لجميع المراحل الدراسية (الابتدائية، المتوسطة، والثانوية). يتميز الموقع بهوية بصرية متميزة، وتصميم متجاوب وتفاعلي عالي السرعة، مع استعراض مفصل للمراحل الدراسية، وبرامج التأهيل والتأسيس، ونماذج متابعة أولياء الأمور، ونظام حجز سريع ومباشر عبر واتساب.",
+                features: {
+                  f1: {
+                    title: "المراحل والمناهج التعليمية المتكاملة",
+                    desc: "تغطية شاملة لجميع الصفوف والمواد الدراسية، شروحات مرئية واختبارات قياس، وبرامج تأسيس متخصصة لاختبارات القدرات والتحصيلي.",
+                  },
+                  f2: {
+                    title: "متابعة أولياء الأمور ولوحة التكريم",
+                    desc: "لوحة شرف وشهادات تفوق للطلاب المتميزين، تقارير دورية لمستوى الطالب الدراسي، وآراء وتجارب حقيقية لأولياء الأمور.",
+                  },
+                  f3: {
+                    title: "الحجز والتواصل الفوري عبر واتساب",
+                    desc: "حجز مادة فوري بضغطة زر وتكامل سلس ومباشر مع تطبيق واتساب مع واجهة مستخدم تفاعلية فائقة السرعة.",
+                  },
+                },
+              },
+            },
             cihost: {
               title: "منصة CiHost للضيافة السحابية وإدارة الفنادق",
               desc: "نظام سحابي متكامل لإدارة المنشآت الفندقية والسياحية (PMS) والشقق المفروشة والمنتجعات مع مدير قنوات ذكي ومساعد ذكاء اصطناعي.",
@@ -828,6 +968,8 @@ i18n
               gradDetail: "مشروع التخرج الرسمي | كلية الحاسبات والذكاء الاصطناعي - جامعة سوهاج (امتياز A+)",
               personalBadge: "مشروع شخصي مستقل",
               personalDetail: "مشروع شخصي مستقل | فكرة وتطبيق كامل",
+              freelanceBadge: "عمل حر (Freelance)",
+              freelanceDetail: "مشروع عمل حر لعميل | تسليم متكامل للإنتاج",
             },
             projectDetails: {
               backToHome: "العودة للرئيسية",
@@ -894,10 +1036,12 @@ i18n
             emailField: "البريد الإلكتروني",
             project: "تفاصيل الرسالة أو المشروع",
             send: "إرسال الرسالة",
-            sending: "جاري الإرسال...",
-            success_title: "تم الإرسال بنجاح!",
-            success_desc: "شكراً لك! سيتواصل معك سعيد في أسرع وقت ممكن.",
-            send_another: "إرسال رسالة أخرى",
+            sendViaWA: "إرسال عبر واتساب",
+            sending: "جاري تجهيز واتساب...",
+            success_title: "تم تجهيز محادثة واتساب بنجاح!",
+            success_desc: "تم تنسيق تفاصيل رسالتك وتوجيهها مباشرة إلى محادثة واتساب الخاصة بالمهندس سعيد (01126488442).",
+            reopenWA: "فتح محادثة واتساب",
+            send_another: "إرسال استفسار جديد",
             error_submit: "حدث خطأ أثناء الإرسال. يرجى المحاولة مرة أخرى.",
             errors: {
               name_min: "الاسم يجب أن يكون 3 أحرف على الأقل.",
@@ -910,6 +1054,14 @@ i18n
             quickLinks: "روابط سريعة",
             rights: "جميع الحقوق محفوظة.",
             designedBy: "تم التطوير بواسطة سعيد رمضان",
+          },
+          loader: {
+            systemInitializing: "جارٍ تهيئة بنية الواجهات الأمامية...",
+            compilingVite: "تجميع نواة React 19 و Tailwind v4...",
+            loadingModules: "تحميل أنظمة العرض التفاعلية ثلاثية الأبعاد...",
+            readyPrompt: "النظام جاهز. انقر لإطلاق موقع سعيد رمضان",
+            clickAction: "اضغط على الماوس / انقر للدخول",
+            entering: "جاري فتح البوابة الرقمية للموقع...",
           },
         },
       },

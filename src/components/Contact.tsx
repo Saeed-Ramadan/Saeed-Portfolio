@@ -19,6 +19,7 @@ const Contact: React.FC = () => {
     isSubmitting,
     isSuccess,
     isError,
+    lastWhatsAppUrl,
     resetMutation,
   } = useContactForm();
 
@@ -206,23 +207,39 @@ const Contact: React.FC = () => {
                 <motion.div
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="text-center py-10 space-y-3"
+                  className="text-center py-10 space-y-4"
                 >
-                  <div className="w-14 h-14 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-3xl mx-auto">
-                    <i className="bx bx-check-circle" />
+                  <div className="w-16 h-16 rounded-2xl bg-emerald-500/20 text-emerald-500 flex items-center justify-center text-4xl mx-auto shadow-inner">
+                    <i className="bx bxl-whatsapp" />
                   </div>
-                  <h4 className="text-lg font-bold text-title">
-                    {t("contact.success_title")}
-                  </h4>
-                  <p className="text-xs text-textLight max-w-sm mx-auto">
-                    {t("contact.success_desc")}
-                  </p>
-                  <button
-                    onClick={() => resetMutation()}
-                    className="mt-4 px-4 py-2 rounded-lg bg-indigo-600 text-white text-xs font-bold hover:bg-indigo-500 transition-colors"
-                  >
-                    {t("contact.send_another")}
-                  </button>
+                  <div>
+                    <h4 className="text-lg font-bold text-title">
+                      {t("contact.success_title")}
+                    </h4>
+                    <p className="text-xs text-textLight max-w-sm mx-auto mt-1 leading-relaxed">
+                      {t("contact.success_desc")}
+                    </p>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+                    {lastWhatsAppUrl && (
+                      <a
+                        href={lastWhatsAppUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all shadow-md shadow-emerald-500/20 flex items-center justify-center gap-2 cursor-pointer"
+                      >
+                        <i className="bx bxl-whatsapp text-lg" />
+                        <span>{t("contact.reopenWA")}</span>
+                      </a>
+                    )}
+                    <button
+                      onClick={() => resetMutation()}
+                      className="w-full sm:w-auto px-5 py-2.5 rounded-xl border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/[0.04] text-textLight hover:text-title text-xs font-bold transition-colors cursor-pointer"
+                    >
+                      {t("contact.send_another")}
+                    </button>
+                  </div>
                 </motion.div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
@@ -235,7 +252,7 @@ const Contact: React.FC = () => {
                       type="text"
                       {...register("name")}
                       placeholder={t("contact.name")}
-                      className={`w-full px-4 py-3 rounded-xl border bg-slate-50 dark:bg-white/[0.02] text-sm text-title placeholder-textLight/40 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 transition-all ${
+                      className={`w-full px-4 py-3 sm:py-3 text-base sm:text-sm rounded-xl border bg-slate-50 dark:bg-white/[0.02] text-title placeholder-textLight/40 focus:outline-none focus:ring-2 focus:ring-emerald-500/30 transition-all ${
                         errors.name
                           ? "border-rose-500"
                           : "border-slate-200 dark:border-white/10"
@@ -243,7 +260,7 @@ const Contact: React.FC = () => {
                     />
                     {errors.name && (
                       <span className="text-[11px] text-rose-500 mt-1 block">
-                        {errors.name.message}
+                        {errors.name.message && t(errors.name.message)}
                       </span>
                     )}
                   </div>
@@ -257,7 +274,7 @@ const Contact: React.FC = () => {
                       type="email"
                       {...register("email")}
                       placeholder="you@example.com"
-                      className={`w-full px-4 py-3 rounded-xl border bg-slate-50 dark:bg-white/[0.02] text-sm text-title placeholder-textLight/40 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 transition-all ${
+                      className={`w-full px-4 py-3 sm:py-3 text-base sm:text-sm rounded-xl border bg-slate-50 dark:bg-white/[0.02] text-title placeholder-textLight/40 focus:outline-none focus:ring-2 focus:ring-emerald-500/30 transition-all ${
                         errors.email
                           ? "border-rose-500"
                           : "border-slate-200 dark:border-white/10"
@@ -265,7 +282,7 @@ const Contact: React.FC = () => {
                     />
                     {errors.email && (
                       <span className="text-[11px] text-rose-500 mt-1 block">
-                        {errors.email.message}
+                        {errors.email.message && t(errors.email.message)}
                       </span>
                     )}
                   </div>
@@ -279,7 +296,7 @@ const Contact: React.FC = () => {
                       rows={4}
                       {...register("project")}
                       placeholder={t("contact.project")}
-                      className={`w-full px-4 py-3 rounded-xl border bg-slate-50 dark:bg-white/[0.02] text-sm text-title placeholder-textLight/40 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 transition-all resize-none ${
+                      className={`w-full px-4 py-3 sm:py-3 text-base sm:text-sm rounded-xl border bg-slate-50 dark:bg-white/[0.02] text-title placeholder-textLight/40 focus:outline-none focus:ring-2 focus:ring-emerald-500/30 transition-all resize-none ${
                         errors.project
                           ? "border-rose-500"
                           : "border-slate-200 dark:border-white/10"
@@ -287,7 +304,7 @@ const Contact: React.FC = () => {
                     />
                     {errors.project && (
                       <span className="text-[11px] text-rose-500 mt-1 block">
-                        {errors.project.message}
+                        {errors.project.message && t(errors.project.message)}
                       </span>
                     )}
                   </div>
@@ -302,7 +319,7 @@ const Contact: React.FC = () => {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full h-12 rounded-xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white text-xs font-bold uppercase tracking-wider transition-all shadow-md shadow-indigo-500/20 flex items-center justify-center gap-2 cursor-pointer"
+                    className="w-full h-12 rounded-xl bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white text-xs sm:text-sm font-bold uppercase tracking-wider transition-all shadow-md shadow-emerald-500/20 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99]"
                   >
                     {isSubmitting ? (
                       <>
@@ -311,8 +328,8 @@ const Contact: React.FC = () => {
                       </>
                     ) : (
                       <>
-                        <span>{t("contact.send")}</span>
-                        <i className="bx bx-paper-plane text-base" />
+                        <i className="bx bxl-whatsapp text-xl" />
+                        <span>{t("contact.sendViaWA")}</span>
                       </>
                     )}
                   </button>

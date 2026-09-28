@@ -17,13 +17,13 @@ const Header: React.FC = () => {
   };
 
   const navLinks = [
-    { to: "home", label: t("nav.home") },
-    { to: "about", label: t("nav.about") },
-    { to: "qualification", label: t("nav.qualification") },
-    { to: "skills", label: t("nav.skills") },
-    { to: "work", label: t("nav.portfolio") },
-    { to: "leadership", label: t("nav.leadership") },
-    { to: "contact", label: t("nav.contact") },
+    { to: "home", label: t("nav.home"), icon: "bx-home-alt" },
+    { to: "about", label: t("nav.about"), icon: "bx-user" },
+    { to: "qualification", label: t("nav.qualification"), icon: "bx-briefcase-alt-2" },
+    { to: "skills", label: t("nav.skills"), icon: "bx-code-alt" },
+    { to: "work", label: t("nav.portfolio"), icon: "bx-folder" },
+    { to: "leadership", label: t("nav.leadership"), icon: "bx-award" },
+    { to: "contact", label: t("nav.contact"), icon: "bx-envelope" },
   ];
 
   const isDark = theme === "dark";
@@ -127,13 +127,13 @@ const Header: React.FC = () => {
           <>
             {isMenuOpen && (
               <div
-                className="fixed inset-0 bg-black/60 z-[99998] md:hidden backdrop-blur-xs transition-opacity"
+                className="fixed inset-0 bg-slate-950/80 z-[99998] md:hidden backdrop-blur-sm transition-opacity duration-300"
                 onClick={closeMenu}
               />
             )}
 
             <div
-              className={`fixed top-0 bottom-0 h-full w-[280px] max-w-[85vw] shadow-2xl z-[99999] md:hidden flex flex-col justify-between p-6 transition-transform duration-300 ease-out bg-container border-slate-200 dark:border-white/10 ${
+              className={`fixed top-0 bottom-0 h-full w-[300px] max-w-[85vw] shadow-2xl z-[99999] md:hidden flex flex-col justify-between p-6 transition-transform duration-300 ease-out bg-white dark:bg-[#0c101b] border-slate-200 dark:border-white/10 overflow-y-auto ${
                 isRtl
                   ? `right-0 border-l ${isMenuOpen ? "translate-x-0" : "translate-x-full"}`
                   : `left-0 border-r ${isMenuOpen ? "translate-x-0" : "-translate-x-full"}`
@@ -141,21 +141,27 @@ const Header: React.FC = () => {
             >
               <div>
                 <div className="flex items-center justify-between pb-5 border-b border-slate-200 dark:border-white/10">
-                  <div className="flex items-center gap-2.5">
-                    <img src="/logo.png" alt="Saeed Ramadan" className="w-7 h-auto" />
-                    <span className="text-sm font-bold text-title">
-                      {i18n.language === "ar" ? "سعيد رمضان" : "Saeed Ramadan"}
-                    </span>
+                  <div className="flex items-center gap-3 min-w-0">
+                    <img src="/logo.png" alt="Saeed Ramadan" className="w-8 h-8 object-contain shrink-0" />
+                    <div className="min-w-0">
+                      <span className="text-sm font-bold text-slate-900 dark:text-white block leading-tight truncate">
+                        {i18n.language === "ar" ? "سعيد رمضان" : "Saeed Ramadan"}
+                      </span>
+                      <span className="text-[10.5px] text-slate-500 dark:text-slate-400 font-code block mt-0.5">
+                        Front-End Developer
+                      </span>
+                    </div>
                   </div>
                   <button
                     onClick={closeMenu}
-                    className="w-8 h-8 rounded-lg border border-slate-200 dark:border-white/10 flex items-center justify-center text-title"
+                    aria-label="Close menu"
+                    className="w-9 h-9 rounded-xl border border-slate-200 dark:border-white/10 flex items-center justify-center text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/[0.08] transition-colors cursor-pointer shrink-0"
                   >
-                    <i className="bx bx-x text-xl" />
+                    <i className="bx bx-x text-2xl" />
                   </button>
                 </div>
 
-                <ul className="py-6 space-y-2">
+                <ul className="py-5 space-y-1.5">
                   {navLinks.map((link) => (
                     <li key={link.to}>
                       <Link
@@ -165,26 +171,50 @@ const Header: React.FC = () => {
                         offset={-70}
                         duration={500}
                         onClick={closeMenu}
-                        className="block px-3 py-2.5 rounded-lg text-sm font-semibold text-text hover:text-indigo-500 hover:bg-slate-100 dark:hover:bg-white/[0.04] transition-all cursor-pointer"
+                        activeClass="!text-indigo-600 dark:!text-indigo-400 !bg-indigo-500/10 dark:!bg-indigo-500/15 font-bold"
+                        className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-white/[0.05] transition-all cursor-pointer"
                       >
-                        {link.label}
+                        <i className={`bx ${link.icon} text-lg text-indigo-500/80`} />
+                        <span>{link.label}</span>
                       </Link>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              <div className="pt-4 border-t border-slate-200 dark:border-white/10">
+              <div className="pt-4 border-t border-slate-200 dark:border-white/10 space-y-3">
+                <div className="flex items-center justify-between p-2 rounded-xl bg-slate-100 dark:bg-white/[0.04] border border-slate-200 dark:border-white/[0.06]">
+                  <span className="text-xs font-semibold text-slate-600 dark:text-slate-300">
+                    {isRtl ? "المظهر واللغة" : "Theme & Language"}
+                  </span>
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      onClick={toggleLanguage}
+                      aria-label="Toggle language"
+                      className="px-2.5 py-1 text-xs font-bold rounded-lg border border-slate-300 dark:border-white/10 text-slate-800 dark:text-white bg-white dark:bg-white/[0.08] cursor-pointer"
+                    >
+                      {i18n.language === "en" ? "العربية" : "EN"}
+                    </button>
+                    <button
+                      onClick={toggleTheme}
+                      aria-label="Toggle dark/light theme"
+                      className="w-8 h-8 flex items-center justify-center rounded-lg border border-slate-300 dark:border-white/10 text-slate-800 dark:text-white bg-white dark:bg-white/[0.08] cursor-pointer text-base"
+                    >
+                      <i className={`bx ${isDark ? "bx-sun" : "bx-moon"}`} />
+                    </button>
+                  </div>
+                </div>
+
                 <Link
                   to="contact"
                   smooth={true}
                   offset={-70}
                   duration={500}
                   onClick={closeMenu}
-                  className="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold uppercase tracking-wider text-center flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-3.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold uppercase tracking-wider text-center flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-indigo-600/30 active:scale-[0.98] transition-all"
                 >
                   <span>{t("hero.contactMe")}</span>
-                  <i className="bx bx-paper-plane" />
+                  <i className="bx bx-paper-plane text-sm" />
                 </Link>
               </div>
             </div>

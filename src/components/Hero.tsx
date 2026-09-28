@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-scroll";
 import bgImg from "../assets/bg.png";
+import avatarReadyImg from "../assets/avatar/saeed_avatar_ready.jpg";
 import { useClipboard } from "../hooks/useClipboard";
 import { useSocialPreview } from "../hooks/useSocialPreview";
 import SocialPreviewCard from "./SocialPreviewCard";
@@ -17,6 +18,7 @@ const Hero: React.FC = () => {
   const { t, i18n } = useTranslation();
   const isAr = i18n.language === "ar";
   const { copy, isCopied } = useClipboard();
+  const [showAvatar, setShowAvatar] = React.useState<boolean>(false);
 
   const primaryTechs = [
     { name: "Next.js", icon: "bx-layer", color: "text-slate-900 dark:text-white border-slate-300 dark:border-white/20 bg-slate-100 dark:bg-white/5" },
@@ -78,6 +80,15 @@ const Hero: React.FC = () => {
           <p className="text-text text-sm md:text-base max-w-xl mb-6 leading-relaxed font-normal">
             {t("hero.tagline")}
           </p>
+
+          {/* Mobile Profile Photo (Visible only on < lg right after intro text) */}
+          <div className="lg:hidden my-6 flex justify-center relative select-none">
+            <HeroProfileCard
+              showAvatar={showAvatar}
+              setShowAvatar={setShowAvatar}
+              isAr={isAr}
+            />
+          </div>
 
           {/* Core Tech Stack Badges */}
           <div className="flex flex-wrap gap-2 justify-center md:justify-start mb-8">
@@ -217,35 +228,87 @@ const Hero: React.FC = () => {
           </div>
         </motion.div>
 
-        {/* --- RIGHT: SLEEK ARCHITECTURAL CARD --- */}
-        <div className="lg:col-span-5 flex justify-center order-1 lg:order-2 relative select-none">
-          <motion.div
-            variants={appleScaleReveal}
-            initial="hidden"
-            animate="visible"
-            className="relative w-[280px] xs:w-[320px] sm:w-[350px]"
-          >
-            {/* Elegant Framed Container */}
-            <div className="relative aspect-[4/5] rounded-3xl p-2.5 bg-gradient-to-b from-white/10 via-white/5 to-transparent dark:from-white/[0.08] dark:to-transparent border border-slate-200/80 dark:border-white/[0.1] shadow-2xl backdrop-blur-xl">
-              {/* Profile Image Wrap */}
-              <div className="relative w-full h-full rounded-2xl overflow-hidden bg-container">
-                <img
-                  src={bgImg}
-                  alt="Saeed Ramadan"
-                  className="w-full h-full object-cover saturate-[1.05] brightness-[0.98] contrast-[1.02]"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#07090e] via-[#07090e]/20 to-transparent opacity-80" />
-              </div>
-
-              {/* Floating Engineering Badge: Dynamic Current Roles Rotator */}
-              <div className="absolute bottom-4 left-4 right-4 z-20">
-                <CurrentRolesBadge />
-              </div>
-            </div>
-          </motion.div>
+        {/* --- RIGHT: SLEEK ARCHITECTURAL CARD (Visible only on Desktop lg+) --- */}
+        <div className="hidden lg:flex lg:col-span-5 justify-center relative select-none">
+          <HeroProfileCard
+            showAvatar={showAvatar}
+            setShowAvatar={setShowAvatar}
+            isAr={isAr}
+          />
         </div>
       </div>
     </section>
+  );
+};
+
+interface HeroProfileCardProps {
+  showAvatar: boolean;
+  setShowAvatar: React.Dispatch<React.SetStateAction<boolean>>;
+  isAr: boolean;
+}
+
+const HeroProfileCard: React.FC<HeroProfileCardProps> = ({
+  showAvatar,
+  setShowAvatar,
+  isAr,
+}) => {
+  return (
+    <motion.div
+      variants={appleScaleReveal}
+      initial="hidden"
+      animate="visible"
+      className="relative w-[280px] xs:w-[320px] sm:w-[350px]"
+    >
+      {/* Elegant Framed Container */}
+      <div className="relative aspect-[4/5] rounded-3xl p-2.5 bg-gradient-to-b from-white/10 via-white/5 to-transparent dark:from-white/[0.08] dark:to-transparent border border-slate-200/80 dark:border-white/[0.1] shadow-2xl backdrop-blur-xl">
+        {/* Profile Image Wrap */}
+        <div className="relative w-full h-full rounded-2xl overflow-hidden bg-container">
+          <AnimatePresence mode="wait">
+            <motion.img
+              key={showAvatar ? "avatar" : "real"}
+              src={showAvatar ? avatarReadyImg : bgImg}
+              alt="Saeed Ramadan"
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.04 }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
+              className="w-full h-full object-cover saturate-[1.05] brightness-[0.98] contrast-[1.02]"
+            />
+          </AnimatePresence>
+          <div className="absolute inset-0 bg-gradient-to-t from-[#07090e] via-[#07090e]/20 to-transparent opacity-80 pointer-events-none" />
+
+          {/* Dynamic 3D Avatar Toggle Pill */}
+          <div className="absolute top-3 right-3 z-30">
+            <button
+              type="button"
+              onClick={() => setShowAvatar((prev) => !prev)}
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900/80 hover:bg-slate-900 border border-white/20 text-[11px] font-semibold text-white shadow-xl backdrop-blur-md cursor-pointer transition-all duration-300 hover:scale-105 active:scale-95 group"
+              title={showAvatar ? "Switch to Real Photo" : "Switch to 3D Avatar"}
+            >
+              <i
+                className={`bx ${
+                  showAvatar ? "bx-user text-emerald-400" : "bx-bot text-cyan-400"
+                } text-xs transition-transform group-hover:rotate-12`}
+              />
+              <span className="font-sans">
+                {showAvatar
+                  ? isAr
+                    ? "الصورة الحقيقية"
+                    : "Real Photo"
+                  : isAr
+                  ? "الأفاتار 3D"
+                  : "3D Avatar"}
+              </span>
+            </button>
+          </div>
+        </div>
+
+        {/* Floating Engineering Badge: Dynamic Current Roles Rotator */}
+        <div className="absolute bottom-4 left-4 right-4 z-20">
+          <CurrentRolesBadge />
+        </div>
+      </div>
+    </motion.div>
   );
 };
 

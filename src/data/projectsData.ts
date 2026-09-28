@@ -103,6 +103,21 @@ import cihostAiResponse from "../assets/cihost/cihost-ai-response.png";
 import cihostReferences from "../assets/cihost/cihost-references.png";
 import cihostFooter from "../assets/cihost/cihost-footer.png";
 
+// ─── Fatma Magdy Images (Freelance Personal Branding) ──────────────────────
+import fatmaHero from "../assets/fatma magdy portfolio/hero.png";
+import fatmaFull from "../assets/fatma magdy portfolio/full.png";
+import fatmaLogo from "../assets/fatma magdy portfolio/logo.png";
+
+// ─── SR Programming Academy Images ──────────────────────────────────────────
+import srHero from "../assets/SR/Hero.png";
+import srFull from "../assets/SR/full.png";
+import srLogo from "../assets/SR/logo.png";
+
+// ─── Zakaa Academy Images (Freelance Saudi EdTech Platform) ─────────────────
+import zakaaHero from "../assets/Zakaa/Hero.png";
+import zakaaFull from "../assets/Zakaa/full.png";
+import zakaaLogo from "../assets/Zakaa/logo.png";
+
 export interface ProjectFeature {
   titleKey: string;
   descKey: string;
@@ -126,7 +141,7 @@ export interface ProjectDetailsSection {
 }
 
 export interface ProjectAffiliation {
-  type: "company" | "grad" | "personal";
+  type: "company" | "grad" | "personal" | "freelance";
   badgeKey: string;
   detailKey: string;
   companyNameKey?: string;
@@ -229,7 +244,174 @@ export const projectsData: Project[] = [
     },
   },
 
-  // ── 2. Bynona ── Yellow E-Commerce
+  // ── 2. Fatma Magdy ── Freelance Personal Branding & Social Media Specialist
+  {
+    id: "fatma-magdy",
+    titleKey: "portfolio.fatmaMagdy.title",
+    descKey: "portfolio.fatmaMagdy.desc",
+    titleFallback: "Fatma Magdy - Personal Branding Portfolio",
+    category: "professional",
+    affiliation: {
+      type: "freelance",
+      badgeKey: "portfolio.affiliation.freelanceBadge",
+      detailKey: "portfolio.affiliation.freelanceDetail",
+      icon: "bx-briefcase-alt-2",
+    },
+    img: fatmaLogo,
+    link: "https://fatma-magdy-portfolio.vercel.app/",
+    theme: {
+      primary: "#8b5cf6",
+      glow: "rgba(139, 92, 246, 0.35)",
+      bgGlow: "rgba(139, 92, 246, 0.08)",
+      gradient:
+        "linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(236, 72, 153, 0.05))",
+      label: "Personal Branding",
+      icon: "bx-palette",
+    },
+    techs: [
+      "React",
+      "Vite",
+      "Tailwind CSS",
+      "Framer Motion",
+      "Lucide React",
+      "Personal Branding",
+    ],
+    details: {
+      heroImage: fatmaHero,
+      overviewKey: "portfolio.fatmaMagdy.details.overview",
+      features: [
+        {
+          titleKey: "portfolio.fatmaMagdy.details.features.f1.title",
+          descKey: "portfolio.fatmaMagdy.details.features.f1.desc",
+          icon: "bx-palette",
+        },
+        {
+          titleKey: "portfolio.fatmaMagdy.details.features.f2.title",
+          descKey: "portfolio.fatmaMagdy.details.features.f2.desc",
+          icon: "bx-trending-up",
+        },
+        {
+          titleKey: "portfolio.fatmaMagdy.details.features.f3.title",
+          descKey: "portfolio.fatmaMagdy.details.features.f3.desc",
+          icon: "bx-devices",
+        },
+      ],
+      images: [fatmaHero, fatmaFull, fatmaLogo],
+    },
+  },
+
+  // ── 3. SR Programming Academy ── EdTech & Programming Mentorship Platform
+  {
+    id: "sr-academy",
+    titleKey: "portfolio.srAcademy.title",
+    descKey: "portfolio.srAcademy.desc",
+    titleFallback: "SR Programming Academy",
+    category: "professional",
+    affiliation: {
+      type: "freelance",
+      badgeKey: "portfolio.affiliation.freelanceBadge",
+      detailKey: "portfolio.affiliation.freelanceDetail",
+      icon: "bx-chalkboard",
+    },
+    img: srLogo,
+    link: "https://sr-gamma-azure.vercel.app/",
+    theme: {
+      primary: "#0284c7",
+      glow: "rgba(2, 132, 199, 0.35)",
+      bgGlow: "rgba(2, 132, 199, 0.08)",
+      gradient:
+        "linear-gradient(135deg, rgba(2, 132, 199, 0.15), rgba(245, 158, 11, 0.05))",
+      label: "EdTech Platform",
+      icon: "bx-code-block",
+    },
+    techs: [
+      "React 19",
+      "Vite",
+      "Tailwind CSS",
+      "Framer Motion",
+      "Lucide React",
+      "EdTech Systems",
+    ],
+    details: {
+      heroImage: srHero,
+      overviewKey: "portfolio.srAcademy.details.overview",
+      features: [
+        {
+          titleKey: "portfolio.srAcademy.details.features.f1.title",
+          descKey: "portfolio.srAcademy.details.features.f1.desc",
+          icon: "bx-code-alt",
+        },
+        {
+          titleKey: "portfolio.srAcademy.details.features.f2.title",
+          descKey: "portfolio.srAcademy.details.features.f2.desc",
+          icon: "bx-terminal",
+        },
+        {
+          titleKey: "portfolio.srAcademy.details.features.f3.title",
+          descKey: "portfolio.srAcademy.details.features.f3.desc",
+          icon: "bx-calendar-check",
+        },
+      ],
+      images: [srHero, srFull, srLogo],
+    },
+  },
+
+  // ── 4. Zakaa Academy ── Saudi Curriculum Online Platform
+  {
+    id: "zakaa-academy",
+    titleKey: "portfolio.zakaaAcademy.title",
+    descKey: "portfolio.zakaaAcademy.desc",
+    titleFallback: "Zakaa Academy - Saudi Curriculum Online Platform",
+    category: "professional",
+    affiliation: {
+      type: "freelance",
+      badgeKey: "portfolio.affiliation.freelanceBadge",
+      detailKey: "portfolio.affiliation.freelanceDetail",
+      icon: "bx-book-reader",
+    },
+    img: zakaaLogo,
+    link: "https://www.zakaa-academy.com/",
+    theme: {
+      primary: "#2563eb",
+      glow: "rgba(37, 99, 235, 0.35)",
+      bgGlow: "rgba(37, 99, 235, 0.08)",
+      gradient:
+        "linear-gradient(135deg, rgba(37, 99, 235, 0.15), rgba(249, 115, 22, 0.05))",
+      label: "K-12 EdTech",
+      icon: "bx-book-reader",
+    },
+    techs: [
+      "HTML5 / CSS3",
+      "JavaScript (ES6+)",
+      "Responsive Web Design",
+      "Interactive UI / Animations",
+      "WhatsApp Booking Engine",
+    ],
+    details: {
+      heroImage: zakaaHero,
+      overviewKey: "portfolio.zakaaAcademy.details.overview",
+      features: [
+        {
+          titleKey: "portfolio.zakaaAcademy.details.features.f1.title",
+          descKey: "portfolio.zakaaAcademy.details.features.f1.desc",
+          icon: "bx-book-open",
+        },
+        {
+          titleKey: "portfolio.zakaaAcademy.details.features.f2.title",
+          descKey: "portfolio.zakaaAcademy.details.features.f2.desc",
+          icon: "bx-award",
+        },
+        {
+          titleKey: "portfolio.zakaaAcademy.details.features.f3.title",
+          descKey: "portfolio.zakaaAcademy.details.features.f3.desc",
+          icon: "bxl-whatsapp",
+        },
+      ],
+      images: [zakaaHero, zakaaFull, zakaaLogo],
+    },
+  },
+
+  // ── 5. Bynona ── Yellow E-Commerce
   {
     id: "bymona",
     titleKey: "portfolio.bymona.title",

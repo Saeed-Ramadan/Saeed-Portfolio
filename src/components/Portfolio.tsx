@@ -86,6 +86,8 @@ const Portfolio: React.FC = () => {
                               ? "bg-indigo-950/85 text-indigo-300 border-indigo-500/30"
                               : project.affiliation.type === "grad"
                               ? "bg-teal-950/85 text-teal-300 border-teal-500/30"
+                              : project.affiliation.type === "freelance"
+                              ? "bg-purple-950/85 text-purple-300 border-purple-500/30"
                               : "bg-slate-900/85 text-amber-300 border-amber-500/30"
                           }`}
                         >
@@ -105,6 +107,8 @@ const Portfolio: React.FC = () => {
                               ? "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20"
                               : project.affiliation.type === "grad"
                               ? "bg-teal-500/10 text-teal-600 dark:text-teal-400 border border-teal-500/20"
+                              : project.affiliation.type === "freelance"
+                              ? "bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20"
                               : "bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20"
                           }`}
                         >
