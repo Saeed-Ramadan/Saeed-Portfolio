@@ -327,6 +327,27 @@ i18n
                 },
               },
             },
+            clickNest: {
+              title: "ClickNest - Digital Growth Agency & High-Performance Web",
+              desc: "Full-service digital growth agency specialized in brand identity engineering, paid advertising campaigns (PPC), high-speed web development, and ROI-driven marketing ecosystems.",
+              details: {
+                overview: "An ultra-modern digital agency platform engineered for 'ClickNest', specializing in brand identity architecture, performance marketing, and high-impact digital growth strategies. The web platform delivers a sleek, fluid experience showcasing tailored growth strategies, rapid web engineering, SEO optimization, and social media management to scale businesses into market leaders.",
+                features: {
+                  f1: {
+                    title: "Digital Growth & Brand Identity",
+                    desc: "Comprehensive brand architecture, in-depth market & competitor intelligence, and custom sustainable growth scaling frameworks.",
+                  },
+                  f2: {
+                    title: "Targeted Performance Marketing (PPC)",
+                    desc: "High-converting paid ad campaigns, multi-platform social media leadership, and persuasive creative content production.",
+                  },
+                  f3: {
+                    title: "High-Speed Web Architecture & SEO",
+                    desc: "Ultra-fast responsive web applications, advanced search engine optimization (SEO), and transparent ROI performance dashboards.",
+                  },
+                },
+              },
+            },
             cihost: {
               title: "CiHost - Cloud Hospitality Platform",
               desc: "Comprehensive cloud-based property management system (PMS) and hospitality ecosystem engineered for hotels, resorts, chalets, and tourist cruises.",
@@ -536,6 +557,18 @@ i18n
             readyPrompt: "System Ready. Click to Launch Saeed's Portfolio",
             clickAction: "Click Mouse / Tap to Enter",
             entering: "Engaging Quantum Portal...",
+          },
+          notFound: {
+            badge: "Error 404 • Page Not Found",
+            title: "Looks like you've reached an unknown route!",
+            desc: "The page or resource you are looking for does not exist in Saeed's portfolio architecture. It might have been moved, renamed, or mistyped.",
+            requestedPath: "Requested Route",
+            systemStatus: "Router Status: 404 Not Found",
+            backHome: "Back to Home",
+            exploreProjects: "Explore Projects",
+            contactMe: "Contact Saeed",
+            quickNavigation: "Quick Navigation",
+            developerNote: "All system services are operational. You can safely return to the main portfolio or reach out directly.",
           },
         },
       },
@@ -853,6 +886,27 @@ i18n
                 },
               },
             },
+            clickNest: {
+              title: "ClickNest - وكالة حلول النمو الرقمي والتسويق",
+              desc: "وكالة رقمية متكاملة متخصصة في بناء وتطوير الهويات التجارية، وإدارة الحملات الإعلانية الممولة، وتطوير مواقع الويب فائقة السرعة لتحقيق أعلى عائد على الاستثمار (ROI).",
+              details: {
+                overview: "موقع تعريفي ووكالة حلول نمو رقمية متكاملة لـ 'ClickNest' متخصصة في بناء وتطوير الهويات التجارية وإدارة الحملات الإعلانية والتسويق الرقمي عالي الأداء. يقدم الموقع تجربة تصفح عصرية فائقة السلاسة تستعرض حلول استراتيجيات النمو، وخدمات تطوير الويب، وتحسين محركات البحث، وإدارة وسائل التواصل الاجتماعي لتمكين الشركات من التوسع والريادة في أسواقها.",
+                features: {
+                  f1: {
+                    title: "منظومة النمو الرقمي والهوية التجارية",
+                    desc: "بناء وتطوير الهوية التجارية، دراسة السوق وتحليل المنافسين، وخطط نمو مخصصة ومستدامة تميز العلامة في سوقها.",
+                  },
+                  f2: {
+                    title: "التسويق الرقمي وإدارة الحملات (PPC)",
+                    desc: "إعلانات ممولة عالية الاستهداف، إدارة احترافية لمنصات التواصل الاجتماعي، وصناعة محتوى تسويقي إبداعي جذاب.",
+                  },
+                  f3: {
+                    title: "التحليل وتطوير الويب عالي الأداء",
+                    desc: "تطوير مواقع ويب سريعة الاستجابة، تحسين شامل لمحركات البحث (SEO)، وتقارير أداء دورية لمؤشرات عائد الاستثمار (ROI).",
+                  },
+                },
+              },
+            },
             cihost: {
               title: "منصة CiHost للضيافة السحابية وإدارة الفنادق",
               desc: "نظام سحابي متكامل لإدارة المنشآت الفندقية والسياحية (PMS) والشقق المفروشة والمنتجعات مع مدير قنوات ذكي ومساعد ذكاء اصطناعي.",
@@ -1062,6 +1116,18 @@ i18n
             readyPrompt: "النظام جاهز. انقر لإطلاق موقع سعيد رمضان",
             clickAction: "اضغط على الماوس / انقر للدخول",
             entering: "جاري فتح البوابة الرقمية للموقع...",
+          },
+          notFound: {
+            badge: "خطأ 404 • الصفحة غير موجودة",
+            title: "يبدو أنك سلكت مساراً غير موجود!",
+            desc: "الصفحة أو المورد الذي تبحث عنه غير متاح في المعمارية الرقمية للموقع. ربما تم نقل الرابط أو حذفه أو كتابته بشكل غير دقيق.",
+            requestedPath: "المسار المطلوب",
+            systemStatus: "حالة الموجه: 404 غير موجود",
+            backHome: "العودة للرئيسية",
+            exploreProjects: "استعراض المشاريع",
+            contactMe: "تواصل مع سعيد",
+            quickNavigation: "تنقل سريع",
+            developerNote: "كافة أنظمة الموقع تعمل بكفاءة. يمكنك العودة بأمان إلى الصفحة الرئيسية أو التواصل المباشر.",
           },
         },
       },

@@ -61,12 +61,15 @@ const Portfolio: React.FC = () => {
                 animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                 exit={{ opacity: 0, scale: 0.95, filter: "blur(4px)" }}
                 transition={{ duration: 0.75, ease: APPLE_EASE, delay: idx * 0.05 }}
-                className="flex"
+                className="flex h-full"
               >
-                <SpotlightCard className="flex flex-col justify-between w-full overflow-hidden group">
-                  <div>
+                <SpotlightCard
+                  className="w-full h-full overflow-hidden group flex flex-col"
+                  innerClassName="flex flex-col justify-between h-full"
+                >
+                  <div className="flex-1 flex flex-col">
                     {/* Project Image Banner */}
-                    <div className="relative aspect-video w-full overflow-hidden bg-slate-900 border-b border-slate-200/80 dark:border-white/[0.08]">
+                    <div className="relative aspect-video w-full overflow-hidden bg-slate-900 border-b border-slate-200/80 dark:border-white/[0.08] shrink-0">
                       <img
                         src={project.details.heroImage || project.img}
                         alt={t(project.titleKey)}
@@ -98,35 +101,37 @@ const Portfolio: React.FC = () => {
                     </div>
 
                     {/* Card Content */}
-                    <div className="p-5">
-                      {/* Affiliation Badge Tag */}
-                      <div className="flex items-center gap-1.5 mb-2">
-                        <span
-                          className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[11px] font-bold ${
-                            project.affiliation.type === "company"
-                              ? "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20"
-                              : project.affiliation.type === "grad"
-                              ? "bg-teal-500/10 text-teal-600 dark:text-teal-400 border border-teal-500/20"
-                              : project.affiliation.type === "freelance"
-                              ? "bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20"
-                              : "bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20"
-                          }`}
-                        >
-                          <i className={`bx ${project.affiliation.icon} text-xs`} />
-                          <span>{t(project.affiliation.badgeKey)}</span>
-                        </span>
+                    <div className="p-5 flex-1 flex flex-col justify-between">
+                      <div>
+                        {/* Affiliation Badge Tag */}
+                        <div className="flex items-center gap-1.5 mb-2">
+                          <span
+                            className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[11px] font-bold ${
+                              project.affiliation.type === "company"
+                                ? "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20"
+                                : project.affiliation.type === "grad"
+                                ? "bg-teal-500/10 text-teal-600 dark:text-teal-400 border border-teal-500/20"
+                                : project.affiliation.type === "freelance"
+                                ? "bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20"
+                                : "bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20"
+                            }`}
+                          >
+                            <i className={`bx ${project.affiliation.icon} text-xs`} />
+                            <span>{t(project.affiliation.badgeKey)}</span>
+                          </span>
+                        </div>
+
+                        <h3 className="text-lg font-bold text-title mb-2 group-hover:text-indigo-400 transition-colors duration-300 ease-apple">
+                          {t(project.titleKey)}
+                        </h3>
+
+                        <p className="text-xs text-textLight leading-relaxed line-clamp-3 mb-4 font-normal">
+                          {t(project.descKey)}
+                        </p>
                       </div>
 
-                      <h3 className="text-lg font-bold text-title mb-2 group-hover:text-indigo-400 transition-colors duration-300 ease-apple">
-                        {t(project.titleKey)}
-                      </h3>
-
-                      <p className="text-xs text-textLight leading-relaxed line-clamp-3 mb-4 font-normal">
-                        {t(project.descKey)}
-                      </p>
-
                       {/* Tech Chips */}
-                      <div className="flex flex-wrap gap-1.5 mb-2">
+                      <div className="flex flex-wrap gap-1.5 mt-auto pt-3">
                         {project.techs.slice(0, 4).map((tech) => (
                           <span
                             key={tech}
@@ -144,14 +149,14 @@ const Portfolio: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Action Buttons Footer */}
-                  <div className="p-5 pt-0 mt-auto border-t border-slate-200/60 dark:border-white/[0.06] flex items-center justify-between gap-3">
+                  {/* Action Buttons Footer (Pinned to bottom at equal level across all cards) */}
+                  <div className="p-5 pt-4 mt-auto border-t border-slate-200/60 dark:border-white/[0.06] flex items-center justify-between gap-3 shrink-0">
                     {/* Live Demo */}
                     <a
                       href={project.link}
                       target="_blank"
                       rel="noreferrer"
-                      className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all duration-300 ease-apple shadow-xs"
+                      className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all duration-300 ease-apple shadow-xs active:scale-[0.98]"
                     >
                       <span>{t("portfolio.viewDemo")}</span>
                       <i className="bx bx-link-external text-sm" />
@@ -170,7 +175,7 @@ const Portfolio: React.FC = () => {
                           ? "/project/hope"
                           : `/project/${project.id}`
                       }
-                      className="inline-flex items-center justify-center gap-1 px-3 py-2 rounded-lg border border-slate-200 dark:border-white/10 hover:border-indigo-500/40 text-textLight hover:text-title text-xs font-bold transition-all duration-300 ease-apple"
+                      className="inline-flex items-center justify-center gap-1 px-3.5 py-2.5 rounded-lg border border-slate-200 dark:border-white/10 hover:border-indigo-500/40 text-textLight hover:text-title text-xs font-bold transition-all duration-300 ease-apple active:scale-[0.98]"
                     >
                       <span>{t("portfolio.viewDetails")}</span>
                       <i className={`bx ${isAr ? "bx-chevron-left" : "bx-chevron-right"} text-base`} />

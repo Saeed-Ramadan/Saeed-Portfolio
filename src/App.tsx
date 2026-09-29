@@ -11,6 +11,7 @@ const HopeDetails = lazy(() => import("./pages/HopeDetails"));
 const BynonaDetails = lazy(() => import("./pages/BynonaDetails"));
 const PropixDetails = lazy(() => import("./pages/PropixDetails"));
 const CiHostDetails = lazy(() => import("./pages/CiHostDetails"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 function App() {
   const { i18n } = useTranslation();
@@ -41,6 +42,7 @@ function App() {
                 <Route path="/project/propix8" element={<PropixDetails />} />
                 <Route path="/project/cihost" element={<CiHostDetails />} />
                 <Route path="/project/:id" element={<ProjectDetails />} />
+                <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>
           </div>

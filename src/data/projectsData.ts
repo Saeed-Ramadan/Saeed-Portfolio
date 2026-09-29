@@ -118,6 +118,12 @@ import zakaaHero from "../assets/Zakaa/Hero.png";
 import zakaaFull from "../assets/Zakaa/full.png";
 import zakaaLogo from "../assets/Zakaa/logo.png";
 
+// ─── ClickNest Images (Freelance Digital Growth Agency) ──────────────────────
+import clickNestLogo from "../assets/ClickNest/logo.png";
+import clickNestHero from "../assets/ClickNest/Hero.png";
+import clickNestFull1 from "../assets/ClickNest/Full1.png";
+import clickNestFull2 from "../assets/ClickNest/Full2.png";
+
 export interface ProjectFeature {
   titleKey: string;
   descKey: string;
@@ -411,7 +417,63 @@ export const projectsData: Project[] = [
     },
   },
 
-  // ── 5. Bynona ── Yellow E-Commerce
+  // ── 5. ClickNest ── Digital Growth Agency & Performance Web
+  {
+    id: "click-nest",
+    titleKey: "portfolio.clickNest.title",
+    descKey: "portfolio.clickNest.desc",
+    titleFallback: "ClickNest - Digital Growth Agency",
+    category: "professional",
+    affiliation: {
+      type: "freelance",
+      badgeKey: "portfolio.affiliation.freelanceBadge",
+      detailKey: "portfolio.affiliation.freelanceDetail",
+      icon: "bx-trending-up",
+    },
+    img: clickNestLogo,
+    link: "https://click-nest.vercel.app/",
+    theme: {
+      primary: "#0284c7",
+      glow: "rgba(2, 132, 199, 0.35)",
+      bgGlow: "rgba(2, 132, 199, 0.08)",
+      gradient:
+        "linear-gradient(135deg, rgba(2, 132, 199, 0.15), rgba(249, 115, 22, 0.08))",
+      label: "Digital Growth",
+      icon: "bx-trending-up",
+    },
+    techs: [
+      "React 19",
+      "Vite",
+      "Tailwind CSS",
+      "Framer Motion",
+      "Lucide React",
+      "Digital Growth System",
+    ],
+    details: {
+      heroImage: clickNestHero,
+      overviewKey: "portfolio.clickNest.details.overview",
+      features: [
+        {
+          titleKey: "portfolio.clickNest.details.features.f1.title",
+          descKey: "portfolio.clickNest.details.features.f1.desc",
+          icon: "bx-line-chart",
+        },
+        {
+          titleKey: "portfolio.clickNest.details.features.f2.title",
+          descKey: "portfolio.clickNest.details.features.f2.desc",
+          icon: "bx-target-lock",
+        },
+        {
+          titleKey: "portfolio.clickNest.details.features.f3.title",
+          descKey: "portfolio.clickNest.details.features.f3.desc",
+          icon: "bx-rocket",
+        },
+      ],
+      images: [clickNestHero, clickNestFull1, clickNestFull2, clickNestLogo],
+    },
+  },
+
+  // ── 6. Bynona ── Yellow E-Commerce
   {
     id: "bymona",
     titleKey: "portfolio.bymona.title",
