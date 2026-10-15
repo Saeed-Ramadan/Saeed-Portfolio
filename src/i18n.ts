@@ -25,6 +25,7 @@ i18n
             portfolio: "Projects",
             work: "Projects",
             contact: "Contact",
+            cv: "Download CV",
           },
           hero: {
             greeting: "Hello, I'm",
@@ -584,6 +585,7 @@ i18n
             portfolio: "المشاريع",
             work: "المشاريع",
             contact: "تواصل معي",
+            cv: "تحميل الـ CV",
           },
           hero: {
             greeting: "أهلاً بك، أنا",

@@ -75,6 +75,19 @@ const Header: React.FC = () => {
               ))}
             </ul>
 
+            {/* Desktop CV Download Action */}
+            <a
+              href="/Saeed-Ramadan-CV.pdf"
+              download="Saeed-Ramadan-Front-End-React-CV.pdf"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-indigo-500/30 hover:border-indigo-500 text-indigo-600 dark:text-indigo-400 bg-indigo-500/10 hover:bg-indigo-500/15 text-xs font-bold transition-all duration-300 ease-apple hover:-translate-y-0.5 cursor-pointer"
+              title={t("nav.cv")}
+            >
+              <i className="bx bx-download text-sm" />
+              <span>{t("nav.cv")}</span>
+            </a>
+
             {/* Language & Theme Controls */}
             <div className="flex items-center gap-3 border-l border-slate-200 dark:border-white/10 pl-5 rtl:border-l-0 rtl:border-r rtl:pl-0 rtl:pr-5">
               <button
@@ -204,6 +217,22 @@ const Header: React.FC = () => {
                     </button>
                   </div>
                 </div>
+
+                {/* Mobile Drawer CV Download */}
+                <a
+                  href="/Saeed-Ramadan-CV.pdf"
+                  download="Saeed-Ramadan-Front-End-React-CV.pdf"
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={closeMenu}
+                  className="w-full py-3 border border-indigo-500/40 hover:border-indigo-500 bg-indigo-500/10 hover:bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 rounded-xl text-xs font-bold uppercase tracking-wider text-center flex items-center justify-center gap-2 cursor-pointer transition-all"
+                >
+                  <i className="bx bx-download text-base" />
+                  <span>{t("nav.cv")}</span>
+                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 font-code font-bold">
+                    PDF
+                  </span>
+                </a>
 
                 <Link
                   to="contact"

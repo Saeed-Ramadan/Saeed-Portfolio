@@ -144,15 +144,19 @@ const Hero: React.FC = () => {
               </Link>
             </MagneticButton>
 
-            <MagneticButton strength={0.25}>
+            <MagneticButton strength={0.3}>
               <a
-                href="/Saeed Ramadan Front End (React JS).pdf"
+                href="/Saeed-Ramadan-CV.pdf"
+                download="Saeed-Ramadan-Front-End-React-CV.pdf"
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-2 px-5 h-12 border border-dashed border-indigo-500/30 hover:border-indigo-500 text-indigo-600 dark:text-indigo-400 bg-indigo-500/5 hover:bg-indigo-500/10 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 ease-apple"
+                className="group flex items-center gap-2.5 px-6 h-12 border border-indigo-500/40 hover:border-indigo-500 bg-gradient-to-r from-indigo-500/10 via-indigo-500/15 to-purple-500/10 hover:from-indigo-500/20 hover:to-purple-500/20 text-indigo-600 dark:text-indigo-300 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 ease-apple shadow-sm shadow-indigo-500/10 hover:shadow-indigo-500/25 active:scale-95 cursor-pointer"
               >
-                <i className="bx bx-download text-base" />
+                <i className="bx bx-download text-lg group-hover:-translate-y-0.5 group-hover:scale-110 transition-transform duration-300" />
                 <span>{t("hero.downloadCV")}</span>
+                <span className="text-[10px] px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 font-code font-bold">
+                  PDF
+                </span>
               </a>
             </MagneticButton>
           </div>

@@ -2,6 +2,7 @@ import { useEffect, useState, lazy, Suspense } from "react";
 import { useTranslation } from "react-i18next";
 import { AnimatePresence } from "framer-motion";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Analytics } from "@vercel/analytics/react";
 import Loader from "./components/Loader";
 import Home from "./pages/Home";
 
@@ -48,6 +49,7 @@ function App() {
           </div>
         )}
       </AnimatePresence>
+      <Analytics />
     </Router>
   );
 }
